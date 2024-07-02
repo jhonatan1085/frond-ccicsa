@@ -7,6 +7,7 @@ import { UsuariosService } from '../service/usuarios.service';
   styleUrls: ['./add-usuario.component.scss']
 })
 export class AddUsuarioComponent {
+  
   public selectedValue !: string;
   public selectedEducacion !: string;
   public selectedZona !: string;
@@ -52,8 +53,8 @@ export class AddUsuarioComponent {
 
   save(){
     this.text_validation = '';
-    if(!this.name || !this.email || !this.surname || !this.FILE_AVATAR || !this.password){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (nombre, apellidos, email, avatar)"
+    if(!this.name || !this.email || !this.surname || !this.password){
+      this.text_validation = "LOS CAMPOS SON NECESARIOS (nombre, apellidos, email)"
       return;
     }
 

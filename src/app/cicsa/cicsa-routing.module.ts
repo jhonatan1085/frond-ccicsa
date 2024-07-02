@@ -18,6 +18,17 @@ const routes: Routes = [
         path:'site',
         loadChildren: () => 
           import('./site/site.module').then((m) => m.SiteModule),
+      },
+      {
+        path:'bitacoras',
+        loadChildren: () => 
+          import('./bitacoras/bitacoras.module').then((m) => m.BitacorasModule),
+      }
+      ,
+      {
+        path:'cuadrilla',
+        loadChildren: () => 
+          import('./cuadrilla/cuadrilla.module').then((m) => m.CuadrillaModule),
       }
     ]
   }

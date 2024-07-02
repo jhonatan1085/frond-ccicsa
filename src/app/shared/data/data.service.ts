@@ -277,17 +277,17 @@ export class DataService {
           img: 'assets/img/icons/menu-icon-08.svg',
           subMenus: [
             {
-              menuValue: 'Lista Usuarios',
-              route: routes.usuarioList,
-              base: routes.usuarioList,
-              permision: 'list_staff',
-              show_nav: true,
-            },
-            {
               menuValue: 'Agregar Usuario',
               route: routes.addUsuario,
               base: routes.addUsuario,
               permision: 'register_staff',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Lista Usuarios',
+              route: routes.usuarioList,
+              base: routes.usuarioList,
+              permision: 'list_staff',
               show_nav: true,
             },
             {
@@ -315,23 +315,24 @@ export class DataService {
           menuValue: 'Sites',
           hasSubRoute: true,
           showSubRoute: false,
-          base: 'staff',
+          base: 'site',
           img: 'assets/img/icons/menu-icon-08.svg',
           subMenus: [
-            {
-              menuValue: 'Lista Sites',
-              route: routes.siteList,
-              base: routes.siteList,
-              permision: 'list_site',
-              show_nav: true,
-            },
+            
             {
               menuValue: 'Agregar Site',
               route: routes.addSite,
               base: routes.addSite,
               permision: 'register_site',
               show_nav: true,
+            },{
+              menuValue: 'Lista Sites',
+              route: routes.siteList,
+              base: routes.siteList,
+              permision: 'list_site',
+              show_nav: true,
             },
+            
             {
               menuValue: 'Editar Site',
               route: '',
@@ -346,6 +347,84 @@ export class DataService {
               permision: 'delete_site',
               show_nav: false,
             },
+
+          ],
+        },
+        {
+          menuValue: 'Bitacoras',
+          hasSubRoute: true,
+          showSubRoute: false,
+          base: 'bitacoras',
+          img: 'assets/img/icons/menu-icon-08.svg',
+          subMenus: [
+            {
+              menuValue: 'Agregar Bitacora',
+              route: routes.addBitacora,
+              base: routes.addBitacora,
+              permision: 'register_bitacora',
+              show_nav: true,
+            },
+            /*  {
+              menuValue: 'Lista Sites',
+              route: routes.siteList,
+              base: routes.siteList,
+              permision: 'list_site',
+              show_nav: true,
+            }, */
+            
+            /* {
+              menuValue: 'Editar Site',
+              route: '',
+              base: '',
+              permision: 'edit_site',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Eliminar Site',
+              route: '',
+              base: '',
+              permision: 'delete_site',
+              show_nav: false,
+            }, */
+
+          ],
+        },
+        {
+          menuValue: 'Cuadrillas',
+          hasSubRoute: true,
+          showSubRoute: false,
+          base: 'cuadrillas',
+          img: 'assets/img/icons/menu-icon-08.svg',
+          subMenus: [
+            {
+              menuValue: 'Listar Cuadrillas',
+              route: routes.cuadrillaList,
+              base: routes.cuadrillaList,
+              permision: 'list_cuadrilla',
+              show_nav: true,
+            },
+            /*  {
+              menuValue: 'Lista Sites',
+              route: routes.siteList,
+              base: routes.siteList,
+              permision: 'list_site',
+              show_nav: true,
+            }, */
+            
+            /* {
+              menuValue: 'Editar Site',
+              route: '',
+              base: '',
+              permision: 'edit_site',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Eliminar Site',
+              route: '',
+              base: '',
+              permision: 'delete_site',
+              show_nav: false,
+            }, */
 
           ],
         },

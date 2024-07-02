@@ -1,0 +1,116 @@
+<div id="add_cuadrilla" class="modal fade delete-modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-heading">
+                                                <h4>Registro de Cuadrilla</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6 col-xl-6">
+                                            <div class="form-group local-forms">
+                                                <label>Tipo Brigada <span class="login-danger">*</span></label>
+                                                <mat-select [(ngModel)]="selectedTipobrigadas"
+                                                    [ngModelOptions]="{standalone: true}" class="form-control select"
+                                                    placeholder="Seleccione Zona">
+                                                    <mat-option *ngFor="let data of tipobrigadas" [value]="data.id">
+                                                        {{data.nombre}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6 col-xl-6">
+                                            <div class="form-group local-forms">
+                                                <label>Contrata <span class="login-danger">*</span></label>
+                                                <mat-select [(ngModel)]="selectedContratistas"
+                                                    [ngModelOptions]="{standalone: true}" class="form-control select"
+                                                    placeholder="Seleccione Zona">
+                                                    <mat-option *ngFor="let data of contratistas" [value]="data.id">
+                                                        {{data.nombre}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6 col-xl-6">
+                                            <div class="form-group local-forms">
+                                                <label>Zona <span class="login-danger">*</span></label>
+                                                <mat-select [(ngModel)]="selectedZona"
+                                                    [ngModelOptions]="{standalone: true}" class="form-control select"
+                                                    placeholder="Seleccione Zona" (selectionChange)="tecnicos()">
+                                                    <mat-option *ngFor="let data of zonas" [value]="data.id">
+                                                        {{data.nombre}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">Seleccione Tecnicos de Brigada</h4>
+                                                    <div class="table-responsive">
+                                                        <table class="table mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>*</th>
+                                                                    <th>Lider</th>
+                                                                    <th>Nombres</th>
+                                                                    <th>UM</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                    <ng-container *ngFor="let user of users">
+                                                                    <tr >
+                                                                        <td style=" text-align: center !important;">
+                                                                            <div class="form-check check-tables">
+                                                                                    <input class="form-check-input" type="checkbox"
+                                                                                            name="checkbox" [checked]="isCheck(user)" (click)="addUser(user)">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td style=" text-align: center !important;">
+                                                                            <div class="form-check check-tables">
+                                                                               
+                                                                                    <input class="form-check-input" type="checkbox"
+                                                                                            name="checkbox"   (click)="addLider(user)" [disabled]="islider(user)" >
+                                                                            </div>
+                                                                        </td>
+                                                                        <td style=" text-align: left !important;">
+                                                                            {{user.name}} {{user.surname}} 
+                                                                        </td>
+                                                                        <td>
+                                                                            <ng-container *ngFor="let movil of user.unidad_movil">
+                                                                                {{movil.placa}}
+                                                                            </ng-container>
+                                                                            
+                                                                        </td>
+
+
+                                                                    </tr>
+                                                                </ng-container>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m-t-20"> <a href="javascript:void(0);" class="btn btn-white me-1"
+                        data-bs-dismiss="modal">Close</a>
+                    <button type="submit" class="btn btn-danger" (click)="saveCuadrilla()">Registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

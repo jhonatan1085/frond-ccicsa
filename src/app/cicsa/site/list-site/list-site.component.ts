@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component ,ViewChild} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SiteService } from '../service/site.service';
 
@@ -10,6 +10,8 @@ import { SiteService } from '../service/site.service';
 export class ListSiteComponent {
   public sitesList:any = [];
   dataSource!: MatTableDataSource<any>;
+
+  @ViewChild('closebutton') closebutton:any;
 
   public searchDataValue = '';
 
@@ -33,13 +35,6 @@ export class ListSiteComponent {
   ) {
 
   }
-  public searchData(value: any): void {
-
-    
-    this.dataSource.filter = value.trim().toLowerCase();
-    this.sitesList = this.dataSource.filteredData;
-  }
-
 
   ngOnInit() {
     this.getTableData();
@@ -47,18 +42,21 @@ export class ListSiteComponent {
 
 
 
-  private getTableData(): void {
+  private getTableData(page=1): void {
     this.sitesList = [];
     this.serialNumberArray = [];
 
-    this.SiteService.listSites().subscribe((resp: any) => {
+    this.SiteService.listSites(page,this.searchDataValue).subscribe((resp: any) => {
      
       console.log(resp);
 
-      this.totalData = resp.sites.data.length;
-      this.site_generals = resp.sites.data;
+      this.totalData = resp.total;
+      this.sitesList = resp.sites.data;
 
-      this.getTableDataGeneral();
+      this.dataSource = new MatTableDataSource<any>(this.sitesList);
+      this.calculateTotalPages(this.totalData, this.pageSize);
+
+      //this.getTableDataGeneral();
     });
   }
 
@@ -77,20 +75,18 @@ export class ListSiteComponent {
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
-  private calculateTotalPages(totalData: number, pageSize: number): void {
-    this.pageNumberArray = [];
-    this.totalPages = totalData / pageSize;
-    if (this.totalPages % 1 != 0) {
-      this.totalPages = Math.trunc(this.totalPages + 1);
-    }
-    /* eslint no-var: off */
-    for (var i = 1; i <= this.totalPages; i++) {
-      const limit = pageSize * i;
-      const skip = limit - pageSize;
-      this.pageNumberArray.push(i);
-      this.pageSelection.push({ skip: skip, limit: limit });
-    }
+  
+  public searchData(): void {
+
+    this.pageSelection = [];
+    this.limit = this.pageSize;
+    this.skip = 0;
+    this.currentPage = 1;
+
+    this.getTableData();
   }
+
+
 
   public sortData(sort: any) {
     const data = this.sitesList.slice();
@@ -114,13 +110,13 @@ export class ListSiteComponent {
       this.pageIndex = this.currentPage - 1;
       this.limit += this.pageSize;
       this.skip = this.pageSize * this.pageIndex;
-      this.getTableDataGeneral();
+      this.getTableData(this.currentPage);
     } else if (event == 'previous') {
       this.currentPage--;
       this.pageIndex = this.currentPage - 1;
       this.limit -= this.pageSize;
       this.skip = this.pageSize * this.pageIndex;
-      this.getTableDataGeneral();
+      this.getTableData(this.currentPage);
     }
   }
 
@@ -133,7 +129,7 @@ export class ListSiteComponent {
     } else if (pageNumber < this.currentPage) {
       this.pageIndex = pageNumber + 1;
     }
-    this.getTableDataGeneral();
+    this.getTableData(this.currentPage);
   }
 
   public PageSize(): void {
@@ -143,5 +139,21 @@ export class ListSiteComponent {
     this.currentPage = 1;
     this.searchDataValue = '';
     this.getTableData();
+  }
+
+
+  private calculateTotalPages(totalData: number, pageSize: number): void {
+    this.pageNumberArray = [];
+    this.totalPages = totalData / pageSize;
+    if (this.totalPages % 1 != 0) {
+      this.totalPages = Math.trunc(this.totalPages + 1);
+    }
+    /* eslint no-var: off */
+    for (var i = 1; i <= this.totalPages; i++) {
+      const limit = pageSize * i;
+      const skip = limit - pageSize;
+      this.pageNumberArray.push(i);
+      this.pageSelection.push({ skip: skip, limit: limit });
+    }
   }
 }

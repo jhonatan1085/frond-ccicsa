@@ -6,56 +6,53 @@ import { AuthService } from 'src/app/shared/auth/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UsuariosService {
+export class BitacorasService {
 
   constructor(
     public http:HttpClient,
     public authService:AuthService
   ) { }
 
-  listUsers(){
+ /*  listSites(page:number = 1, search:string = ''){
     let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs";
+    let URL = URL_SERVICIOS+"/sites?page="+page+"&search="+search;
     return this.http.get(URL,{headers:headers});
-    
-  }
+  } */
 
   listConfig(){
     let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs/config";
+    let URL = URL_SERVICIOS+"/bitacoras/config";
     return this.http.get(URL,{headers:headers});
   }
 
-  registerUser(data:any){
+  registerSite(data:any){
     let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs";
+    let URL = URL_SERVICIOS+"/sites";
     return this.http.post(URL,data, {headers:headers});
   }
-
-  showUser(staff_id:string){
+  
+//retorna la provincia
+  showProvinciasDep(dep_id:string){
     let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs/"+staff_id;
+    let URL = URL_SERVICIOS+"/provinciasdep/"+dep_id;
+    return this.http.get(URL,{headers:headers});
+  }
+  showDistritoProv(dist_id:string){
+    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
+    let URL = URL_SERVICIOS+"/distritoprov/"+dist_id;
+    return this.http.get(URL,{headers:headers});
+  }
+
+  showSite(site_id:string){
+    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
+    let URL = URL_SERVICIOS+"/sites/"+site_id;
     return this.http.get(URL,{headers:headers});
     
   }
 
-  updateUser(staff_id:string, data:any){
+  updateSite(site_id:string, data:any){
     let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs/"+staff_id;
+    let URL = URL_SERVICIOS+"/sites/"+ site_id;
     return this.http.post(URL,data,{headers:headers});
   }
-
-  deleteUSer(staff_id:string){
-    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs/"+staff_id;
-    return this.http.delete(URL,{headers:headers});
-  }
-
-  
-//retorna la provincia
-showUserZona(zona_id:string){
-  let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-  let URL = URL_SERVICIOS+"/usuariozona/"+zona_id;
-  return this.http.get(URL,{headers:headers});
-}
 }

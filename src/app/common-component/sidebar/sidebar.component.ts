@@ -34,7 +34,7 @@ export class SidebarComponent {
     let USER = localStorage.getItem("user");
     this.user = JSON.parse(USER ? USER : '');
     //inicio
-    if(this.user.roles.includes("Super-Admin")){
+    if(this.user.roles.includes("Admin")){
       this.sidebarData = this.data.sideBar;
     }else{
       //vamos a filtrar y validar que opciones puede ver ese rol
