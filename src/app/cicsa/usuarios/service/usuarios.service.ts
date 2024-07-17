@@ -9,53 +9,59 @@ import { AuthService } from 'src/app/shared/auth/auth.service';
 export class UsuariosService {
 
   constructor(
-    public http:HttpClient,
-    public authService:AuthService
+    public http: HttpClient,
+    public authService: AuthService
   ) { }
 
-  listUsers(){
-    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs";
-    return this.http.get(URL,{headers:headers});
-    
+  listUsers() {
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.token })
+    let URL = URL_SERVICIOS + "/staffs";
+    return this.http.get(URL, { headers: headers });
+
   }
 
-  listConfig(){
-    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs/config";
-    return this.http.get(URL,{headers:headers});
+  listConfig() {
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.token })
+    let URL = URL_SERVICIOS + "/staffs/config";
+    return this.http.get(URL, { headers: headers });
   }
 
-  registerUser(data:any){
-    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs";
-    return this.http.post(URL,data, {headers:headers});
+  registerUser(data: any) {
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.token })
+    let URL = URL_SERVICIOS + "/staffs";
+    return this.http.post(URL, data, { headers: headers });
   }
 
-  showUser(staff_id:string){
-    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs/"+staff_id;
-    return this.http.get(URL,{headers:headers});
-    
+  showUser(staff_id: string) {
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.token })
+    let URL = URL_SERVICIOS + "/staffs/" + staff_id;
+    return this.http.get(URL, { headers: headers });
+
   }
 
-  updateUser(staff_id:string, data:any){
-    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs/"+staff_id;
-    return this.http.post(URL,data,{headers:headers});
+  updateUser(staff_id: string, data: any) {
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.token })
+    let URL = URL_SERVICIOS + "/staffs/" + staff_id;
+    return this.http.post(URL, data, { headers: headers });
   }
 
-  deleteUSer(staff_id:string){
-    let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-    let URL = URL_SERVICIOS+"/staffs/"+staff_id;
-    return this.http.delete(URL,{headers:headers});
+  deleteUSer(staff_id: string) {
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.token })
+    let URL = URL_SERVICIOS + "/staffs/" + staff_id;
+    return this.http.delete(URL, { headers: headers });
   }
 
-  
-//retorna la provincia
-showUserZona(zona_id:string){
-  let headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
-  let URL = URL_SERVICIOS+"/usuariozona/"+zona_id;
-  return this.http.get(URL,{headers:headers});
-}
+
+  //retorna la tecnicos por zona
+  showUserZona(zona_id: string) {
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.token })
+    let URL = URL_SERVICIOS + "/usuariozonatecnico/" + zona_id;
+    return this.http.get(URL, { headers: headers });
+  }
+
+  showResponsables(zona_id: string) {
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.token })
+    let URL = URL_SERVICIOS + "/usuariozonaresponsables/" + zona_id;
+    return this.http.get(URL, { headers: headers });
+  }
 }

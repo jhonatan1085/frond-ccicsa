@@ -358,20 +358,20 @@ export class DataService {
           img: 'assets/img/icons/menu-icon-08.svg',
           subMenus: [
             {
+              menuValue: 'Lista Bitacoras',
+              route: routes.bitacoraList,
+              base: routes.bitacoraList,
+              permision: 'list_bitacora',
+              show_nav: true,
+            },
+            {
               menuValue: 'Agregar Bitacora',
               route: routes.addBitacora,
               base: routes.addBitacora,
               permision: 'register_bitacora',
               show_nav: true,
             },
-            /*  {
-              menuValue: 'Lista Sites',
-              route: routes.siteList,
-              base: routes.siteList,
-              permision: 'list_site',
-              show_nav: true,
-            }, */
-            
+            /*   */
             /* {
               menuValue: 'Editar Site',
               route: '',

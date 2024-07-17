@@ -1,5 +1,11 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from '@angular/common';
+import {
+    MatSnackBar,
+    MatSnackBarHorizontalPosition,
+    MatSnackBarModule,
+    MatSnackBarVerticalPosition,
+  } from '@angular/material/snack-bar';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCardModule} from '@angular/material/card';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -12,7 +18,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
 import {FormsModule} from '@angular/forms';
-
+import {MatRadioModule} from '@angular/material/radio';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
@@ -31,6 +38,9 @@ imports: [
     MatDialogModule,
     FormsModule,
     MatAutocompleteModule,
+    MatSnackBarModule,
+    MatRadioModule,
+    MatListModule,
 ],
 exports: [
     CommonModule,
@@ -45,8 +55,10 @@ exports: [
     MatIconModule,
     MatDialogModule,
     FormsModule,
-    MatAutocompleteModule
-
+    MatAutocompleteModule,
+    MatSnackBarModule,
+    MatRadioModule,
+    MatListModule
 ]
 })
 

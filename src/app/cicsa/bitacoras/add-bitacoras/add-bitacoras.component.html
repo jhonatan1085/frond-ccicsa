@@ -81,22 +81,22 @@
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="latitud">Latitud <span class="login-danger">*</span></label>
+                        <label for="latitud">Latitud </label>
                         <input class="form-control" [(ngModel)]="latitud" name="latitud" type="text" />
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="longitud">Longitud <span class="login-danger">*</span></label>
+                        <label for="longitud">Longitud </label>
                         <input class="form-control" [(ngModel)]="longitud" name="longitud" type="text" />
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="distancia">Distancia <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="distancia" name="distancia" type="text" />
+                        <label for="distancia">Distancia </label>
+                        <input class="form-control" [(ngModel)]="distancia" name="distancia" type="number" />
                       </div>
                     </div>
 
@@ -149,9 +149,6 @@
                       </div>
                     </div>
 
-
-
-
                     <div class="col-12 col-md-6 col-xl-3">
                       <div class="form-group local-forms">
                         <mat-form-field style="text-align: right">
@@ -167,16 +164,29 @@
 
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 col-xl-3">
+                    <!-- <div class="col-12 col-md-6 col-xl-3">
                       <div class="form-group local-forms">
                         <label for="codigo">Codigo <span class="login-danger">*</span></label>
                         <input class="form-control" [(ngModel)]="codigo" name="codigo" type="text" />
                       </div>
+                    </div> -->
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="invoice-counts">
+                        <h4>Codigo <br><span> {{ codigo }}</span></h4>
+                      </div>
                     </div>
+                    <!-- 
                     <div class="col-12 col-md-6 col-xl-3">
                       <div class="form-group local-forms">
                         <label for="zona">Zona <span class="login-danger">*</span></label>
                         <input class="form-control" [(ngModel)]="zona" name="zona" type="text" />
+                      </div>
+                    </div> -->
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="invoice-counts">
+                        <h4>Zona <br><span> {{ zona }}</span></h4>
                       </div>
                     </div>
 
@@ -187,48 +197,82 @@
                       </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-xl-2">
+                   <!--  <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <label for="region">Region <span class="login-danger">*</span></label>
                         <input class="form-control" [(ngModel)]="region" name="region" type="text" />
                       </div>
+                    </div> -->
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="invoice-counts">
+                        <h4>Region <br><span> {{ region }}</span></h4>
+                      </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-xl-2">
+           <!--          <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <label for="departamento">Departamento <span class="login-danger">*</span></label>
                         <input class="form-control" [(ngModel)]="departamento" name="departamento" type="text" />
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-12 col-md-6 col-xl-2">
+                      <div class="invoice-counts">
+                        <h4>Departamento <br><span> {{ departamento }}</span></h4>
+                      </div>
+                    </div>
+
+                    <!-- <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <label for="provincia">Provincia <span class="login-danger">*</span></label>
                         <input class="form-control" [(ngModel)]="provincia" name="provincia" type="text" />
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-12 col-md-6 col-xl-2">
+                      <div class="invoice-counts">
+                        <h4>Provincia <br><span> {{ provincia }}</span></h4>
+                      </div>
+                    </div>
+
+                   <!--  <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <label for="distrito">Distrito <span class="login-danger">*</span></label>
                         <input class="form-control" [(ngModel)]="distrito" name="distrito" type="text" />
                       </div>
+                    </div> -->
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="invoice-counts">
+                        <h4>Distrito <br><span> {{ distrito }}</span></h4>
+                      </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-xl-2">
+                    <!-- <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <label for="latitud">Latitud <span class="login-danger">*</span></label>
                         <input class="form-control" [(ngModel)]="latitud" name="latitud" type="text" />
                       </div>
+                    </div> -->
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="invoice-counts">
+                        <h4>Latitud <br><span> {{ latitudsite }}</span></h4>
+                      </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-xl-2">
+                    <!-- <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <label for="longitud">Longitud <span class="login-danger">*</span></label>
                         <input class="form-control" [(ngModel)]="longitud" name="longitud" type="text" />
                       </div>
+                    </div> -->
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="invoice-counts">
+                        <h4>Longitud <br><span> {{ longitudsite }}</span></h4>
+                      </div>
                     </div>
                   </div>
+                  
 
                   <mat-action-row>
                     <button mat-button color="warn" (click)="prevStep()">Anterior</button>
@@ -271,8 +315,10 @@
                                     <td>{{countTecnicos(cuadrilla)}}</td>
                                     <td>
                                       <div class="add-group">
-                                        <button class="check-point status-blue  me-1" (click)="showSegment(cuadrilla)" ><i class="feather icon-search"></i></button>
-                                        <button class="check-point status-blue " *ngIf="searchadd(cuadrilla)" (click)="addCuadrilla(cuadrilla)" ><i class="feather icon-plus"></i></button>
+                                        <button class="check-point status-blue  me-1"
+                                          (click)="showSegment(cuadrilla)"><i class="feather icon-search"></i></button>
+                                        <button class="check-point status-blue " *ngIf="searchadd(cuadrilla)"
+                                          (click)="addCuadrilla(cuadrilla)"><i class="feather icon-plus"></i></button>
                                       </div>
                                     </td>
                                   </tr>
@@ -355,8 +401,8 @@
                             </div>
                           </div>
 
+                        </div>
                       </div>
-                    </div>
 
                     </div>
                     <div class="col-4" *ngIf="CUADRILLA_SELECTED">
@@ -402,31 +448,32 @@
                         <div class="card-block">
                           <h4 class="card-title">Cuadrilla Seleccionada</h4>
                           <div class="table-responsive">
-                          <table class="table mb-0">
-                            <thead>
-                              <tr>
-                                <th>ZONA</th>
-                                <th>Cuadrilla</th>
-                                <th>ACCION</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <ng-container *ngFor="let cuadriadd of cuadrilla_add">
+                            <table class="table mb-0">
+                              <thead>
                                 <tr>
-                                  <td>{{cuadriadd.zona}} </td>
-                                  <td>{{cuadriadd.tipocuadrilla}}</td>
-                                  <td>
-                                    <div class="add-group">
-                
-                                          <button class="check-point status-red " (click)="addCuadrilla(cuadriadd)" ><i class="feather icon-x"></i></button>
-                                    
-                                        </div>
-
-                                  </td>
+                                  <th>ZONA</th>
+                                  <th>Cuadrilla</th>
+                                  <th>ACCION</th>
                                 </tr>
-                              </ng-container>
-                            </tbody>
-                          </table>
+                              </thead>
+                              <tbody>
+                                <ng-container *ngFor="let cuadriadd of cuadrilla_add">
+                                  <tr>
+                                    <td>{{cuadriadd.zona}} </td>
+                                    <td>{{cuadriadd.tipocuadrilla}}</td>
+                                    <td>
+                                      <div class="add-group">
+
+                                        <button class="check-point status-red " (click)="addCuadrilla(cuadriadd)"><i
+                                            class="feather icon-x"></i></button>
+
+                                      </div>
+
+                                    </td>
+                                  </tr>
+                                </ng-container>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       </div>
@@ -453,43 +500,53 @@
 
                   <div class="row align-items-center">
                     <div class="col-8">
-                      <div class="table-responsive">
-                        <table class="table mb-0">
-                          <thead>
-                            <tr>
-                              <th>SELECCIONAR</th>
-                              <th>ZONA</th>
-                              <th>Tipo cuadrilla</th>
-                              <th>VER</th>
-                            </tr>
-                          </thead>
-                          <tbody>
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="table-responsive">
+                            <table class="table mb-0">
+                              <thead>
+                                <tr>
+                                  <th>Responsable Ciccsa</th>
+                                  <th>Responsable Claro</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td style=" text-align: center !important;">
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                      class="example-radio-group" [(ngModel)]="selectedlidercicsa"
+                                      [ngModelOptions]="{ standalone: true }">
+                                      <mat-radio-button class="example-radio-button"
+                                        *ngFor="let data of responsables_cicsa" [value]="data.id">{{data.name}}
+                                        {{data.surname}}</mat-radio-button>
+                                    </mat-radio-group>
+                                  </td>
+                                  <td style=" text-align: center !important;">
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                      class="example-radio-group" [(ngModel)]="selectedliderclaro"
+                                      [ngModelOptions]="{ standalone: true }">
+                                      <mat-radio-button class="example-radio-button"
+                                        *ngFor="let data of responsables_claro" [value]="data.id">{{data.name}}
+                                        {{data.surname}}</mat-radio-button>
+                                    </mat-radio-group>
+                                  </td>
+                                </tr>
 
-                            <ng-container>
-                              <tr>
-                                <td>
-                                  <div class="checkbox">
-                                    <label>
-                                      <input type="checkbox" name="checkbox">
-                                    </label>
-                                  </div>
-                                </td>
-                                <td>TRUJILLO</td>
-                                <td>CUADRILLA</td>
-                                <td><button class="btn btn-primary btn-sm">+</button></td>
-                              </tr>
-                            </ng-container>
+                              </tbody>
+                            </table>
 
-                          </tbody>
-                        </table>
+                          </div>
+
+                        </div>
                       </div>
+
                     </div>
 
                   </div>
 
                   <mat-action-row>
                     <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-                    <button mat-button color="primary" (click)="nextStep()">Registrar</button>
+                    <button mat-button color="primary" (click)="saveBitacora()">Registrar</button>
                   </mat-action-row>
                 </mat-expansion-panel>
               </mat-accordion>

@@ -1,138 +1,120 @@
 <div class="page-wrapper">
-    <div class="content">
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Cuadrillas </a></li>
-                        <li class="breadcrumb-item">
-                            <i class="feather icon-chevron-right"></i>
-                        </li>
-                        <li class="breadcrumb-item active">Lista de Cuadrillas</li>
-                    </ul>
-                </div>
-            </div>
+  <div class="content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Cuadrillas </a></li>
+            <li class="breadcrumb-item">
+              <i class="feather icon-chevron-right"></i>
+            </li>
+            <li class="breadcrumb-item active">Lista de Cuadrillas</li>
+          </ul>
         </div>
-        <!-- /Page Header -->
+      </div>
+    </div>
+    <!-- /Page Header -->
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card card-table show-entire">
-                    <div class="card-body">
-                        <!-- Table Header -->
-                        <div class="page-table-header mb-2">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="doctor-table-blk">
-                                        <h3>Lista Cuadrillas</h3>
-                                        <div class="doctor-search-blk">
-                                            <div class="top-nav-search table-search-blk">
-                                                <input class="form-control" placeholder="Search here"
-                                                    [(ngModel)]="searchDataValue"
-                                                    (keyup.enter)="searchData()"/>
-                                                <a class="btn"><img src="assets/img/icons/search-normal.svg"
-                                                        alt="" /></a>
-                                            </div>
-                                            <div class="add-group">
-                                                <a class="btn btn-primary add-pluss ms-2" data-bs-toggle="modal" data-bs-target="#add_cuadrilla"><img
-                                                        src="assets/img/icons/plus.svg" alt="" /></a>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table show-entire">
+          <div class="card-body">
+            <!-- Table Header -->
+            <div class="page-table-header mb-2">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="doctor-table-blk">
+                    <h3>Lista Cuadrillas</h3>
+                    <div class="doctor-search-blk">
+                      <div class="top-nav-search table-search-blk">
+                        <input class="form-control" placeholder="Search here" [(ngModel)]="searchDataValue"
+                          (keyup.enter)="searchData()" />
+                        <a class="btn"><img src="assets/img/icons/search-normal.svg" alt="" /></a>
+                      </div>
+                      <div class="add-group">
+                        <a class="btn btn-primary add-pluss ms-2" data-bs-toggle="modal"
+                          data-bs-target="#add_cuadrilla"><img src="assets/img/icons/plus.svg" alt="" /></a>
 
-                                                <a href="javascript:;" class="btn btn-primary doctor-refresh ms-2"><img
-                                                        src="assets/img/icons/re-fresh.svg" alt="" /></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-auto text-end float-end ms-auto download-grp">
-                                    <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-01.svg"
-                                            alt="" /></a>
-                                    <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-02.svg"
-                                            alt="" /></a>
-                                    <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-03.svg"
-                                            alt="" /></a>
-                                    <a href="javascript:;"><img src="assets/img/icons/pdf-icon-04.svg" alt="" /></a>
-                                </div>
+                        <a href="javascript:;" class="btn btn-primary doctor-refresh ms-2"><img
+                            src="assets/img/icons/re-fresh.svg" alt="" /></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-auto text-end float-end ms-auto download-grp">
+                  <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-01.svg" alt="" /></a>
+                  <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-02.svg" alt="" /></a>
+                  <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-03.svg" alt="" /></a>
+                  <a href="javascript:;"><img src="assets/img/icons/pdf-icon-04.svg" alt="" /></a>
+                </div> -->
+              </div>
+            </div>
+            <!-- /Table Header -->
+            <div class="row align-items-center py-4">
+
+              <div class="col-7">
+                <div class="table-responsive">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Contrata</th>
+                        <th>Cuadrilla</th>
+                        <th>Zona</th>
+                        <th>Tecnicos</th>
+                        <th>Estado</th>
+                        <th>Ver</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let cuadrilla of cuadrillasList">
+                        <tr>
+
+                          <td>{{cuadrilla.contratista.nombre}} </td>
+                          <td>{{cuadrilla.tipo_brigada.nombre}}</td>
+                          <td>{{cuadrilla.zona.nombre}}</td>
+                          <td>{{countTecnicos(cuadrilla)}}</td>
+                          <td>
+                            <button
+                              [ngClass]="{'status-pink': cuadrilla.estado ==='0', 'status-green': cuadrilla.estado ==='1' }"
+                              class="custom-badge" (click)="inactiva(cuadrilla)" >{{cuadrilla.estadotext}}</button>
+                          </td>
+                          <td>
+                            <div class="add-group">
+                              <a href="javascript:;" (click)="showSegment(cuadrilla)"
+                                class="btn btn-primary doctor-refresh ms-2"><img
+                                  src="assets/img/icons/search-normal.svg" alt="" /></a>
                             </div>
-                        </div>
-                        <!-- /Table Header -->
-                        <div class="row align-items-center py-4">
-                          
-                          <div class="col-7">
-                                <div class="table-responsive">
-                                    <table class="table mb-0">
-                                        <thead>
-                                            <tr> 
-                                               
-                                                <th>Contrata</th>
-                                                <th>Cuadrilla</th>
-                                                <th>Zona</th>
-                                                <th>Tecnicos</th>
-                                                <th>Estado</th>
-                                                <th>Ver</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <ng-container *ngFor="let cuadrilla of cuadrillasList">
-                                                <tr>
-                                                    
-                                                    <td>{{cuadrilla.contratista.nombre}} </td>
-                                                    <td>{{cuadrilla.tipo_brigada.nombre}}</td>
-                                                    <td>{{cuadrilla.zona.nombre}}</td>
-                                                    <td>{{countTecnicos(cuadrilla)}}</td>
-                                                    <!-- <td>{{cuadrilla.estado}}</td>
-                                                      --> <td>
-                                                        <!-- <button [ngClass]="{'status-green': data.triage === 'Non Urgent', 'status-pink' : data.triage === 'Emergency','status-gray' : data.triage === 'Out Patient','status-orange' : data.triage === 'Urgent' }" class="custom-badge">{{data.triage}}</button>
-                                                        --> 
-                                                        <button [ngClass]="{'status-pink': cuadrilla.estado ==='0', 'status-green': cuadrilla.estado ==='1' }" class="custom-badge">{{cuadrilla.estadotext}}</button>
-                                                      </td>  
-                                                        <td>
-                                                            <div class="add-group">
-                                                                <a href="javascript:;"  (click)="showSegment(cuadrilla)" class="btn btn-primary doctor-refresh ms-2"><img
-                                                                        src="assets/img/icons/search-normal.svg" alt="" /></a>
-                                                            </div>
 
-                                                        <!-- <a class="btn btn-primary add-pluss ms-2" (click)="showSegment(cuadrilla)" ><img
+                            <!-- <a class="btn btn-primary add-pluss ms-2" (click)="showSegment(cuadrilla)" ><img
                                                             src="assets/img/icons/search-normal.svg" alt="" /></a>
-                                                    -->  </td>
-                                                </tr>
-                                            </ng-container>
-                                        </tbody>
-                                    </table>
-                                    <div class="table_footer">
-                                      <div class="col-sm-12 col-md-5">
-                                        <div class="dataTables_info">
-                                          Showing {{ serialNumberArray[0] }} to
-                                          {{ serialNumberArray[serialNumberArray.length - 1] }} of
-                                          {{ totalData }} entries
-                                        </div>
-                                      </div>
-                      
-                                      <div class="col-sm-12 col-md-7">
-                                        <div class="pagination_section">
-                                          <ul class="pagination">
-                                            <li
-                                              class="page-item"
-                                              [ngClass]="{
+                                                    -->
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                  <div class="table_footer">
+                    <div class="col-sm-12 col-md-5">
+                      <div class="dataTables_info">
+                        Showing {{ serialNumberArray[0] }} to
+                        {{ serialNumberArray[serialNumberArray.length - 1] }} of
+                        {{ totalData }} entries
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-7">
+                      <div class="pagination_section">
+                        <ul class="pagination">
+                          <li class="page-item" [ngClass]="{
                                                 disabled: currentPage === 1
-                                              }"
-                                            >
-                                              <a
-                                                (click)="getMoreData('previous')"
-                                                class="page-link"
-                                                href="javascript:void(0);"
-                                                tabindex="-1"
-                                                >Previous</a
-                                              >
-                                            </li>
-                      
-                                            <ng-container
-                                              *ngFor="let item of pageNumberArray; let i = index"
-                                            >
-                                              <li
-                                                class="page-item"
-                                                [class.active]="item === currentPage"
-                                                [ngClass]="
+                                              }">
+                            <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
+                              tabindex="-1">Previous</a>
+                          </li>
+
+                          <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                            <li class="page-item" [class.active]="item === currentPage" [ngClass]="
                                                   (pageNumberArray[currentPage - 2] > item &&
                                                     item !== 1 &&
                                                     pageNumberArray.length > 6) ||
@@ -142,112 +124,90 @@
                                                     pageNumberArray.length !== item)
                                                     ? 'hide-page-no'
                                                     : 'show-page-no'
-                                                "
-                                              >
-                                                <a
-                                                  (click)="moveToPage(item)"
-                                                  class="page-link"
-                                                  href="javascript:void(0);"
-                                                >
-                                                  {{ item }}
-                                                </a>
-                                              </li>
-                                              <li
-                                                class="page-item"
-                                                *ngIf="
+                                                ">
+                              <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                                {{ item }}
+                              </a>
+                            </li>
+                            <li class="page-item" *ngIf="
                                                   i === 0 &&
                                                   pageNumberArray.length > 6 &&
                                                   currentPage > 2
-                                                "
-                                                [hidden]="currentPage === 1"
-                                                (click)="moveToPage(currentPage - 2)"
-                                            (keyup.enter)="moveToPage(currentPage - 2)"  
-                                            tabindex="0"
-                                              >
-                                                <a class="page-link" href="javascript:void(0);">
-                                                  ...
-                                                </a>
-                                              </li>
-                                              <li
-                                                *ngIf="
+                                                " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)"
+                              (keyup.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                              <a class="page-link" href="javascript:void(0);">
+                                ...
+                              </a>
+                            </li>
+                            <li *ngIf="
                                                   i === pageNumberArray.length - 2 &&
                                                   pageNumberArray.length > 6
-                                                "
-                                                [hidden]="
+                                                " [hidden]="
                                                   currentPage >=
                                                     pageNumberArray[pageNumberArray.length - 2] ||
                                                   totalData <
                                                     serialNumberArray[serialNumberArray.length - 1]
-                                                "
-                                                class="page-item"
-                                                (click)="moveToPage(currentPage + 2)"(keyup.enter)="moveToPage(currentPage + 2)" tabindex="0"
-                                              >
-                                                <a class="page-link" href="javascript:void(0);">
-                                                  ...
-                                                </a>
-                                              </li>
-                                            </ng-container>
-                      
-                                            <li
-                                              class="page-item"
-                                              [ngClass]="{
+                                                " class="page-item" (click)="moveToPage(currentPage + 2)"
+                              (keyup.enter)="moveToPage(currentPage + 2)" tabindex="0">
+                              <a class="page-link" href="javascript:void(0);">
+                                ...
+                              </a>
+                            </li>
+                          </ng-container>
+
+                          <li class="page-item" [ngClass]="{
                                                 disabled:
                                                   currentPage ===
                                                     pageNumberArray[pageNumberArray.length - 1] ||
                                                     cuadrillasList.length === 0
-                                              }"
-                                            >
-                                              <a
-                                                (click)="getMoreData('next')"
-                                                class="page-link"
-                                                href="javascript:void(0);"
-                                                >Next
-                                              </a>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-5" *ngIf="CUADRILLA_SELECTED">
-                                <div class="table-responsive">
-                                    <table class="table mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>TECNICO</th>
-                                                <th>LIDER</th>
-                                                <th>UM</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <ng-container *ngFor="let SEGMENT of CUADRILLA_SELECTED.user_movil">
-                                                <tr>
-                                                    <td>
-                                                        {{SEGMENT.user.nombre}} 
-                                                    </td>
-                                                    <td>
-
-                                                      <button class="check-point status-blue  me-1" *ngIf="SEGMENT.is_lider === '1'"><i class="feather icon-user-check"></i></button>
-                                                    </td>
-                                                    <td >
-                                                        <div *ngIf="SEGMENT.unidad_movil">
-                                                            {{SEGMENT.unidad_movil.placa}}
-                                                        </div>  
-                                                    </td>
-                                                </tr>
-                                            </ng-container>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                                              }">
+                            <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Next
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
+              <div class="col-5" *ngIf="CUADRILLA_SELECTED">
+                <div class="table-responsive">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>TECNICO</th>
+                        <th>LIDER</th>
+                        <th>UM</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <ng-container *ngFor="let SEGMENT of CUADRILLA_SELECTED.user_movil">
+                        <tr>
+                          <td>
+                            {{SEGMENT.user.nombre}}
+                          </td>
+                          <td>
+
+                            <button class="check-point status-blue  me-1" *ngIf="SEGMENT.is_lider === '1'"><i
+                                class="feather icon-user-check"></i></button>
+                          </td>
+                          <td>
+                            <div *ngIf="SEGMENT.unidad_movil">
+                              {{SEGMENT.unidad_movil.placa}}
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <app-add-cuadrilla></app-add-cuadrilla>
-

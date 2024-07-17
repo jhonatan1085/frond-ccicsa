@@ -388,6 +388,11 @@ export class routes {
   public static get addSite(): string {
     return this.baseUrl + '/site/add-site';
   }
+
+  public static get bitacoraList(): string {
+    return this.baseUrl + '/bitacoras/list-bitacora';
+  }
+  
   public static get addBitacora(): string {
     return this.baseUrl + '/bitacoras/add-bitacora';
   }
@@ -395,4 +400,6 @@ export class routes {
   public static get cuadrillaList(): string {
     return this.baseUrl + '/cuadrilla/list-cuadrilla';
   }
+
+
 }

@@ -90,7 +90,6 @@ export class ListUsuarioComponent {
           $("body").removeClass();
           $("body").removeAttr("style");
 
-
           this.staff_selected = null;
          // this.closebutton.nativeElement.click();
         }

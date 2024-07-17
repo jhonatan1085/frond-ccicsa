@@ -1,0 +1,112 @@
+<div class="page-wrapper">
+    <div class="content">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Bitacoras</a></li>
+                        <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
+                        <li class="breadcrumb-item active">Agregar Tareas Bitacora</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="card">
+                    <div class="card-body"><!-- *ngIf="usuario_selected" -->
+                        <form>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-heading">
+                                        <h4>Desarrollo de la atención de averia : <!-- #{{ usuario_selected.id }} -->
+                                        </h4>
+                                    </div>
+                                </div>
+                                
+                                
+                                <ng-container *ngFor="let atencion of atenciones" >
+                                    <mat-card class="example-card">
+                                        <mat-card-header>
+                                            <mat-card-title>({{atencion.orden}}) {{atencion.descripcion}} 
+                                                <a *ngIf="atencion.bitacora_atencion?.length === 0"><i class=" fas fa-plus-circle"
+                                                        (click)="addItemAtencion(atencion)" aria-hidden="true" ></i></a></mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <ng-container *ngFor="let bitacoraatencion of atencion.bitacora_atencion">
+
+                                                <div class="row align-items-center p-1">
+                                                    <div class="col-12 col-md-6 col-xl-2">
+                                                        <div class="form-group local-forms">
+                                                            <label [for]="bitacoraatencion.hora"></label>
+                                                            <input class="form-control" [name]="bitacoraatencion.hora"
+                                                                type="time" [(ngModel)]="bitacoraatencion.hora"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6 col-xl-7">
+                                                        <div class="form-group local-forms">
+                                                            <label [for]="bitacoraatencion.descripcion">
+                                                            </label>
+                                                            <textarea class="form-control"
+                                                                [name]="bitacoraatencion.descripcion" rows="1" cols="10"
+                                                                [(ngModel)]="bitacoraatencion.descripcion"
+                                                                [ngModelOptions]="{standalone: true}"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6 col-xl-2">
+                                                        <a><i class=" fas fa-plus-circle"
+                                                                (click)="addItem(bitacoraatencion)" aria-hidden="true" ></i></a>
+                                                    </div>
+                                                </div>
+                                                <ng-container
+                                                    *ngFor="let hijo of bitacoraatencion.bitacora_atencion; let i = index">
+                                                    <div class="row align-items-center p-1">
+                                                        <div class="col-12 col-md-6 col-xl-3">
+                                                            <div class="form-group local-forms">
+                                                                <label [for]="hijo.hora"></label>
+                                                                <input class="form-control" [name]="hijo.hora"
+                                                                    type="time" [(ngModel)]="hijo.hora"
+                                                                    [ngModelOptions]="{standalone: true}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-6 col-xl-7">
+                                                            <div class="form-group local-forms">
+                                                                <label [for]="hijo.descripcion"> </label>
+                                                                <textarea class="form-control" [name]="hijo.descripcion"
+                                                                    rows="1" cols="10" [(ngModel)]="hijo.descripcion"
+                                                                    [ngModelOptions]="{standalone: true}"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-6 col-xl-2">
+                                                            <a><i class=" fas fa-plus-circle"
+                                                                (click)="addItem(bitacoraatencion)" aria-hidden="true" ></i></a>
+                                                            <a class="me-2" (click)="deleteItem(bitacoraatencion, i)" aria-hidden="true" ><i class="fas fa-trash-alt"
+                                                                    ></i></a>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                        </mat-card-content>
+                                    </mat-card>
+
+                                </ng-container>
+                            
+                                <div class="col-12">
+                                    <div class="doctor-submit text-end">
+                                        <button type="button" class="btn btn-primary submit-form me-2" (click)="guardar()">Guardar</button>
+                                        <button type="submit" class="btn btn-primary cancel-form">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

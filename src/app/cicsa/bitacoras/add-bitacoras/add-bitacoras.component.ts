@@ -6,7 +6,9 @@ import { map, startWith } from 'rxjs/operators';
 import { SiteService } from '../../site/service/site.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { CuadrillaService } from '../../cuadrilla/service/cuadrilla.service';
-
+import { UsuariosService } from '../../usuarios/service/usuarios.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -40,6 +42,10 @@ export class AddBitacorasComponent {
 
 
   public cuadrilla_add: any = [];
+
+  public responsables_cicsa: any = []
+
+  public responsables_claro: any = []
   //fin paginacion cuadrillas
 
   panelOpenState = false;
@@ -47,6 +53,8 @@ export class AddBitacorasComponent {
   public selectedRed !: string;
   public selectedServ !: string;
   public selectedSite !: string;
+  public selectedliderclaro !: string;
+  public selectedlidercicsa !: string;
 
   public nombre: string = '';
   public fecha_inicial: string = '';
@@ -64,6 +72,8 @@ export class AddBitacorasComponent {
   public distancia: string = '';
   public zona: string = '';
 
+  public latitudsite: string = '';
+  public longitudsite: string = '';
 
   public tipo_Averia: any = [];
   public red: any = [];
@@ -76,7 +86,10 @@ export class AddBitacorasComponent {
   constructor(
     public bitacoraService: BitacorasService,
     public siteService: SiteService,
-    public cuadrillaService: CuadrillaService
+    public cuadrillaService: CuadrillaService,
+    public usuarioService: UsuariosService,
+    private _snackBar: MatSnackBar,
+    private router: Router,
   ) {
 
   }
@@ -218,7 +231,7 @@ export class AddBitacorasComponent {
     }
   }
 
-  searchadd(cuadrilla:any) {
+  searchadd(cuadrilla: any) {
 
     let INDEX = this.cuadrilla_add.findIndex((cuadri: any) => cuadri.cuadrilla_id == cuadrilla.id);
 
@@ -252,16 +265,81 @@ export class AddBitacorasComponent {
 
   detallesite(value: any) {
     this.selectedSite = value.id
-    this.latitud = value.latitud
-    this.longitud = value.longitud
+    this.latitudsite = value.latitud
+    this.longitudsite = value.longitud
     this.region = value.region.nombre
     this.distrito = value.distrito.nombre
     this.departamento = value.distrito.provincia.departamento.nombre
     this.provincia = value.distrito.provincia.nombre
     this.zona = value.zona.nombre
-    console.log(value.region)
+
+    this.dataResponsables(value.zona.id)
     this.codigo = value.codigo
   }
+
+  dataResponsables(idzona: any) {
+    this.usuarioService.showResponsables(idzona).subscribe((resp: any) => {
+      console.log('responsables')
+      console.log(resp)
+      this.responsables_cicsa = resp.lidercicsa;
+      this.responsables_claro = resp.liderclaro;
+    });
+  }
+
+
+  snackBar(comentario: any) {
+    this._snackBar.open(comentario, 'Cerrar', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 3000
+    });
+  }
+
+  saveBitacora() {
+
+    /*   if (this.user_selecteds.length == 0) {
+        console.log(this.user_selecteds.length);
+        this.snackBar('No selecciono tecnico')
+        return;
+      }
+  
+      const INDEX = this.user_selecteds.findIndex((us: any) => us.is_lider == 1);
+      console.log(INDEX);
+      if (INDEX == -1) {
+        console.log(this.user_selecteds.length);
+        this.snackBar('No selecciono Lider')
+        return;
+      } */
+
+
+    let formData = new FormData();
+    formData.append("nombre", this.nombre);
+    formData.append("fecha_inicial", this.fecha_inicial);
+    formData.append("sot", this.nro_sot);
+    formData.append("insidencia", this.nro_incidencia);
+    formData.append("tipo_averia_id", this.selectedTipoAveria);
+    formData.append("latitud", this.latitud);
+    formData.append("longitud", this.longitud);
+    formData.append("distancia", this.distancia);
+    formData.append("red_id", this.selectedRed);
+    formData.append("serv_id", this.selectedServ);
+    formData.append("site_id", this.selectedSite);
+    formData.append("resp_cicsa_id", this.selectedlidercicsa);
+    formData.append("resp_claro_id", this.selectedliderclaro);
+    formData.append("cuadrilla", JSON.stringify(this.cuadrilla_add));
+
+
+    this.bitacoraService.registerBitacora(formData).subscribe((resp: any) => {
+      console.log(resp);
+      if (resp.message == 403) {
+        this.snackBar('Falta ingresar datos');
+      } else {
+        this.snackBar('Registro Exitoso');
+        this.router.navigate(['/bitacoras/list-bitacora']);
+      }
+    })
+  }
+
   step = 0;
 
   setStep(index: number) {
@@ -275,7 +353,6 @@ export class AddBitacorasComponent {
   prevStep() {
     this.step--;
   }
-
 
 
 }

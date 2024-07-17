@@ -9,11 +9,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { materialModule } from 'src/app/shared/material.module';
+import { ListBitacorasComponent } from './list-bitacoras/list-bitacoras.component';
+import { ViewBitacorasComponent } from './view-bitacoras/view-bitacoras.component';
+import { AddDetalleBitacorasComponent } from './add-detalle-bitacoras/add-detalle-bitacoras.component';
 
 @NgModule({
   declarations: [
     BitacorasComponent,
-    AddBitacorasComponent
+    AddBitacorasComponent,
+    ListBitacorasComponent,
+    ViewBitacorasComponent,
+    AddDetalleBitacorasComponent
   ],
   imports: [
     CommonModule,
