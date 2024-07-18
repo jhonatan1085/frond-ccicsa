@@ -20,8 +20,8 @@ export class AddCuadrillaComponent {
   public zonas: any = [];
   public users: any = [];
 
-  public text_success: string = '';
-  public text_validation: string = '';
+  public text_success = '';
+  public text_validation= '';
 
   public user_selecteds: any = [];
 

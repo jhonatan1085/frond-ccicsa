@@ -2,7 +2,7 @@ import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Atencion, Bitacora, Brigada, Respuesta, UsuarioMovil } from 'src/app/modelos/Modelos';
+import { Atencion, Bitacora, Brigada, UsuarioMovil } from 'src/app/modelos/Modelos';
 import { BitacorasService } from '../services/bitacoras.service';
 
 @Component({
@@ -57,9 +57,17 @@ export class ViewBitacorasComponent {
 
       this.bitacora?.atenciones.forEach((element: Atencion) => {
         element.bitacora_atencion.forEach((item: Atencion) => {
-          this.atenciones =
+          if(item.is_coment == "0"){
+            this.atenciones =
             this.atenciones + ' *' + item.hora + '* ' + item.descripcion + ' \n';
-        });
+       
+          }else{
+            this.atenciones =
+            this.atenciones + '   *-* ' + item.descripcion + ' \n';
+
+          }
+          
+          });
         this.atenciones =
           this.atenciones +
           ' *' +

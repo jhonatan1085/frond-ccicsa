@@ -66,7 +66,7 @@
                                                 <ng-container
                                                     *ngFor="let hijo of bitacoraatencion.bitacora_atencion; let i = index">
                                                     <div class="row align-items-center p-1">
-                                                        <div class="col-12 col-md-6 col-xl-3">
+                                                        <div class="col-12 col-md-6 col-xl-3" *ngIf="hijo.is_coment === '0'">
                                                             <div class="form-group local-forms">
                                                                 <label [for]="hijo.hora"></label>
                                                                 <input class="form-control" [name]="hijo.hora"
@@ -83,10 +83,11 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-6 col-xl-2">
-                                                            <a><i class=" fas fa-plus-circle"
+                                                            <a><i class="fa-solid fa-comment"
+                                                                (click)="addComent(bitacoraatencion)" aria-hidden="true" ></i></a>
+                                                            <a><i class="fas fa-plus-circle"
                                                                 (click)="addItem(bitacoraatencion)" aria-hidden="true" ></i></a>
-                                                            <a class="me-2" (click)="deleteItem(bitacoraatencion, i)" aria-hidden="true" ><i class="fas fa-trash-alt"
-                                                                    ></i></a>
+                                                            <a class="me-2" (click)="deleteItem(bitacoraatencion, i)" aria-hidden="true" ><i class="fas fa-trash-alt"></i></a>
                                                         </div>
                                                     </div>
                                                 </ng-container>

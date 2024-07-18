@@ -17,6 +17,10 @@ export interface Bitacora {
   site: Site;
   brigada: Brigada[];
   atenciones: Atencion[];
+  causa_averia: Tipo;
+  consecuencia_averia: Tipo;
+  tipo_reparacion:Tipo;
+  herramientas: Tipo;
 }
 
 export interface TipoAveria {
@@ -97,22 +101,23 @@ export interface Atencion {
   id: number;
   hora: string;
   orden: number;
-  atencion_id?:number;
-  bitacora_id?:number;
-  parent_id?:number;
+  is_coment: string;
+  atencion_id?: number;
+  bitacora_id?: number;
+  parent_id?: number;
   descripcion: string;
   bitacora_atencion: Atencion[]; // Recursividad para los padres de la atención
 }
 
 export interface AtencionDetalle {
-  
+
   id: number,
-      hora:string,
-      descripcion: string,
-      orden: number,
-      atencion_id: number,
-      bitacora_id: number,
-      parent_id: number
+  hora: string,
+  descripcion: string,
+  orden: number,
+  atencion_id: number,
+  bitacora_id: number,
+  parent_id: number
 }
 
 
@@ -125,18 +130,18 @@ export interface AtencionBitacora {
 
 
 export interface BitacoraAtencion {
-  id: number;
-  hora: string;
-  orden: number;
-  atencion_id?: number;
-  bitacora_id?: number;
-  parent_id?: number;
-  descripcion: string;
-  bitacora_atencion: BitacoraAtencion[]; // Recursividad para los padres de la atención
+  id: number,
+  hora: string,
+  orden: number,
+  is_coment: string,
+  atencion_id?: number,
+  bitacora_id?: number,
+  parent_id?: number,
+  descripcion: string,
+  bitacora_atencion: BitacoraAtencion[], // Recursividad para los padres de la atención
 }
 
 
-export interface Respuesta<T>{
-bitacora:{data:T[]}
+export interface Respuesta<T> {
+  bitacora: { data: T[] }
 }
-

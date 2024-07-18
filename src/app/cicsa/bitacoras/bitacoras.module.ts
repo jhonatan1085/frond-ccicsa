@@ -12,6 +12,7 @@ import { materialModule } from 'src/app/shared/material.module';
 import { ListBitacorasComponent } from './list-bitacoras/list-bitacoras.component';
 import { ViewBitacorasComponent } from './view-bitacoras/view-bitacoras.component';
 import { AddDetalleBitacorasComponent } from './add-detalle-bitacoras/add-detalle-bitacoras.component';
+import { EndBitacorasComponent } from './end-bitacoras/end-bitacoras.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AddDetalleBitacorasComponent } from './add-detalle-bitacoras/add-detall
     AddBitacorasComponent,
     ListBitacorasComponent,
     ViewBitacorasComponent,
-    AddDetalleBitacorasComponent
+    AddDetalleBitacorasComponent,
+    EndBitacorasComponent
   ],
   imports: [
     CommonModule,

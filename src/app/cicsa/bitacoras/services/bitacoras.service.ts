@@ -37,6 +37,12 @@ export class BitacorasService {
     const URL = URL_SERVICIOS+"/bitacoras/addAtencionBitacora";
     return this.http.post(URL,data, {headers:headers});
   }
+
+  registerEndBitacora(data:any){
+    const headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
+    const URL = URL_SERVICIOS+"/bitacoras/endBitacora";
+    return this.http.post(URL,data, {headers:headers});
+  }
   
 //retorna la provincia
   showProvinciasDep(dep_id:string){
@@ -63,7 +69,7 @@ export class BitacorasService {
     return this.http.post(URL,data,{headers:headers});
   }
 
-  listAtencion(bitacora_id:string){
+  listAtencion(bitacora_id:number){
     const headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
     const URL = URL_SERVICIOS+"/bitacoras/atencion/"+bitacora_id;
     return this.http.get<AtencionBitacora[]>(URL,{headers:headers});
@@ -73,5 +79,11 @@ export class BitacorasService {
     const headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
     const URL = URL_SERVICIOS+"/bitacoras/viewBitacora/"+bitacora_id;
     return this.http.get<Bitacora>(URL,{headers:headers});
+  }
+
+  listEndConfig(){
+    const headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
+    const URL = URL_SERVICIOS+"/bitacoras/endConfig";
+    return this.http.get(URL,{headers:headers});
   }
 }

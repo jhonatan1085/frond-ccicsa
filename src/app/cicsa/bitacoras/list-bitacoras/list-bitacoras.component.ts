@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewBitacorasComponent } from '../view-bitacoras/view-bitacoras.component';
 import { AddDetalleBitacorasComponent } from '../add-detalle-bitacoras/add-detalle-bitacoras.component';
+import { EndBitacorasComponent } from '../end-bitacoras/end-bitacoras.component';
+import { Bitacora } from 'src/app/modelos/Modelos';
 
 @Component({
   selector: 'app-list-bitacoras',
@@ -158,6 +160,11 @@ export class ListBitacorasComponent {
     this.dialog.open(ViewBitacorasComponent, {
       data: { id: id },
     });
+  }
 
+  openDialogEnd(bitacora: Bitacora) {
+    this.dialog.open(EndBitacorasComponent, {
+      data: { bitacora: bitacora },
+    });
   }
 }

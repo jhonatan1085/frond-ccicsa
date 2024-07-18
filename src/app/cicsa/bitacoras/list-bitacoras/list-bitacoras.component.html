@@ -1,121 +1,112 @@
 <div class="page-wrapper">
-    <div class="content">
-    
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Bitacoras </a></li>
-                        <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
-                        <li class="breadcrumb-item active">Lista de Bitacoras</li>
-                    </ul>
-                </div>
-            </div>
+  <div class="content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Bitacoras </a></li>
+            <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
+            <li class="breadcrumb-item active">Lista de Bitacoras</li>
+          </ul>
         </div>
-        <!-- /Page Header -->
-        
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card card-table show-entire">
-                    <div class="card-body">
-                        <!-- Table Header -->
-                        <div class="page-table-header mb-2">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="doctor-table-blk">
-                                        <h3>Listado  de Bitacoras</h3>
-                                        <div class="doctor-search-blk">
-                                            <div class="top-nav-search table-search-blk">
-                                                    <input  class="form-control" placeholder="Search here" [(ngModel)]="searchDataValue"
-                                                    (keyup.enter)="searchData()" >
-                                                    <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
-                                            </div>
-                                            <div class="add-group">
-                                                <a routerLink="/bitacoras/add-bitacora" class="btn btn-primary add-pluss ms-2"><img src="assets/img/icons/plus.svg" alt=""></a>
-                                                <a href="javascript:;" (click)="PageSize()" class="btn btn-primary doctor-refresh ms-2"><img src="assets/img/icons/re-fresh.svg" alt=""></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <!-- /Table Header -->
-                        
-                        <div class="table-responsive">
-                            <table matSort (matSortChange)="sortData($event)" class="table border-0 custom-table comman-table datatable mb-0">
-                                <thead>
-                                    <tr>
-                                        <th mat-sort-header="nombre">Nombre</th>
-                                        <th mat-sort-header="fecha_inicial">Fecha</th>
-                                        <th mat-sort-header="sot">SOT</th>
-                                        <th mat-sort-header="insidencia">Insidencia</th>
-                                        <th mat-sort-header="tipo_averia">Tipo Averia</th>
-                                        <th mat-sort-header="red">Red</th>
-                                        <th mat-sort-header="serv">Serv</th>
-                                        <th mat-sort-header="estado">Estado</th>
-                                        <th >Acción</th>
-                                        <th ></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let data of bitacoraList">
-                                        <td>{{ data.nombre }}</td>
-                                        <td>{{data.fecha_inicial}}</td>
-                                        <td>{{data.sot}}</td>
-                                        <td>{{data.insidencia}}</td>
-                                        <td>{{data.tipo_averia.nombre}}</td>
-                                        <td>{{data.red.nombre}}</td>
-                                        <td>{{data.serv.nombre}}</td>
-                                        <td> <a [ngClass]="{'status-red': data.estado ==='0', 'status-orange': data.estado ==='1' }"
-                                        class="custom-badge"  >{{data.estadotext}}</a>
-                                        </td>
-                                        <td class="text-end">
-                                            <button class="check-point status-blue  me-1" ><i
-                                                class="feather icon-edit-2"></i></button>
-                                                <button class="check-point status-blue  me-1" ><i
-                                                class="feather icon-eye" (click)="openDialog(data.id)"></i></button>
-                                                <button class="check-point status-blue  me-1" ><i
-                                                    class="feather icon-clock" [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]"></i></button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="table_footer">
-                                <div class="col-sm-12 col-md-5">
-                                  <div class="dataTables_info">
-                                    Showing {{ serialNumberArray[0] }} to
-                                    {{ serialNumberArray[serialNumberArray.length - 1] }} of
-                                    {{ totalData }} entries
-                                  </div>
-                                </div>
-                
-                                <div class="col-sm-12 col-md-7">
-                                  <div class="pagination_section">
-                                    <ul class="pagination">
-                                      <li
-                                        class="page-item"
-                                        [ngClass]="{
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table show-entire">
+          <div class="card-body">
+            <!-- Table Header -->
+            <div class="page-table-header mb-2">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="doctor-table-blk">
+                    <h3>Listado de Bitacoras</h3>
+                    <div class="doctor-search-blk">
+                      <div class="top-nav-search table-search-blk">
+                        <input class="form-control" placeholder="Search here" [(ngModel)]="searchDataValue"
+                          (keyup.enter)="searchData()">
+                        <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
+                      </div>
+                      <div class="add-group">
+                        <a routerLink="/bitacoras/add-bitacora" class="btn btn-primary add-pluss ms-2"><img
+                            src="assets/img/icons/plus.svg" alt=""></a>
+                        <a href="javascript:;" (click)="PageSize()" class="btn btn-primary doctor-refresh ms-2"><img
+                            src="assets/img/icons/re-fresh.svg" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!-- /Table Header -->
+
+            <div class="table-responsive">
+              <table matSort (matSortChange)="sortData($event)"
+                class="table border-0 custom-table comman-table datatable mb-0">
+                <thead>
+                  <tr>
+                    <th mat-sort-header="nombre">Nombre</th>
+                    <th mat-sort-header="fecha_inicial">Fecha</th>
+                    <th mat-sort-header="sot">SOT</th>
+                    <th mat-sort-header="insidencia">Insidencia</th>
+                    <th mat-sort-header="tipo_averia">Tipo Averia</th>
+                    <th mat-sort-header="red">Red</th>
+                    <th mat-sort-header="serv">Serv</th>
+                    <th mat-sort-header="estado">Estado</th>
+                    <th>Acción</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of bitacoraList">
+                    <td>{{ data.nombre }}</td>
+                    <td>{{data.fecha_inicial}}</td>
+                    <td>{{data.sot}}</td>
+                    <td>{{data.insidencia}}</td>
+                    <td>{{data.tipo_averia.nombre}}</td>
+                    <td>{{data.red.nombre}}</td>
+                    <td>{{data.serv.nombre}}</td>
+                    <td> <a [ngClass]="{'status-red': data.estado ==='0', 'status-orange': data.estado ==='1' }"
+                        class="custom-badge">{{data.estadotext}}</a>
+                    </td>
+                    <td class="text-end">
+                      <button class="check-point status-blue  me-1"><i class="feather icon-edit-2"></i></button>
+                      <button class="check-point status-blue  me-1"><i class="feather icon-eye"
+                          (click)="openDialog(data.id)" aria-hidden="true"></i></button>
+                      <button class="check-point status-blue  me-1"><i class="feather icon-clock"
+                          [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]"></i></button>
+                      <button class="check-point status-blue  me-1"><i class="feather icon-check-circle"
+                          (click)="openDialogEnd(data)" aria-hidden="true"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="table_footer">
+                <div class="col-sm-12 col-md-5">
+                  <div class="dataTables_info">
+                    Showing {{ serialNumberArray[0] }} to
+                    {{ serialNumberArray[serialNumberArray.length - 1] }} of
+                    {{ totalData }} entries
+                  </div>
+                </div>
+
+                <div class="col-sm-12 col-md-7">
+                  <div class="pagination_section">
+                    <ul class="pagination">
+                      <li class="page-item" [ngClass]="{
                                           disabled: currentPage === 1
-                                        }"
-                                      >
-                                        <a
-                                          (click)="getMoreData('previous')"
-                                          class="page-link"
-                                          href="javascript:void(0);"
-                                          tabindex="-1"
-                                          >Previous</a
-                                        >
-                                      </li>
-                
-                                      <ng-container
-                                        *ngFor="let item of pageNumberArray; let i = index"
-                                      >
-                                        <li
-                                          class="page-item"
-                                          [class.active]="item === currentPage"
-                                          [ngClass]="
+                                        }">
+                        <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
+                          tabindex="-1">Previous</a>
+                      </li>
+
+                      <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                        <li class="page-item" [class.active]="item === currentPage" [ngClass]="
                                             (pageNumberArray[currentPage - 2] > item &&
                                               item !== 1 &&
                                               pageNumberArray.length > 6) ||
@@ -125,79 +116,56 @@
                                               pageNumberArray.length !== item)
                                               ? 'hide-page-no'
                                               : 'show-page-no'
-                                          "
-                                        >
-                                          <a
-                                            (click)="moveToPage(item)"
-                                            class="page-link"
-                                            href="javascript:void(0);"
-                                          >
-                                            {{ item }}
-                                          </a>
-                                        </li>
-                                        <li
-                                          class="page-item"
-                                          *ngIf="
+                                          ">
+                          <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                            {{ item }}
+                          </a>
+                        </li>
+                        <li class="page-item" *ngIf="
                                             i === 0 &&
                                             pageNumberArray.length > 6 &&
                                             currentPage > 2
-                                          "
-                                          [hidden]="currentPage === 1"
-                                          (click)="moveToPage(currentPage - 2)"
-                                      (keyup.enter)="moveToPage(currentPage - 2)"  
-                                      tabindex="0"
-                                        >
-                                          <a class="page-link" href="javascript:void(0);">
-                                            ...
-                                          </a>
-                                        </li>
-                                        <li
-                                          *ngIf="
+                                          " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)"
+                          (keyup.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                          <a class="page-link" href="javascript:void(0);">
+                            ...
+                          </a>
+                        </li>
+                        <li *ngIf="
                                             i === pageNumberArray.length - 2 &&
                                             pageNumberArray.length > 6
-                                          "
-                                          [hidden]="
+                                          " [hidden]="
                                             currentPage >=
                                               pageNumberArray[pageNumberArray.length - 2] ||
                                             totalData <
                                               serialNumberArray[serialNumberArray.length - 1]
-                                          "
-                                          class="page-item"
-                                          (click)="moveToPage(currentPage + 2)"(keyup.enter)="moveToPage(currentPage + 2)" tabindex="0"
-                                        >
-                                          <a class="page-link" href="javascript:void(0);">
-                                            ...
-                                          </a>
-                                        </li>
-                                      </ng-container>
-                
-                                      <li
-                                        class="page-item"
-                                        [ngClass]="{
+                                          " class="page-item" (click)="moveToPage(currentPage + 2)"
+                          (keyup.enter)="moveToPage(currentPage + 2)" tabindex="0">
+                          <a class="page-link" href="javascript:void(0);">
+                            ...
+                          </a>
+                        </li>
+                      </ng-container>
+
+                      <li class="page-item" [ngClass]="{
                                           disabled:
                                             currentPage ===
                                               pageNumberArray[pageNumberArray.length - 1] ||
                                               bitacoraList.length === 0
-                                        }"
-                                      >
-                                        <a
-                                          (click)="getMoreData('next')"
-                                          class="page-link"
-                                          href="javascript:void(0);"
-                                          >Next
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
+                                        }">
+                        <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Next
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                    </div>
-                </div>							
-            </div>					
+          </div>
         </div>
-        
+      </div>
     </div>
+
+  </div>
 </div>
- 
