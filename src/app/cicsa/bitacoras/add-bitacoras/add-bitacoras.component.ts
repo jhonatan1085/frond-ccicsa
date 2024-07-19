@@ -56,24 +56,24 @@ export class AddBitacorasComponent {
   public selectedliderclaro !: string;
   public selectedlidercicsa !: string;
 
-  public nombre: string = '';
-  public fecha_inicial: string = '';
-  public nro_sot: string = '';
-  public nro_incidencia: string = '';
-  public codigo: string = '';
-  public site: string = '';
-  public cliente: string = '';
-  public region: string = '';
-  public departamento: string = '';
-  public provincia: string = '';
-  public distrito: string = '';
-  public latitud: string = '';
-  public longitud: string = '';
-  public distancia: string = '';
-  public zona: string = '';
+  public nombre= '';
+  public fecha_inicial = '';
+  public nro_sot = '';
+  public nro_incidencia = '';
+  public codigo = '';
+  public site = '';
+  public cliente = '';
+  public region = '';
+  public departamento = '';
+  public provincia = '';
+  public distrito = '';
+  public latitud = '';
+  public longitud = '';
+  public distancia = '';
+  public zona = '';
 
-  public latitudsite: string = '';
-  public longitudsite: string = '';
+  public latitudsite = '';
+  public longitudsite = '';
 
   public tipo_Averia: any = [];
   public red: any = [];
@@ -96,7 +96,6 @@ export class AddBitacorasComponent {
 
   ngOnInit(): void {
     this.bitacoraService.listConfig().subscribe((resp: any) => {
-      console.log(resp);
       this.tipo_Averia = resp.tipoaveria;
       this.red = resp.red;
       this.serv = resp.serv;
@@ -115,8 +114,6 @@ export class AddBitacorasComponent {
     this.serialNumberArray = [];
 
     this.cuadrillaService.brigadaactiva().subscribe((resp: any) => {
-      console.log('aca llegabrigadas')
-      console.log(resp)
       this.totalData = resp.brigadas.data.length;
       this.cuadrillas_generals = resp.brigadas.data;
 
@@ -217,8 +214,7 @@ export class AddBitacorasComponent {
   }
 
   addCuadrilla(cuadrilla: any) {
-    console.log(cuadrilla)
-    let INDEX = this.cuadrilla_add.findIndex((us: any) =>
+    const INDEX = this.cuadrilla_add.findIndex((us: any) =>
       us.id == cuadrilla.id);
     if (INDEX != -1) {
       this.cuadrilla_add.splice(INDEX, 1);
@@ -233,7 +229,7 @@ export class AddBitacorasComponent {
 
   searchadd(cuadrilla: any) {
 
-    let INDEX = this.cuadrilla_add.findIndex((cuadri: any) => cuadri.cuadrilla_id == cuadrilla.id);
+    const INDEX = this.cuadrilla_add.findIndex((cuadri: any) => cuadri.cuadrilla_id == cuadrilla.id);
 
     if (INDEX != -1) {
       return false;
@@ -254,7 +250,6 @@ export class AddBitacorasComponent {
 
   private _filter(value: any) {
     const filterValue = value.toLowerCase();
-    console.log(filterValue)
     return this.options.filter((option: any) => option.nombre.toLowerCase().includes(filterValue));
   }
 
@@ -279,8 +274,6 @@ export class AddBitacorasComponent {
 
   dataResponsables(idzona: any) {
     this.usuarioService.showResponsables(idzona).subscribe((resp: any) => {
-      console.log('responsables')
-      console.log(resp)
       this.responsables_cicsa = resp.lidercicsa;
       this.responsables_claro = resp.liderclaro;
     });
@@ -312,7 +305,7 @@ export class AddBitacorasComponent {
       } */
 
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append("nombre", this.nombre);
     formData.append("fecha_inicial", this.fecha_inicial);
     formData.append("sot", this.nro_sot);
@@ -330,7 +323,6 @@ export class AddBitacorasComponent {
 
 
     this.bitacoraService.registerBitacora(formData).subscribe((resp: any) => {
-      console.log(resp);
       if (resp.message == 403) {
         this.snackBar('Falta ingresar datos');
       } else {

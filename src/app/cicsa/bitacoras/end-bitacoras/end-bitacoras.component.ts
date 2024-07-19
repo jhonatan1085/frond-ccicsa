@@ -14,8 +14,8 @@ export class EndBitacorasComponent {
   public selectedCausa !: string;
   public selectedConsecuencia !: string;
   public selectedTipoReparacion !: string;
-  public herramientas = '';
-
+  public herramientas= '';
+  public tiempo= '';
   public causa: Tipo[] = [];
   public consecuencia: Tipo []= [];
   public tipoReparacion: Tipo []= [];
@@ -46,6 +46,7 @@ bitacora: Bitacora;
     formData.append("consecuencia", this.selectedConsecuencia);
     formData.append("tipoReparacion", this.selectedTipoReparacion);
     formData.append("herramientas", this.herramientas);
+    formData.append("tiempo", this.tiempo);
 
     this.bitacoraService.registerEndBitacora(formData).subscribe((resp: any) => {
       console.log(resp);

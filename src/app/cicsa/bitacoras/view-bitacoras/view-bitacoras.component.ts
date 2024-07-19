@@ -15,6 +15,7 @@ export class ViewBitacorasComponent {
   bitacora?: Bitacora;
   brigadas = '';
   atenciones = '';
+  causas = '';
   count = 1;
 
   @ViewChild('textoDelicioso', { static: true }) textoDelicioso!: ElementRef;
@@ -30,8 +31,22 @@ export class ViewBitacorasComponent {
     this.bitacoraService.read(data.id).subscribe((resp: Bitacora) => {
 
       //this.bitacora_selected = resp.bitacora.data;
+
+      console.log('la bitacora: ', resp);
       this.bitacora = resp;
       this.count = 1;
+
+      if (this.bitacora.estado == '0') {
+        this.causas = '*Causa: ' + this.bitacora.causa_averia.nombre + ';* \n'
+        this.causas = this.causas + '*Consecuencia: ' + this.bitacora.consecuencia_averia.nombre + ';* \n';
+        this.causas = this.causas + '*Tipo de Reparación:* ' + this.bitacora.tipo_reparacion.nombre + '; \n';
+        this.causas = this.causas + '*Tiempo de solución:* ' + this.bitacora.tiempo_solucion + '; \n';
+        if (this.bitacora.herramientas) {
+          this.causas = this.causas + '\n*Material Utilizado:*\n' + this.bitacora.herramientas + '\n';
+        } else {
+          this.causas = this.causas + '\n*Material Utilizado:*\n - Sin materiales \n';
+        }
+      }
 
       this.bitacora?.brigada.forEach((element: Brigada) => {
         // let zona = element.zona.nombre;
@@ -57,17 +72,17 @@ export class ViewBitacorasComponent {
 
       this.bitacora?.atenciones.forEach((element: Atencion) => {
         element.bitacora_atencion.forEach((item: Atencion) => {
-          if(item.is_coment == "0"){
+          if (item.is_coment == "0") {
             this.atenciones =
-            this.atenciones + ' *' + item.hora + '* ' + item.descripcion + ' \n';
-       
-          }else{
+              this.atenciones + ' *' + item.hora + '* ' + item.descripcion + ' \n';
+
+          } else {
             this.atenciones =
-            this.atenciones + '   *-* ' + item.descripcion + ' \n';
+              this.atenciones + '   *-* ' + item.descripcion + ' \n';
 
           }
-          
-          });
+
+        });
         this.atenciones =
           this.atenciones +
           ' *' +

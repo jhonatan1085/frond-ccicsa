@@ -71,7 +71,7 @@
                     <td>{{data.tipo_averia.nombre}}</td>
                     <td>{{data.red.nombre}}</td>
                     <td>{{data.serv.nombre}}</td>
-                    <td> <a [ngClass]="{'status-red': data.estado ==='0', 'status-orange': data.estado ==='1' }"
+                    <td> <a [ngClass]="{'status-red': data.estado ==='1', 'status-green': data.estado ==='0' }"
                         class="custom-badge">{{data.estadotext}}</a>
                     </td>
                     <td class="text-end">

@@ -48,7 +48,7 @@
                                                                 [ngModelOptions]="{standalone: true}">
                                                         </div>
                                                     </div>
-                                                    <div class="col-12 col-md-6 col-xl-7">
+                                                    <div class="col-12 col-md-6 col-xl-8">
                                                         <div class="form-group local-forms">
                                                             <label [for]="bitacoraatencion.descripcion">
                                                             </label>
@@ -65,8 +65,8 @@
                                                 </div>
                                                 <ng-container
                                                     *ngFor="let hijo of bitacoraatencion.bitacora_atencion; let i = index">
-                                                    <div class="row align-items-center p-1">
-                                                        <div class="col-12 col-md-6 col-xl-3" *ngIf="hijo.is_coment === '0'">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-12 col-md-6 col-xl-2 offset-xl-1" *ngIf="hijo.is_coment === '0'">
                                                             <div class="form-group local-forms">
                                                                 <label [for]="hijo.hora"></label>
                                                                 <input class="form-control" [name]="hijo.hora"
@@ -74,7 +74,7 @@
                                                                     [ngModelOptions]="{standalone: true}">
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 col-md-6 col-xl-7">
+                                                        <div  [class.col-xl-7]="hijo.is_coment === '0'"  [class.col-xl-9]="hijo.is_coment === '1'" class="col-12 col-md-6" [class.offset-xl-1]="hijo.is_coment === '1'" >
                                                             <div class="form-group local-forms">
                                                                 <label [for]="hijo.descripcion"> </label>
                                                                 <textarea class="form-control" [name]="hijo.descripcion"

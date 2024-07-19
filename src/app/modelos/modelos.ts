@@ -20,7 +20,8 @@ export interface Bitacora {
   causa_averia: Tipo;
   consecuencia_averia: Tipo;
   tipo_reparacion:Tipo;
-  herramientas: Tipo;
+  herramientas: string;
+  tiempo_solucion: string;
 }
 
 export interface TipoAveria {

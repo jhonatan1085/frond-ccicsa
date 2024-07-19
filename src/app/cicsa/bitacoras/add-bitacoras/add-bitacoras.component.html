@@ -102,7 +102,7 @@
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label>Red1 <span class="login-danger">*</span></label>
+                        <label for="selectedRed">Red1 <span class="login-danger">*</span></label>
                         <mat-select [(ngModel)]="selectedRed" [ngModelOptions]="{ standalone: true }"
                           class="form-control select" placeholder="Selec. Red1">
                           <mat-option *ngFor="let data of red" [value]="data.id">
