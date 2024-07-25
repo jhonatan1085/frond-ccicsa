@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
-import {  AtencionBitacora,  BitacoraAtencion } from 'src/app/modelos/Modelos';
+import { AtencionBitacora, BitacoraAtencion } from 'src/app/modelos/Modelos';
 
 import { BitacorasService } from '../services/bitacoras.service';
 
@@ -20,7 +20,7 @@ export class AddDetalleBitacorasComponent {
 
   public itemDetails: number[] = [0];
 
-  atenciones: AtencionBitacora[]=[];
+  atenciones: AtencionBitacora[] = [];
 
   public bitacora_id = 0;
 
@@ -35,16 +35,14 @@ export class AddDetalleBitacorasComponent {
 
   ngOnInit(): void {
 
-    this.activeRoute.params.subscribe((resp:any) => {
+    this.activeRoute.params.subscribe((resp: any) => {
       this.bitacora_id = resp.bitacora;
     });
 
     this.bitacorasServices.listAtencion(this.bitacora_id).subscribe((resp: AtencionBitacora[]) => {
       this.atenciones = resp
     })
-
   }
-
 
   addItemAtencion(atencion: AtencionBitacora) {
 
@@ -54,54 +52,56 @@ export class AddDetalleBitacorasComponent {
         hora: '',
         descripcion: '',
         orden: atencion.orden,
-        is_coment:'0',
+        is_coment: '0',
         atencion_id: atencion.id,
         bitacora_id: this.bitacora_id,
-        parent_id:0,
+        parent_id: 0,
         bitacora_atencion: []
       });
     }
   }
 
-  addComent(bitacoraAtencion: BitacoraAtencion) {
-    bitacoraAtencion.bitacora_atencion?.push({
-      id: 0,
-      hora: '',
-      descripcion: '',
-      orden: bitacoraAtencion.bitacora_atencion.length + 1,
-      is_coment:'1',
-      atencion_id: bitacoraAtencion.atencion_id,
-      bitacora_id: bitacoraAtencion.bitacora_id,
-      parent_id: bitacoraAtencion.atencion_id,
-      bitacora_atencion:[]
-    });
+  valida(bitacoraAtencion: BitacoraAtencion) {
+    if (bitacoraAtencion.bitacora_atencion.at(-1)?.is_coment == '0') {
+      return  (bitacoraAtencion.bitacora_atencion.at(-1)?.descripcion != '' && bitacoraAtencion.bitacora_atencion.at(-1)?.hora != '')  
+    } else {
+      return (bitacoraAtencion.bitacora_atencion.at(-1)?.descripcion != '') 
+    }
+  }
+  addItem(bitacoraAtencion: BitacoraAtencion, is_comentario: string) {
+
+    if (this.valida(bitacoraAtencion)) {
+      bitacoraAtencion.bitacora_atencion?.push({
+        id: 0,
+        hora: '',
+        descripcion: '',
+        is_coment: is_comentario,
+        orden: bitacoraAtencion.bitacora_atencion.length + 1,
+        atencion_id: bitacoraAtencion.atencion_id,
+        bitacora_id: bitacoraAtencion.bitacora_id,
+        parent_id: bitacoraAtencion.atencion_id,
+        bitacora_atencion: []
+      });
+    } else {
+      this.snackBar('Falta completar datos');
+    }
+
   }
 
-  addItem(bitacoraAtencion: BitacoraAtencion) {
-
-    bitacoraAtencion.bitacora_atencion?.push({
-      id: 0,
-      hora: '',
-      descripcion: '',
-      is_coment:'0',
-      orden: bitacoraAtencion.bitacora_atencion.length + 1,
-      atencion_id: bitacoraAtencion.atencion_id,
-      bitacora_id: bitacoraAtencion.bitacora_id,
-      parent_id: bitacoraAtencion.atencion_id,
-      bitacora_atencion:[]
-    });
-
-    console.log(this.atenciones)
-  }
-
-  deleteItem(bitacoraAtencion: BitacoraAtencion, index: number) {
+  deleteItemHijo(bitacoraAtencion: BitacoraAtencion, index: number) {
     bitacoraAtencion.bitacora_atencion?.splice(index, 1)
-    bitacoraAtencion.bitacora_atencion?.forEach((hijo:BitacoraAtencion, i:number) => hijo.orden = i + 1)
+    bitacoraAtencion.bitacora_atencion?.forEach((hijo: BitacoraAtencion, i: number) => hijo.orden = i + 1)
+  }
+  deleteItem(atencion: AtencionBitacora, index: number) {
+    atencion.bitacora_atencion.splice(index, 1);
   }
 
-  guardar(){
+  guardar() {
+
+    console.log(this.atenciones);
+
     const formData = new FormData();
-    formData.append("id", ""+this.bitacora_id);
+    formData.append("id", "" + this.bitacora_id);
     formData.append("atenciones", JSON.stringify(this.atenciones));
 
     this.bitacorasServices.registerAtencionBitacora(formData).subscribe((resp: any) => {
