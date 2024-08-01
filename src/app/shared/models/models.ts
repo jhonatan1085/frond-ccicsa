@@ -302,7 +302,6 @@ export interface SubMenu {
   base: string;
   permision?: string;
   show_nav?: boolean;
- 
 }
 export interface MenuItem {
   menuValue: string;
@@ -314,7 +313,6 @@ export interface MenuItem {
   icon?: string;
   faIcon?: boolean;
   subMenus: SubMenu[];
-  
 }
 
 export interface SideBarData {
@@ -322,6 +320,17 @@ export interface SideBarData {
   showAsTab: boolean;
   separateRoute: boolean;
   menu: MenuItem[];
-} 
-  
+}
 
+export interface UserAuth {
+  name: string;
+  surname: string;
+  permissions: string[];
+  roles: string[];
+  email: string;
+}
+
+export interface Auth {
+  user: UserAuth;
+  access_token: string;
+}

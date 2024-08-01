@@ -4,7 +4,7 @@ export interface Bitacora {
   fecha_inicial: string;
   sot: string; // Puede ser de cualquier tipo, ajusta según corresponda
   incidencia: string; // Puede ser de cualquier tipo, ajusta según corresponda
-  tipo_averia: TipoAveria;
+  tipo_averia: Tipo;
   red: Tipo;
   serv: Tipo;
   resp_cicsa: Responsable;
@@ -15,18 +15,18 @@ export interface Bitacora {
   longitud?: number;
   distancia: number;
   site: Site;
-  brigada: Brigada[];
+  brigada: Cuadrilla[];
   atenciones: Atencion[];
   causa_averia: Tipo;
   consecuencia_averia: Tipo;
-  tipo_reparacion:Tipo;
+  tipo_reparacion: Tipo;
   herramientas: string;
   tiempo_solucion: string;
 }
-
-export interface TipoAveria {
-  id: number;
-  nombre: string;
+export interface Config {
+  tipoaveria: Tipo[];
+  red: string[];
+  serv: string[];
 }
 
 export interface Tipo {
@@ -43,15 +43,42 @@ export interface Responsable {
 export interface Site {
   id: number;
   nombre: string;
-  region: string;
+  region: Tipo;
   distrito: Distrito;
-  departamento: Departamento;
+  departamento: Tipo;
   tipo_site: Tipo;
+  codigo: string;
+  latitud: number;
+  longitud: number;
+  direccion: string;
+  municipalidade: Tipo;
+  zona: Tipo;
+  region_geografica: Tipo;
+  tiempo_sla: number;
+  autonomia_bts: number;
+  autonomia_tx: number;
+  tiempo_auto: number;
+  tiempo_caminata: number;
+  tiempo_acceso: number;
+  suministro: string;
+  consesionaria: Tipo;
+  room_type: Tipo;
+  contratista: Tipo;
+  tipo_acceso: Tipo;
+  prioridad_site: Tipo;
+  tipo_energia: Tipo;
+  provincia: Tipo;
+  observacion: string;
 }
 
 export interface Distrito {
+  provincia: Provincia;
   id: number;
   nombre: string;
+}
+export interface Provincia {
+  nombre: string;
+  departamento: Departamento;
 }
 
 export interface Departamento {
@@ -59,7 +86,7 @@ export interface Departamento {
   nombre: string;
 }
 
-export interface Brigada {
+export interface Cuadrilla {
   id: number;
   estado: string;
   estadotext: string;
@@ -81,7 +108,7 @@ export interface Zona {
 
 export interface UsuarioMovil {
   id: number;
-  is_lider: "0" | "1";
+  is_lider: '0' | '1';
   user: Usuario;
   unidad_movil?: UnidadMovil;
 }
@@ -111,38 +138,30 @@ export interface Atencion {
 }
 
 export interface AtencionDetalle {
-
-  id: number,
-  hora: string,
-  descripcion: string,
-  orden: number,
-  atencion_id: number,
-  bitacora_id: number,
-  parent_id: number
+  id: number;
+  hora: string;
+  descripcion: string;
+  orden: number;
+  atencion_id: number;
+  bitacora_id: number;
+  parent_id: number;
 }
-
 
 export interface AtencionBitacora {
-  id: number,
-  descripcion: string,
-  orden: number,
-  bitacora_atencion: BitacoraAtencion[]
+  id: number;
+  descripcion: string;
+  orden: number;
+  bitacora_atencion: BitacoraAtencion[];
 }
-
 
 export interface BitacoraAtencion {
-  id: number,
-  hora: string,
-  orden: number,
-  is_coment: string,
-  atencion_id?: number,
-  bitacora_id?: number,
-  parent_id?: number,
-  descripcion: string,
-  bitacora_atencion: BitacoraAtencion[], // Recursividad para los padres de la atención
-}
-
-
-export interface Respuesta<T> {
-  bitacora: { data: T[] }
+  id: number;
+  hora: string;
+  orden: number;
+  is_coment: string;
+  atencion_id?: number;
+  bitacora_id?: number;
+  parent_id?: number;
+  descripcion: string;
+  bitacora_atencion: BitacoraAtencion[]; // Recursividad para los padres de la atención
 }

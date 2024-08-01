@@ -1,9 +1,9 @@
-import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Atencion, Bitacora, Brigada, UsuarioMovil } from 'src/app/modelos/Modelos';
 import { BitacorasService } from '../services/bitacoras.service';
+import { Atencion, Bitacora, Cuadrilla, UsuarioMovil } from '../../modelos';
 
 @Component({
   selector: 'app-view-bitacoras',
@@ -11,14 +11,14 @@ import { BitacorasService } from '../services/bitacoras.service';
   styleUrls: ['./view-bitacoras.component.scss'],
 })
 export class ViewBitacorasComponent {
-
   bitacora?: Bitacora;
   brigadas = '';
   atenciones = '';
   causas = '';
   count = 1;
 
-  @ViewChild('textoDelicioso', { static: true }) textoDelicioso!: ElementRef;
+  @ViewChild('invoiceTotalInner', { static: true })
+  invoiceTotalInner!: ElementRef;
 
   constructor(
     public dialogRef: MatDialogRef<ViewBitacorasComponent>,
@@ -27,9 +27,7 @@ export class ViewBitacorasComponent {
     private _snackBar: MatSnackBar,
     private bitacoraService: BitacorasService
   ) {
-
     this.bitacoraService.read(data.id).subscribe((resp: Bitacora) => {
-
       //this.bitacora_selected = resp.bitacora.data;
 
       console.log('la bitacora: ', resp);
@@ -37,18 +35,35 @@ export class ViewBitacorasComponent {
       this.count = 1;
 
       if (this.bitacora.estado == '0') {
-        this.causas = '*Causa: ' + this.bitacora.causa_averia.nombre + ';* \n'
-        this.causas = this.causas + '*Consecuencia: ' + this.bitacora.consecuencia_averia.nombre + ';* \n';
-        this.causas = this.causas + '*Tipo de Reparación:* ' + this.bitacora.tipo_reparacion.nombre + '; \n';
-        this.causas = this.causas + '*Tiempo de solución:* ' + this.bitacora.tiempo_solucion + '; \n';
+        this.causas = '*Causa: ' + this.bitacora.causa_averia.nombre + ';* \n';
+        this.causas =
+          this.causas +
+          '*Consecuencia: ' +
+          this.bitacora.consecuencia_averia.nombre +
+          ';* \n';
+        this.causas =
+          this.causas +
+          '*Tipo de Reparación:* ' +
+          this.bitacora.tipo_reparacion.nombre +
+          '; \n';
+        this.causas =
+          this.causas +
+          '*Tiempo de solución:* ' +
+          this.bitacora.tiempo_solucion +
+          '; \n';
         if (this.bitacora.herramientas) {
-          this.causas = this.causas + '\n*Material Utilizado:*\n' + this.bitacora.herramientas + '\n';
+          this.causas =
+            this.causas +
+            '\n*Material Utilizado:*\n' +
+            this.bitacora.herramientas +
+            '\n';
         } else {
-          this.causas = this.causas + '\n*Material Utilizado:*\n - Sin materiales \n';
+          this.causas =
+            this.causas + '\n*Material Utilizado:*\n - Sin materiales \n';
         }
       }
 
-      this.bitacora?.brigada.forEach((element: Brigada) => {
+      this.bitacora?.brigada.forEach((element: Cuadrilla) => {
         // let zona = element.zona.nombre;
         element.user_movil.forEach((item: UsuarioMovil) => {
           if (item.is_lider == '1') {
@@ -72,16 +87,18 @@ export class ViewBitacorasComponent {
 
       this.bitacora?.atenciones.forEach((element: Atencion) => {
         element.bitacora_atencion.forEach((item: Atencion) => {
-          if (item.is_coment == "0") {
+          if (item.is_coment == '0') {
             this.atenciones =
-              this.atenciones + ' *' + item.hora + '* ' + item.descripcion + ' \n';
-
+              this.atenciones +
+              ' *' +
+              item.hora +
+              '* ' +
+              item.descripcion +
+              ' \n';
           } else {
             this.atenciones =
               this.atenciones + '   *-* ' + item.descripcion + ' \n';
-
           }
-
         });
         this.atenciones =
           this.atenciones +
@@ -95,13 +112,11 @@ export class ViewBitacorasComponent {
           element.descripcion +
           ' \n';
       });
-    })
-
+    });
   }
 
-
   copiarTexto() {
-    const texto = this.textoDelicioso.nativeElement.innerText;
+    const texto = this.invoiceTotalInner.nativeElement.innerText;
     this.clipboard.copy(texto);
     this._snackBar.open('Bicatora copiada', 'Cerrar', {
       horizontalPosition: 'right',

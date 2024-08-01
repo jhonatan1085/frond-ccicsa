@@ -1,43 +1,51 @@
-<h2 mat-dialog-title>Detalle Bitacora </h2>
+<h2 mat-dialog-title>Detalle Bitacora</h2>
 <mat-dialog-content class="mat-typography">
-
-    <div class="invoice-total-card">
-        <h4 class="invoice-total-title">Copiar el texto al chat WhatsApp</h4>
-        <a href="javascript:void(0);" class="me-2" (click)="copiarTexto()"><i class="fas fa-clone"></i></a>
-        <div class="invoice-total-box">
-            <div class="invoice-total-inner" #textoDelicioso >
-                <pre *ngIf="bitacora">
-    #*{{ bitacora.nombre}}*
-_FechaInicial:_ {{bitacora.fecha_inicial}}
-_NroSot:_ {{bitacora.sot}};
-_NroIncidencia:_ {{bitacora.incidencia}};
-_TipoAveria:_ {{bitacora.tipo_averia.nombre}} ; 
-_TipoSitePop:_ {{bitacora.site.tipo_site.nombre}}; 
-_NombreSite:_ *{{bitacora.site.nombre}}*; 
+  <div class="invoice-total-card">
+    <h4 class="invoice-total-title">Copiar el texto al chat WhatsApp</h4>
+    <a href="javascript:void(0);" class="me-2" (click)="copiarTexto()">
+      <i class="fas fa-clone"></i>
+    </a>
+    <div class="invoice-total-box">
+      <div class="invoice-total-inner" #invoiceTotalInner>
+        <pre *ngIf="bitacora">
+    #*{{ bitacora.nombre }}*
+_FechaInicial:_ {{ bitacora.fecha_inicial }}
+_NroSot:_ {{ bitacora.sot }};
+_NroIncidencia:_ {{ bitacora.incidencia }};
+_TipoAveria:_ {{ bitacora.tipo_averia.nombre }} ;
+_TipoSitePop:_ {{ bitacora.site.tipo_site.nombre }};
+_NombreSite:_ *{{ bitacora.site.nombre }}*;
 _NombreCliente:_ **;
-_Lat:_ {{bitacora.latitud}} , _Lon:_ {{bitacora.longitud}};
-_Distancia:_ {{bitacora.distancia}}Kms;
-_Region:_ {{bitacora.site.region}}; 
-_Departamento:_ {{bitacora.site.departamento.nombre}};
-_Distrito:_ {{bitacora.site.distrito.nombre}}; 
-_red1:_ {{bitacora.red.nombre}};
-_serv1:_ {{bitacora.serv.nombre}}, 
-{{brigadas}}
-_Responsable Cicsa:_ {{bitacora.resp_cicsa.nombres}} -T: {{bitacora.resp_cicsa.telefono}}; 
-_Responsable Claro:_ {{bitacora.resp_claro.nombres}} -T: {{bitacora.resp_claro.telefono}};
+_Lat:_ {{ bitacora.latitud }} , _Lon:_ {{ bitacora.longitud }};
+_Distancia:_ {{ bitacora.distancia }}Kms;
+_Region:_ {{ bitacora.site.region }};
+_Departamento:_ {{ bitacora.site.departamento.nombre }};
+_Distrito:_ {{ bitacora.site.distrito.nombre }};
+_red1:_ {{ bitacora.red.nombre }};
+_serv1:_ {{ bitacora.serv.nombre }},
+{{ brigadas }}
+_Responsable Cicsa:_ {{ bitacora.resp_cicsa.nombres }} -T: {{
+            bitacora.resp_cicsa.telefono
+          }};
+_Responsable Claro:_ {{ bitacora.resp_claro.nombres }} -T: {{
+            bitacora.resp_claro.telefono
+          }};
 
-{{causas}}
-{{atenciones}}   
-                </pre>
-            </div>
-        </div>
+{{ causas }}
+{{ atenciones }}
+                </pre
+        >
+      </div>
     </div>
-   <div>
-
-</div>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cerrar</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial><i class='fab fa-whatsapp'></i> WhatsApp</button>
+  <button mat-button mat-dialog-close>Cerrar</button>
+  <button mat-button (click)="copiarTexto()">
+    <i class="fas fa-clone"></i>
+  </button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+    <i class="fab fa-whatsapp"></i> WhatsApp
+  </button>
 </mat-dialog-actions>

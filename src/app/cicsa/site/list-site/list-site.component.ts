@@ -1,17 +1,16 @@
-import { Component ,ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { SiteService } from '../service/site.service';
+import { SiteService } from '../../services/site.service';
+import { Site } from '../../modelos';
 
 @Component({
   selector: 'app-list-site',
   templateUrl: './list-site.component.html',
-  styleUrls: ['./list-site.component.scss']
+  styleUrls: ['./list-site.component.scss'],
 })
-export class ListSiteComponent {
-  public sitesList:any = [];
-  dataSource!: MatTableDataSource<any>;
-
-  @ViewChild('closebutton') closebutton:any;
+export class ListSiteComponent implements OnInit {
+  public sitesList: Site[] = [];
+  dataSource!: MatTableDataSource<Site>;
 
   public searchDataValue = '';
 
@@ -28,45 +27,39 @@ export class ListSiteComponent {
   public pageSelection: Array<any> = [];
   public totalPages = 0;
 
-  public site_generals:any = [];
-  public site_selected:any;
-  constructor(
-    public SiteService: SiteService
-  ) {
-
-  }
+  public site_generals: Site[] = [];
+  public site_selected?: Site;
+  constructor(public SiteService: SiteService) {}
 
   ngOnInit() {
     this.getTableData();
   }
 
-
-
-  private getTableData(page=1): void {
+  private getTableData(page = 1): void {
     this.sitesList = [];
     this.serialNumberArray = [];
 
-    this.SiteService.listSites(page,this.searchDataValue).subscribe((resp: any) => {
-     
-      console.log(resp);
+    this.SiteService.readAll({ page, search: this.searchDataValue }).subscribe(
+      (resp) => {
+        console.log(resp);
 
-      this.totalData = resp.total;
-      this.sitesList = resp.sites.data;
+        this.totalData = resp.total;
+        this.sitesList = resp.data;
 
-      this.dataSource = new MatTableDataSource<any>(this.sitesList);
-      this.calculateTotalPages(this.totalData, this.pageSize);
+        this.dataSource = new MatTableDataSource<Site>(this.sitesList);
+        this.calculateTotalPages(this.totalData, this.pageSize);
 
-      //this.getTableDataGeneral();
-    });
+        //this.getTableDataGeneral();
+      }
+    );
   }
 
-  getTableDataGeneral(){
+  getTableDataGeneral() {
     this.sitesList = [];
     this.serialNumberArray = [];
     this.site_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-
         this.sitesList.push(res);
         this.serialNumberArray.push(serialNumber);
       }
@@ -75,9 +68,7 @@ export class ListSiteComponent {
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
-  
   public searchData(): void {
-
     this.pageSelection = [];
     this.limit = this.pageSize;
     this.skip = 0;
@@ -86,15 +77,13 @@ export class ListSiteComponent {
     this.getTableData();
   }
 
-
-
   public sortData(sort: any) {
     const data = this.sitesList.slice();
 
     if (!sort.active || sort.direction === '') {
       this.sitesList = data;
     } else {
-      this.sitesList = data.sort((a:any, b:any) => {
+      this.sitesList = data.sort((a: any, b: any) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -140,7 +129,6 @@ export class ListSiteComponent {
     this.searchDataValue = '';
     this.getTableData();
   }
-
 
   private calculateTotalPages(totalData: number, pageSize: number): void {
     this.pageNumberArray = [];

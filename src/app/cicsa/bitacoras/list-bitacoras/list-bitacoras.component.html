@@ -1,13 +1,14 @@
 <div class="page-wrapper">
   <div class="content">
-
     <!-- Page Header -->
     <div class="page-header">
       <div class="row">
         <div class="col-sm-12">
           <ul class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Bitacoras </a></li>
-            <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
+            <li class="breadcrumb-item">
+              <i class="feather icon-chevron-right"></i>
+            </li>
             <li class="breadcrumb-item active">Lista de Bitacoras</li>
           </ul>
         </div>
@@ -27,27 +28,42 @@
                     <h3>Listado de Bitacoras</h3>
                     <div class="doctor-search-blk">
                       <div class="top-nav-search table-search-blk">
-                        <input class="form-control" placeholder="Search here" [(ngModel)]="searchDataValue"
-                          (keyup.enter)="searchData()">
-                        <a class="btn"><img src="assets/img/icons/search-normal.svg" alt=""></a>
+                        <input
+                          class="form-control"
+                          placeholder="Search here"
+                          [(ngModel)]="searchDataValue"
+                          (keyup.enter)="searchData()"
+                        />
+                        <a class="btn"
+                          ><img src="assets/img/icons/search-normal.svg" alt=""
+                        /></a>
                       </div>
                       <div class="add-group">
-                        <a routerLink="/bitacoras/add-bitacora" class="btn btn-primary add-pluss ms-2"><img
-                            src="assets/img/icons/plus.svg" alt=""></a>
-                        <a href="javascript:;" (click)="PageSize()" class="btn btn-primary doctor-refresh ms-2"><img
-                            src="assets/img/icons/re-fresh.svg" alt=""></a>
+                        <a
+                          routerLink="/bitacoras/add-bitacora"
+                          class="btn btn-primary add-pluss ms-2"
+                          ><img src="assets/img/icons/plus.svg" alt=""
+                        /></a>
+                        <a
+                          href="javascript:;"
+                          (click)="PageSize()"
+                          class="btn btn-primary doctor-refresh ms-2"
+                          ><img src="assets/img/icons/re-fresh.svg" alt=""
+                        /></a>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
             <!-- /Table Header -->
 
             <div class="table-responsive">
-              <table matSort (matSortChange)="sortData($event)"
-                class="table border-0 custom-table comman-table datatable mb-0">
+              <table
+                matSort
+                (matSortChange)="sortData($event)"
+                class="table border-0 custom-table comman-table datatable mb-0"
+              >
                 <thead>
                   <tr>
                     <th mat-sort-header="nombre">Nombre</th>
@@ -63,25 +79,51 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of bitacoraList">
+                  <tr *ngFor="let data of bitacoras">
                     <td>{{ data.nombre }}</td>
-                    <td>{{data.fecha_inicial}}</td>
-                    <td>{{data.sot}}</td>
-                    <td>{{data.insidencia}}</td>
-                    <td>{{data.tipo_averia.nombre}}</td>
-                    <td>{{data.red.nombre}}</td>
-                    <td>{{data.serv.nombre}}</td>
-                    <td> <a [ngClass]="{'status-red': data.estado ==='1', 'status-green': data.estado ==='0' }"
-                        class="custom-badge">{{data.estadotext}}</a>
+                    <td>{{ data.fecha_inicial }}</td>
+                    <td>{{ data.sot }}</td>
+                    <td>{{ data.incidencia }}</td>
+                    <td>{{ data.tipo_averia.nombre }}</td>
+                    <td>{{ data.red.nombre }}</td>
+                    <td>{{ data.serv.nombre }}</td>
+                    <td>
+                      <a
+                        [ngClass]="{
+                          'status-red': data.estado === '1',
+                          'status-green': data.estado === '0'
+                        }"
+                        class="custom-badge"
+                        >{{ data.estadotext }}</a
+                      >
                     </td>
                     <td class="text-end">
-                      <button class="check-point status-blue  me-1"><i class="feather icon-edit-2"></i></button>
-                      <button class="check-point status-blue  me-1"><i class="feather icon-eye"
-                          (click)="openDialog(data.id)" aria-hidden="true"></i></button>
-                      <button class="check-point status-blue  me-1"><i class="feather icon-clock"
-                          [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]"></i></button>
-                      <button class="check-point status-blue  me-1"><i class="feather icon-check-circle"
-                          (click)="openDialogEnd(data)" aria-hidden="true"></i></button>
+                      <button class="check-point status-blue me-1">
+                        <i class="feather icon-edit-2"></i>
+                      </button>
+                      <button class="check-point status-blue me-1">
+                        <i
+                          class="feather icon-eye"
+                          (click)="openDialog(data.id)"
+                          aria-hidden="true"
+                        ></i>
+                      </button>
+                      <button class="check-point status-blue me-1">
+                        <i
+                          class="feather icon-clock"
+                          [routerLink]="[
+                            '/bitacoras/list-bitacora/detalle-bitacora/',
+                            data.id
+                          ]"
+                        ></i>
+                      </button>
+                      <button class="check-point status-blue me-1">
+                        <i
+                          class="feather icon-check-circle"
+                          (click)="openDialogEnd(data)"
+                          aria-hidden="true"
+                        ></i>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -98,62 +140,99 @@
                 <div class="col-sm-12 col-md-7">
                   <div class="pagination_section">
                     <ul class="pagination">
-                      <li class="page-item" [ngClass]="{
-                                          disabled: currentPage === 1
-                                        }">
-                        <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
-                          tabindex="-1">Previous</a>
+                      <li
+                        class="page-item"
+                        [ngClass]="{
+                          disabled: currentPage === 1
+                        }"
+                      >
+                        <a
+                          (click)="getMoreData('previous')"
+                          class="page-link"
+                          href="javascript:void(0);"
+                          tabindex="-1"
+                          >Previous</a
+                        >
                       </li>
 
-                      <ng-container *ngFor="let item of pageNumberArray; let i = index">
-                        <li class="page-item" [class.active]="item === currentPage" [ngClass]="
-                                            (pageNumberArray[currentPage - 2] > item &&
-                                              item !== 1 &&
-                                              pageNumberArray.length > 6) ||
-                                            (pageNumberArray[currentPage] < item &&
-                                              item !== 1 &&
-                                              pageNumberArray.length > 6 &&
-                                              pageNumberArray.length !== item)
-                                              ? 'hide-page-no'
-                                              : 'show-page-no'
-                                          ">
-                          <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                      <ng-container
+                        *ngFor="let item of pageNumberArray; let i = index"
+                      >
+                        <li
+                          class="page-item"
+                          [class.active]="item === currentPage"
+                          [ngClass]="
+                            (pageNumberArray[currentPage - 2] > item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6) ||
+                            (pageNumberArray[currentPage] < item &&
+                              item !== 1 &&
+                              pageNumberArray.length > 6 &&
+                              pageNumberArray.length !== item)
+                              ? 'hide-page-no'
+                              : 'show-page-no'
+                          "
+                        >
+                          <a
+                            (click)="moveToPage(item)"
+                            class="page-link"
+                            href="javascript:void(0);"
+                          >
                             {{ item }}
                           </a>
                         </li>
-                        <li class="page-item" *ngIf="
-                                            i === 0 &&
-                                            pageNumberArray.length > 6 &&
-                                            currentPage > 2
-                                          " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)"
-                          (keyup.enter)="moveToPage(currentPage - 2)" tabindex="0">
+                        <li
+                          class="page-item"
+                          *ngIf="
+                            i === 0 &&
+                            pageNumberArray.length > 6 &&
+                            currentPage > 2
+                          "
+                          [hidden]="currentPage === 1"
+                          (click)="moveToPage(currentPage - 2)"
+                          (keyup.enter)="moveToPage(currentPage - 2)"
+                          tabindex="0"
+                        >
                           <a class="page-link" href="javascript:void(0);">
                             ...
                           </a>
                         </li>
-                        <li *ngIf="
-                                            i === pageNumberArray.length - 2 &&
-                                            pageNumberArray.length > 6
-                                          " [hidden]="
-                                            currentPage >=
-                                              pageNumberArray[pageNumberArray.length - 2] ||
-                                            totalData <
-                                              serialNumberArray[serialNumberArray.length - 1]
-                                          " class="page-item" (click)="moveToPage(currentPage + 2)"
-                          (keyup.enter)="moveToPage(currentPage + 2)" tabindex="0">
+                        <li
+                          *ngIf="
+                            i === pageNumberArray.length - 2 &&
+                            pageNumberArray.length > 6
+                          "
+                          [hidden]="
+                            currentPage >=
+                              pageNumberArray[pageNumberArray.length - 2] ||
+                            totalData <
+                              serialNumberArray[serialNumberArray.length - 1]
+                          "
+                          class="page-item"
+                          (click)="moveToPage(currentPage + 2)"
+                          (keyup.enter)="moveToPage(currentPage + 2)"
+                          tabindex="0"
+                        >
                           <a class="page-link" href="javascript:void(0);">
                             ...
                           </a>
                         </li>
                       </ng-container>
 
-                      <li class="page-item" [ngClass]="{
-                                          disabled:
-                                            currentPage ===
-                                              pageNumberArray[pageNumberArray.length - 1] ||
-                                              bitacoraList.length === 0
-                                        }">
-                        <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Next
+                      <li
+                        class="page-item"
+                        [ngClass]="{
+                          disabled:
+                            currentPage ===
+                              pageNumberArray[pageNumberArray.length - 1] ||
+                            bitacoras.length === 0
+                        }"
+                      >
+                        <a
+                          (click)="getMoreData('next')"
+                          class="page-link"
+                          href="javascript:void(0);"
+                          >Next
                         </a>
                       </li>
                     </ul>
@@ -161,11 +240,9 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>

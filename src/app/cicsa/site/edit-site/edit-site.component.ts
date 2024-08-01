@@ -1,29 +1,27 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SiteService } from '../service/site.service';
+import { SiteService } from '../../services/site.service';
 
 @Component({
   selector: 'app-edit-site',
   templateUrl: './edit-site.component.html',
-  styleUrls: ['./edit-site.component.scss']
+  styleUrls: ['./edit-site.component.scss'],
 })
 export class EditSiteComponent {
-   
-  public selectedDepartamento !: string;
-  public selectedProvincia !: string;
-  public selectedDistrito !: string;
-  public selectedMunicipalidad !: string;
-  public selectedTipoSite !: string;
-  public selectedZona !: string;
-  public selectedRegion !: string;
-  public selectedRegionGeo !: string;
-  public selectedConsesionaria !: string;
-  public selectedRoomType !: string;
-  public selectedContratista !: string;
-  public selectedTipoAcceso !: string;
-  public selectedPrioridad !: string;
-  public selectedTipoEnergia !: string;
-  
+  public selectedDepartamento!: string;
+  public selectedProvincia!: string;
+  public selectedDistrito!: string;
+  public selectedMunicipalidad!: string;
+  public selectedTipoSite!: string;
+  public selectedZona!: string;
+  public selectedRegion!: string;
+  public selectedRegionGeo!: string;
+  public selectedConsesionaria!: string;
+  public selectedRoomType!: string;
+  public selectedContratista!: string;
+  public selectedTipoAcceso!: string;
+  public selectedPrioridad!: string;
+  public selectedTipoEnergia!: string;
 
   public codigo: string = '';
   public nombre: string = '';
@@ -39,70 +37,62 @@ export class EditSiteComponent {
   public suministro: string = '';
   public observacion: string = '';
 
+  public roles: any = [];
+  public educacions: any = [];
 
-  public roles:any = [];
-  public educacions:any = [];
- 
+  public departamentos: any = [];
+  public provincias: any = [];
+  public municipalidades: any = [];
+  public distritos: any = [];
+  public tiposites: any = [];
+  public zonas: any = [];
+  public regions: any = [];
+  public regionGeograficas: any = [];
+  public consesionarias: any = [];
+  public roomtypes: any = [];
+  public contratistas: any = [];
+  public tipoAcceso: any = [];
+  public prioridad: any = [];
+  public tipoEnergia: any = [];
 
-  public departamentos:any = [];
-  public provincias:any = [];
-  public municipalidades:any = [];
-  public distritos:any = [];
-  public tiposites:any = [];
-  public zonas:any = [];
-  public regions:any = [];
-  public regionGeograficas:any = [];
-  public consesionarias:any = [];
-  public roomtypes:any = [];
-  public contratistas:any = [];
-  public tipoAcceso:any = [];
-  public prioridad:any = [];
-  public tipoEnergia:any = [];
+  public text_success: string = '';
+  public text_validation: string = '';
 
-
-  public text_success:string = '';
-  public text_validation:string = '';
-
-  public site_id:any;
-  public site_selected:any;
-
+  public site_id: any;
+  public site_selected: any;
 
   constructor(
     public siteService: SiteService,
     public activeRoute: ActivatedRoute // para las variables enviadas al formulario
-  ){
+  ) {}
 
-  }
-
-  ngOnInit():void {
-
-    this.siteService.listConfig().subscribe((resp:any) =>{
+  ngOnInit(): void {
+    this.siteService.listConfig().subscribe((resp: any) => {
       console.log(resp);
       this.municipalidades = resp.municipalidades;
-     this.tiposites = resp.tiposites;
-     this.zonas = resp.zonas;
-     this.regions = resp.regions;
-     this.regionGeograficas = resp.regionGeograficas;
-     this.consesionarias= resp.consesionarias;
-     this.roomtypes= resp.roomtypes;
-     this.contratistas= resp.contratistas;
-     this.tipoAcceso= resp.tipoAcceso;
-     this.prioridad= resp.prioridad;
-     this.tipoEnergia= resp.tipoEnergia;
-     this.departamentos= resp. departamentos;
-     this.provincias = resp.provincias;
-     this.distritos = resp.distritos;
-    })
+      this.tiposites = resp.tiposites;
+      this.zonas = resp.zonas;
+      this.regions = resp.regions;
+      this.regionGeograficas = resp.regionGeograficas;
+      this.consesionarias = resp.consesionarias;
+      this.roomtypes = resp.roomtypes;
+      this.contratistas = resp.contratistas;
+      this.tipoAcceso = resp.tipoAcceso;
+      this.prioridad = resp.prioridad;
+      this.tipoEnergia = resp.tipoEnergia;
+      this.departamentos = resp.departamentos;
+      this.provincias = resp.provincias;
+      this.distritos = resp.distritos;
+    });
 
-    this.activeRoute.params.subscribe((resp:any) =>{
+    this.activeRoute.params.subscribe((resp: any) => {
       console.log(resp);
       this.site_id = resp.id;
     });
 
-    this.siteService.showSite(this.site_id).subscribe((resp:any)=>{
+    this.siteService.read(this.site_id).subscribe((resp: any) => {
       console.log(resp);
       this.site_selected = resp.site;
-
 
       this.codigo = this.site_selected.codigo;
       this.nombre = this.site_selected.nombre;
@@ -125,7 +115,7 @@ export class EditSiteComponent {
       this.tiempoCaminando = this.site_selected.tiempo_caminata;
       this.tiempoAcceso = this.site_selected.tiempo_acceso;
       this.suministro = this.site_selected.suministro;
-  
+
       this.selectedConsesionaria = this.site_selected.consesionaria.id;
       this.selectedRoomType = this.site_selected.room_type.id;
       this.selectedContratista = this.site_selected.contratista.id;
@@ -145,7 +135,7 @@ export class EditSiteComponent {
       this.cel_corp = this.usuario_selected.cel_corp ;
       this.dni = this.usuario_selected.dni ;
       this.cel_per = this.usuario_selected.cel_per ;
-      
+
       this.email = this.usuario_selected.email ;
       this.birth_date = new Date( this.usuario_selected.birth_date ).toISOString();
       this.gender = this.usuario_selected.gender ;
@@ -153,79 +143,74 @@ export class EditSiteComponent {
       this.designation = this.usuario_selected.designation ;
       this.address = this.usuario_selected.address ;
       this.IMAGEN_PREVIZUALIZA = this.usuario_selected.avatar; */
-
     });
-
-
-
-
-
-
   }
 
-  provincia(){
+  provincia() {
     //console.log(this.selectedDepartamento);
 
-    this.siteService.showProvinciasDep(this.selectedDepartamento).subscribe((resp:any) => {
-      console.log(resp);
-      this.provincias = resp.provincias
-    })
+    this.siteService
+      .showProvinciasDep(this.selectedDepartamento)
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.provincias = resp.provincias;
+      });
   }
 
-  distrito(){
+  distrito() {
     //console.log(this.selectedDepartamento);
-    this.siteService.showDistritoProv(this.selectedProvincia).subscribe((resp:any) => {
-      console.log(resp);
-      this.distritos = resp.distritos
-    })
+    this.siteService
+      .showDistritoProv(this.selectedProvincia)
+      .subscribe((resp: any) => {
+        console.log(resp);
+        this.distritos = resp.distritos;
+      });
   }
-  save(){
+  save() {
     this.text_validation = '';
-    if(!this.codigo || !this.nombre ){
-      this.text_validation = "LOS CAMPOS SON NECESARIOS (nombre, apellidos, email, avatar)"
+    if (!this.codigo || !this.nombre) {
+      this.text_validation =
+        'LOS CAMPOS SON NECESARIOS (nombre, apellidos, email, avatar)';
       return;
     }
 
     //console.log(this.selectedValue);
 
     let formData = new FormData();
-    formData.append("codigo",this.codigo);
-    formData.append("nombre",this.nombre);
-    formData.append("latitud",this.latitud);
-    formData.append("longitud",this.longitud);
-    formData.append("direccion",this.direccion);
-    formData.append("municipalidade_id",this.selectedMunicipalidad);
-    formData.append("distrito_id",this.selectedDistrito);
-    formData.append("tipo_site_id",this.selectedTipoSite);
-    formData.append("zona_id",this.selectedZona);
-    formData.append("region_id",this.selectedRegion);
-    formData.append("region_geografica_id",this.selectedRegionGeo);
-    formData.append("tiempo_sla",this.tiempoSla);
-    formData.append("autonomia_bts",this.autonomiaBts);
-    formData.append("autonomia_tx",this.autonomiaTx);
-    formData.append("tiempo_auto",this.tiempoAuto);
-    formData.append("tiempo_caminata",this.tiempoCaminando);
-    formData.append("tiempo_acceso",this.tiempoAcceso);
-    formData.append("suministro",this.suministro);
+    formData.append('codigo', this.codigo);
+    formData.append('nombre', this.nombre);
+    formData.append('latitud', this.latitud);
+    formData.append('longitud', this.longitud);
+    formData.append('direccion', this.direccion);
+    formData.append('municipalidade_id', this.selectedMunicipalidad);
+    formData.append('distrito_id', this.selectedDistrito);
+    formData.append('tipo_site_id', this.selectedTipoSite);
+    formData.append('zona_id', this.selectedZona);
+    formData.append('region_id', this.selectedRegion);
+    formData.append('region_geografica_id', this.selectedRegionGeo);
+    formData.append('tiempo_sla', this.tiempoSla);
+    formData.append('autonomia_bts', this.autonomiaBts);
+    formData.append('autonomia_tx', this.autonomiaTx);
+    formData.append('tiempo_auto', this.tiempoAuto);
+    formData.append('tiempo_caminata', this.tiempoCaminando);
+    formData.append('tiempo_acceso', this.tiempoAcceso);
+    formData.append('suministro', this.suministro);
 
-    formData.append("consesionaria_id",this.selectedConsesionaria);
-    formData.append("room_type_id",this.selectedRoomType);
-    formData.append("contratista_id",this.selectedContratista);
-    formData.append("tipo_acceso_id",this.selectedTipoAcceso);
-    formData.append("prioridad_site_id",this.selectedPrioridad);
-    formData.append("tipo_energia_id",this.selectedTipoEnergia);
-    formData.append("observacion",this.observacion);
+    formData.append('consesionaria_id', this.selectedConsesionaria);
+    formData.append('room_type_id', this.selectedRoomType);
+    formData.append('contratista_id', this.selectedContratista);
+    formData.append('tipo_acceso_id', this.selectedTipoAcceso);
+    formData.append('prioridad_site_id', this.selectedPrioridad);
+    formData.append('tipo_energia_id', this.selectedTipoEnergia);
+    formData.append('observacion', this.observacion);
 
-
-    this.siteService.updateSite(this.site_id,formData).subscribe((resp:any) => {
+    this.siteService.update(this.site_id, formData).subscribe((resp: any) => {
       console.log(resp);
-      if(resp.message == 403){
+      if (resp.message == 403) {
         this.text_validation = resp.message_text;
-      }else{
+      } else {
         this.text_success = 'El usuario ha sido registrado correctamente';
       }
-      
-    })
+    });
   }
-
 }
