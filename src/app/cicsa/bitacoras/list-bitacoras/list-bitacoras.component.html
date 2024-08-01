@@ -48,9 +48,10 @@
             <div class="table-responsive">
               <table matSort (matSortChange)="sortData($event)"
                 class="table border-0 custom-table comman-table datatable mb-0">
+
                 <thead>
                   <tr>
-                    <th mat-sort-header="nombre">Nombre</th>
+                    <th mat-sort-header="nombre" class="col-sm-4">Nombre</th>
                     <th mat-sort-header="fecha_inicial">Fecha</th>
                     <th mat-sort-header="sot">SOT</th>
                     <th mat-sort-header="insidencia">Insidencia</th>
@@ -64,10 +65,10 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let data of bitacoraList">
-                    <td>{{ data.nombre }}</td>
+                    <td style="max-width: 24rem; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" [matTooltip]="data.nombre ">{{ data.nombre }} </td>
                     <td>{{data.fecha_inicial}}</td>
                     <td>{{data.sot}}</td>
-                    <td>{{data.insidencia}}</td>
+                    <td>{{data.incidencia}}</td>
                     <td>{{data.tipo_averia.nombre}}</td>
                     <td>{{data.red.nombre}}</td>
                     <td>{{data.serv.nombre}}</td>
@@ -75,13 +76,11 @@
                         class="custom-badge">{{data.estadotext}}</a>
                     </td>
                     <td class="text-end">
-                      <button class="check-point status-blue  me-1"><i class="feather icon-edit-2"></i></button>
-                      <button class="check-point status-blue  me-1"><i class="feather icon-eye"
-                          (click)="openDialog(data.id)" aria-hidden="true"></i></button>
-                      <button class="check-point status-blue  me-1"><i class="feather icon-clock"
-                          [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]"></i></button>
-                      <button class="check-point status-blue  me-1"><i class="feather icon-check-circle"
-                          (click)="openDialogEnd(data)" aria-hidden="true"></i></button>
+                      <button class="btn btn-primary ms-1"><i class="fa fa-pencil"></i></button>
+                      <button  class="btn btn-primary ms-1"><i class="fa fa-clock" [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]"></i></button>
+                      <button class="btn btn-primary ms-1"><i class="fas fa-map-marker-alt" (click)="openDialogLocation(data)" aria-hidden="true"></i></button>
+                      <button  class="btn btn-primary ms-1"><i class="fa fa-check-circle" (click)="openDialogEnd(data)" aria-hidden="true"></i></button>
+                      <button class="btn btn-primary ms-1"><i class="fa fa-eye" (click)="openDialog(data.id)" aria-hidden="true"></i></button>
                     </td>
                   </tr>
                 </tbody>

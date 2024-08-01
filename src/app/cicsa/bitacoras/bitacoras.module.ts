@@ -13,7 +13,8 @@ import { ListBitacorasComponent } from './list-bitacoras/list-bitacoras.componen
 import { ViewBitacorasComponent } from './view-bitacoras/view-bitacoras.component';
 import { AddDetalleBitacorasComponent } from './add-detalle-bitacoras/add-detalle-bitacoras.component';
 import { EndBitacorasComponent } from './end-bitacoras/end-bitacoras.component';
-
+import { LocationBitacorasComponent } from './location-bitacoras/location-bitacoras.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     BitacorasComponent,
@@ -21,7 +22,8 @@ import { EndBitacorasComponent } from './end-bitacoras/end-bitacoras.component';
     ListBitacorasComponent,
     ViewBitacorasComponent,
     AddDetalleBitacorasComponent,
-    EndBitacorasComponent
+    EndBitacorasComponent,
+    LocationBitacorasComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { EndBitacorasComponent } from './end-bitacoras/end-bitacoras.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    MatTooltipModule
   ]
 })
 export class BitacorasModule { }

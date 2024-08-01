@@ -53,7 +53,7 @@ export class ViewBitacorasComponent {
         element.user_movil.forEach((item: UsuarioMovil) => {
           if (item.is_lider == '1') {
             this.brigadas =
-              this.brigadas +
+            this.brigadas +'\n'+
               '_Bri' +
               this.count +
               ':_ ' +
@@ -63,8 +63,7 @@ export class ViewBitacorasComponent {
               ' - Placa: ' +
               item.unidad_movil?.placa +
               ' Cel: ' +
-              item.user.celular +
-              '\n';
+              item.user.celular;
             this.count = this.count + 1;
           }
         });

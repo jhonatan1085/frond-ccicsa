@@ -1,14 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { SiteService } from '../../site/service/site.service';
 import { BitacorasService } from '../services/bitacoras.service';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewBitacorasComponent } from '../view-bitacoras/view-bitacoras.component';
-import { AddDetalleBitacorasComponent } from '../add-detalle-bitacoras/add-detalle-bitacoras.component';
 import { EndBitacorasComponent } from '../end-bitacoras/end-bitacoras.component';
 import { Bitacora } from 'src/app/modelos/Modelos';
+import { LocationBitacorasComponent } from '../location-bitacoras/location-bitacoras.component';
 
 @Component({
   selector: 'app-list-bitacoras',
@@ -16,7 +13,7 @@ import { Bitacora } from 'src/app/modelos/Modelos';
   styleUrls: ['./list-bitacoras.component.scss'],
 })
 export class ListBitacorasComponent {
-  public bitacoraList: any = [];
+  public bitacoraList: Bitacora[] = [];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild('closebutton') closebutton: any;
@@ -49,14 +46,13 @@ export class ListBitacorasComponent {
   }
 
   private getTableData(page = 1): void {
-    this.bitacoraList = [];
+    //this.bitacoraList = [];
     this.serialNumberArray = [];
 
     this.bitacoraService
       .readAll(page, this.searchDataValue)
       .subscribe((resp: any) => {
-        console.log(resp);
-
+        console.log(resp)
         this.totalData = resp.total;
         this.bitacoraList = resp.bitacoras.data;
 
@@ -156,7 +152,7 @@ export class ListBitacorasComponent {
     }
   }
 
-  openDialog(id: string) {
+  openDialog(id: number) {
     this.dialog.open(ViewBitacorasComponent, {
       data: { id: id },
     });
@@ -164,6 +160,12 @@ export class ListBitacorasComponent {
 
   openDialogEnd(bitacora: Bitacora) {
     this.dialog.open(EndBitacorasComponent, {
+      data: { bitacora: bitacora },
+    });
+  }
+
+  openDialogLocation(bitacora: Bitacora){
+    this.dialog.open(LocationBitacorasComponent, {
       data: { bitacora: bitacora },
     });
   }

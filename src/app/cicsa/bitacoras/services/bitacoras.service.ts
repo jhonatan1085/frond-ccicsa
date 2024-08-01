@@ -43,6 +43,12 @@ export class BitacorasService {
     const URL = URL_SERVICIOS+"/bitacoras/endBitacora";
     return this.http.post(URL,data, {headers:headers});
   }
+
+  registerLocationBitacora(data:any){
+    const headers = new HttpHeaders({'Authorization':'Bearer ' + this.authService.token})
+    const URL = URL_SERVICIOS+"/bitacoras/locationBitacora";
+    return this.http.post(URL,data, {headers:headers});
+  }
   
 //retorna la provincia
   showProvinciasDep(dep_id:string){
@@ -86,4 +92,15 @@ export class BitacorasService {
     const URL = URL_SERVICIOS+"/bitacoras/endConfig";
     return this.http.get(URL,{headers:headers});
   }
+
+  getPosition(): Promise<any> {
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resp => {
+                resolve({lng: resp.coords.longitude, lat: resp.coords.latitude});
+            },
+            err => {
+                reject(err);
+          });
+    });
+}
 }

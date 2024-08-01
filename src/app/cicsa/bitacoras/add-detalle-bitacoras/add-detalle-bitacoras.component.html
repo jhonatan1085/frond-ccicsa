@@ -41,8 +41,8 @@
                                         <ng-container
                                             *ngFor="let bitacoraatencion of atencion.bitacora_atencion; let i = index">
 
-                                            <div class="row align-items-center p-1">
-                                                <div class="col-12 col-md-6 col-xl-2" style="height: 50px;">
+                                            <div class="row align-items-center">
+                                                <div class="col-12 col-md-3 col-xl-2" style="height: 50px;">
                                                     <div class="form-group local-forms">
                                                         <label [for]="bitacoraatencion.hora"></label>
                                                         <input class="form-control" [name]="bitacoraatencion.hora"
@@ -60,23 +60,23 @@
                                                             [ngModelOptions]="{standalone: true}"></textarea>
                                                     </div>
                                                 </div>
-                                                <div class="col-12 col-md-6 col-xl-2  space-x-4 flex" style="height: 50px;">
-                                                    <button class="btn btn-primary mx-1" [disabled]="!(bitacoraatencion.descripcion !== '' && bitacoraatencion.hora !== '')"><i class="fa-solid fa-comment"
+                                                <div class="col-12 col-md-3 col-xl-2  space-x-4 flex" style="height: 50px;">
+                                                    <button class="btn btn-primary ms-1" [disabled]="!(bitacoraatencion.descripcion !== '' && bitacoraatencion.hora !== '')"><i class="fa-solid fa-comment"
                                                         (click)="addItem(bitacoraatencion,'1')"
                                                         aria-hidden="true"></i></button>
-                                                    <button class="btn btn-primary mx-1" [disabled]="!(bitacoraatencion.descripcion !== '' && bitacoraatencion.hora !== '')"><i
+                                                    <button class="btn btn-primary ms-1" [disabled]="!(bitacoraatencion.descripcion !== '' && bitacoraatencion.hora !== '')"><i
                                                             class="fas fa-plus-circle"
                                                             (click)="addItem(bitacoraatencion,'0')"
                                                             aria-hidden="true"></i></button>
                                                     <button *ngIf="bitacoraatencion.bitacora_atencion?.length === 0"
-                                                        class="btn btn-primary mx-1" (click)="deleteItem(atencion, i)"
+                                                        class="btn btn-primary ms-1" (click)="deleteItem(atencion, i)"
                                                         aria-hidden="true"><i class="fas fa-trash-alt"></i></button>
                                                 </div>
                                             </div>
                                             <ng-container
                                                 *ngFor="let hijo of bitacoraatencion.bitacora_atencion; let j = index">
                                                 <div class="row align-items-center">
-                                                    <div class="col-12 col-md-6 col-xl-2 offset-xl-1"
+                                                    <div class="col-12 col-md-2 col-xl-2 offset-md-1 offset-xl-1"
                                                         *ngIf="hijo.is_coment === '0'" style="height: 50px;">
                                                         <div class="form-group local-forms">
                                                             <label [for]="hijo.hora"></label>
@@ -87,8 +87,11 @@
                                                     </div>
                                                     <div [class.col-xl-7]="hijo.is_coment === '0'"
                                                         [class.col-xl-9]="hijo.is_coment === '1'"
-                                                        class="col-12 col-md-6"
+                                                        class="col-12 "
+                                                        [class.col-md-6]="hijo.is_coment === '0'"
+                                                        [class.col-md-8]="hijo.is_coment === '1'"
                                                         [class.offset-xl-1]="hijo.is_coment === '1'"
+                                                        [class.offset-md-1]="hijo.is_coment === '1'"
                                                         style="height: 50px;">
                                                         <div class="form-group local-forms">
                                                             <label [for]="hijo.descripcion"> </label>
@@ -97,14 +100,14 @@
                                                                 [ngModelOptions]="{standalone: true}"></textarea>
                                                         </div>
                                                     </div>
-                                                    <div class="col-12 col-md-6 col-xl-2" style="height: 50px;">
-                                                        <button  [disabled]="!valida(bitacoraatencion)" class="btn btn-primary mx-1"><i class="fa-solid fa-comment"
+                                                    <div class="col-12 col-md-3 col-xl-2" style="height: 50px;">
+                                                        <button  [disabled]="!valida(bitacoraatencion)" class="btn btn-primary ms-1"><i class="fa-solid fa-comment"
                                                                 (click)="addItem(bitacoraatencion,'1')"
                                                                 aria-hidden="true"></i></button>
-                                                        <button [disabled]="!valida(bitacoraatencion)" class="btn btn-primary mx-1"><i class=" fas fa-plus-circle"
+                                                        <button [disabled]="!valida(bitacoraatencion)" class="btn btn-primary ms-1"><i class="fas fa-plus-circle"
                                                                 (click)="addItem(bitacoraatencion,'0')"
                                                                 aria-hidden="true"></i></button>
-                                                        <button class="btn btn-primary mx-1" (click)="deleteItemHijo(bitacoraatencion, j)"
+                                                        <button class="btn btn-primary ms-1" (click)="deleteItemHijo(bitacoraatencion, j)"
                                                             aria-hidden="true"><i class="fas fa-trash-alt"></i></button>
                                                     </div>
                                                 </div>

@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Ubicación de: {{bitacora.nombre}}</h2>
+<mat-dialog-content class="mat-typography">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="form-group local-forms">
+                                  <label for="latitud">Latitud </label>
+                                  <input class="form-control" [(ngModel)]="bitacora.latitud" name="latitud" type="text" />
+                                </div>
+                              </div>
+                              <div class="col-12 col-md-6 col-xl-3">
+                                <div class="form-group local-forms">
+                                  <label for="longitud">Longitud </label>
+                                  <input class="form-control" [(ngModel)]="bitacora.longitud" name="longitud" type="text" />
+                                </div>
+                              </div>
+                              <div class="col-12 col-md-6 col-xl-3">
+                                <div class="form-group local-forms">
+                                  <label for="distancia">Distancia</label>
+                                  <input class="form-control" [(ngModel)]="bitacora.distancia" name="distancia" type="number" />
+                                </div>
+                              </div>
+
+                              <div class="col-12 col-md-6 col-xl-3">
+                                <button class="btn btn-primary ms-1"><i class="fas fa-map-marker-alt" (click)="getLocation()"  aria-hidden="true" ></i></button>
+                                <a href="https://www.google.com/maps/search/?api=1&query={{bitacora.latitud}},{{bitacora.longitud}}" class="btn btn-primary ms-1" target="_blank"><i class="fa fa-map" (click)="getLocation()"  aria-hidden="true"></i></a>
+                              </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

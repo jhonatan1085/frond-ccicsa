@@ -18,6 +18,10 @@ const routes: Routes = [
       {
         path:'add-bitacora',
         component:AddBitacorasComponent
+      },
+      {
+        path:'edit-bitacora',
+        component:AddBitacorasComponent
       }
       ,
       {

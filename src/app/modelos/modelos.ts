@@ -11,8 +11,8 @@ export interface Bitacora {
   resp_claro: Responsable;
   estado: string;
   estadotext: string;
-  latitud?: number;
-  longitud?: number;
+  latitud?: string;
+  longitud?: string;
   distancia: number;
   site: Site;
   brigada: Brigada[];
