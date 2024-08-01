@@ -5,12 +5,11 @@ import { AuthService } from 'src/app/shared/auth/auth.service';
 import { routes } from 'src/app/shared/routes/routes';
 
 @Component({
-
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   public routes = routes;
   public passwordClass = false;
   public ERROR = false;
@@ -27,29 +26,26 @@ export class LoginComponent implements OnInit {
     return this.form.controls;
   }
 
-  constructor(public auth: AuthService, public router:Router) {}
-  ngOnInit(): void {
-    //if (localStorage.getItem('authenticated')) {
-    //  localStorage.removeItem('authenticated');
-   // }
-  }
+  constructor(public auth: AuthService, public router: Router) {}
 
   loginFormSubmit() {
     if (this.form.valid) {
       this.ERROR = false;
-      this.auth.login(this.form.value.email ? this.form.value.email: '',this.form.value.password ? this.form.value.password: '')
-      .subscribe((resp:any)=>{
-        console.log(resp + 'que paso');
-        if(resp){
-          this.router.navigate([routes.adminDashboard]);
-        }else{
-         // alert("EL USUARIO O CONTRASEÑA SON INCORRECTOS, NO EXITEN");
-          this.ERROR = true;
-        }
-
-      },error =>{
-        console.log(error);
-      });
+      this.auth
+        .login(this.form.value.email ?? '', this.form.value.password ?? '')
+        .subscribe({
+          next: (resp: any) => {
+            if (resp) {
+              this.router.navigate([routes.adminDashboard]);
+            } else {
+              // alert("EL USUARIO O CONTRASEÑA SON INCORRECTOS, NO EXITEN");
+              this.ERROR = true;
+            }
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
     }
   }
   togglePassword() {

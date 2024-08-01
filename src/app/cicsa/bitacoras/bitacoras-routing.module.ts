@@ -8,12 +8,12 @@ import { AddDetalleBitacorasComponent } from './add-detalle-bitacoras/add-detall
 
 const routes: Routes = [
   {
-    path:'',
+    path: '',
     component: BitacorasComponent,
-    children:[
+    children: [
       {
-        path:'list-bitacora',
-        component:ListBitacorasComponent
+        path: 'list-bitacora',
+        component: ListBitacorasComponent,
       },
       {
         path:'add-bitacora',
@@ -29,15 +29,23 @@ const routes: Routes = [
         component:ViewBitacorasComponent
       },
       {
-        path:'list-bitacora/detalle-bitacora/:bitacora',
-        component:AddDetalleBitacorasComponent
-      }
-    ]
-  }
+        path: 'edit-bitacora/:id',
+        component: AddBitacorasComponent,
+      },
+      {
+        path: 'view-bitacora',
+        component: ViewBitacorasComponent,
+      },
+      {
+        path: 'list-bitacora/detalle-bitacora/:bitacora',
+        component: AddDetalleBitacorasComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class BitacorasRoutingModule { }
+export class BitacorasRoutingModule {}

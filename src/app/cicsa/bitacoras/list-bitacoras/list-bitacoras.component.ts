@@ -16,25 +16,17 @@ export class ListBitacorasComponent {
   public bitacoraList: Bitacora[] = [];
   dataSource!: MatTableDataSource<any>;
 
-  @ViewChild('closebutton') closebutton: any;
 
-  public searchDataValue = '';
+  showFilter = false;
+  lastIndex = 0;
+  serialNumberArray: number[] = [];
+  currentPage = 1;
+  pageNumberArray: number[] = [];
+  pageSelection: any[] = [];
+  totalPages = 0;
 
-  public showFilter = false;
-  public lastIndex = 0;
-  public pageSize = 100;
-  public totalData = 0;
-  public skip = 0;
-  public limit: number = this.pageSize;
-  public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
-  public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<any> = [];
-  public totalPages = 0;
-
-  public bitacora_generals: any = [];
-  public bitacora_selected: any;
+  bitacora_generals: Bitacora[] = [];
+  bitacora_selected?: Bitacora;
 
   constructor(
     public bitacoraService: BitacorasService,
@@ -48,30 +40,28 @@ export class ListBitacorasComponent {
   private getTableData(page = 1): void {
     //this.bitacoraList = [];
     this.serialNumberArray = [];
-
     this.bitacoraService
       .readAll(page, this.searchDataValue)
       .subscribe((resp: any) => {
         console.log(resp)
         this.totalData = resp.total;
-        this.bitacoraList = resp.bitacoras.data;
-
-        this.dataSource = new MatTableDataSource<any>(this.bitacoraList);
+        this.bitacoras = resp.data;
+        this.dataSource = new MatTableDataSource<Bitacora>(this.bitacoras);
         this.calculateTotalPages(this.totalData, this.pageSize);
       });
   }
 
   getTableDataGeneral() {
-    this.bitacoraList = [];
+    this.bitacoras = [];
     this.serialNumberArray = [];
     this.bitacora_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-        this.bitacoraList.push(res);
+        this.bitacoras.push(res);
         this.serialNumberArray.push(serialNumber);
       }
     });
-    this.dataSource = new MatTableDataSource<any>(this.bitacoraList);
+    this.dataSource = new MatTableDataSource<any>(this.bitacoras);
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
@@ -85,12 +75,12 @@ export class ListBitacorasComponent {
   }
 
   public sortData(sort: any) {
-    const data = this.bitacoraList.slice();
+    const data = this.bitacoras.slice();
 
     if (!sort.active || sort.direction === '') {
-      this.bitacoraList = data;
+      this.bitacoras = data;
     } else {
-      this.bitacoraList = data.sort((a: any, b: any) => {
+      this.bitacoras = data.sort((a: any, b: any) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -154,7 +144,7 @@ export class ListBitacorasComponent {
 
   openDialog(id: number) {
     this.dialog.open(ViewBitacorasComponent, {
-      data: { id: id },
+      data: { id },
     });
   }
 

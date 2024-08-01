@@ -1,19 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { UsuariosService } from '../service/usuarios.service';
-declare var $:any;
-
+import { UsuariosService } from '../../services/usuarios.service';
+declare var $: any;
 
 @Component({
   selector: 'app-list-usuario',
   templateUrl: './list-usuario.component.html',
-  styleUrls: ['./list-usuario.component.scss']
+  styleUrls: ['./list-usuario.component.scss'],
 })
-export class ListUsuarioComponent {
-  public usersList:any = [];
+export class ListUsuarioComponent implements OnInit {
+  public usersList: any = [];
   dataSource!: MatTableDataSource<any>;
 
-  @ViewChild('closebutton') closebutton:any;
+  @ViewChild('closebutton') closebutton: any;
 
   public showFilter = false;
   public searchDataValue = '';
@@ -29,14 +28,10 @@ export class ListUsuarioComponent {
   public pageSelection: Array<any> = [];
   public totalPages = 0;
 
-  public role_generals:any = []
-  public staff_selected:any;
+  public role_generals: any = [];
+  public staff_selected: any;
 
-  constructor(
-    public UsuarioService: UsuariosService
-  ) {
-
-  }
+  constructor(public UsuarioService: UsuariosService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -45,24 +40,19 @@ export class ListUsuarioComponent {
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.UsuarioService.listUsers().subscribe((resp: any) => {
-      console.log('holi');
-      console.log(resp);
-
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
-
+    this.UsuarioService.readAll().subscribe((resp) => {
+      this.totalData = resp.data.length;
+      this.role_generals = resp.data;
       this.getTableDataGeneral();
     });
   }
 
-  getTableDataGeneral(){
+  getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];
     this.role_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-
         this.usersList.push(res);
         this.serialNumberArray.push(serialNumber);
       }
@@ -71,32 +61,32 @@ export class ListUsuarioComponent {
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
-
-  selectUser(rol:any){
+  selectUser(rol: any) {
     this.staff_selected = rol;
   }
 
-  deleteUser(){
-
-      this.UsuarioService.deleteUSer(this.staff_selected.id).subscribe((resp:any) => {
+  deleteUser() {
+    this.UsuarioService.delete(this.staff_selected.id).subscribe(
+      (resp: any) => {
         console.log(resp);
-        let INDEX = this.usersList.findIndex((item:any) => item.id == this.staff_selected.id);
-        if(INDEX != -1){
-          this.usersList.splice(INDEX,1);
+        const INDEX = this.usersList.findIndex(
+          (item: any) => item.id == this.staff_selected.id
+        );
+        if (INDEX != -1) {
+          this.usersList.splice(INDEX, 1);
 
           $('#delete_staff').hide();
-          $('#delete_staff').removeClass("show");
-          $(".modal-backdrop").remove();
-          $("body").removeClass();
-          $("body").removeAttr("style");
+          $('#delete_staff').removeClass('show');
+          $('.modal-backdrop').remove();
+          $('body').removeClass();
+          $('body').removeAttr('style');
 
           this.staff_selected = null;
-         // this.closebutton.nativeElement.click();
+          // this.closebutton.nativeElement.click();
         }
-      });
-      
+      }
+    );
   }
-
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
@@ -110,7 +100,7 @@ export class ListUsuarioComponent {
     if (!sort.active || sort.direction === '') {
       this.usersList = data;
     } else {
-      this.usersList = data.sort((a:any, b:any) => {
+      this.usersList = data.sort((a: any, b: any) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

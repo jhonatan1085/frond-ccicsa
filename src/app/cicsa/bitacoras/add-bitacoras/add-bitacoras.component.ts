@@ -1,122 +1,114 @@
-import { Component, ViewChild } from '@angular/core';
-import { BitacorasService } from '../services/bitacoras.service';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { SiteService } from '../../site/service/site.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { CuadrillaService } from '../../cuadrilla/service/cuadrilla.service';
-import { UsuariosService } from '../../usuarios/service/usuarios.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-
-
+import { Bitacora, Cuadrilla, Site, Tipo } from 'src/app/cicsa/modelos/modelos';
+import { BitacorasService } from '../../services/bitacoras.service';
+import { CuadrillaService } from '../../services/cuadrilla.service';
+import { SiteService } from '../../services/site.service';
+import { UsuariosService } from '../../services/usuarios.service';
 @Component({
   selector: 'app-add-bitacoras',
   templateUrl: './add-bitacoras.component.html',
   styleUrls: ['./add-bitacoras.component.scss'],
-
 })
-export class AddBitacorasComponent {
+export class AddBitacorasComponent implements OnInit {
   //paginacion cuadrillas
-  public cuadrillasList: any = [];
-  dataSource!: MatTableDataSource<any>;
+  cuadrillasList: Cuadrilla[] = [];
+  dataSource!: MatTableDataSource<Cuadrilla>;
 
-  @ViewChild('closebutton') closebutton: any;
+  showFilter = false;
+  searchDataValue = '';
+  lastIndex = 0;
+  pageSize = 5;
+  totalData = 0;
+  skip = 0;
+  limit: number = this.pageSize;
+  pageIndex = 0;
+  serialNumberArray: Array<number> = [];
+  currentPage = 1;
+  pageNumberArray: Array<number> = [];
+  pageSelection: Array<any> = [];
+  totalPages = 0;
+  cuadrillas_generals: Cuadrilla[] = [];
+  CUADRILLA_SELECTED: any;
 
-  public showFilter = false;
-  public searchDataValue = '';
-  public lastIndex = 0;
-  public pageSize = 5;
-  public totalData = 0;
-  public skip = 0;
-  public limit: number = this.pageSize;
-  public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
-  public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<any> = [];
-  public totalPages = 0;
-  public cuadrillas_generals: any = []
-  public CUADRILLA_SELECTED: any;
+  cuadrilla_add: any = [];
 
+  responsables_cicsa: any = [];
 
-  public cuadrilla_add: any = [];
-
-  public responsables_cicsa: any = []
-
-  public responsables_claro: any = []
+  responsables_claro: any = [];
   //fin paginacion cuadrillas
 
   panelOpenState = false;
-  public selectedTipoAveria !: string;
-  public selectedRed !: string;
-  public selectedServ !: string;
-  public selectedSite !: string;
-  public selectedliderclaro !: string;
-  public selectedlidercicsa !: string;
+  // selectedTipoAveria!: string;
+  // selectedRed!: string;
+  // selectedServ!: string;
+  // selectedSite!: string;
+  // selectedliderclaro!: string;
+  // selectedlidercicsa!: string;
 
-  public nombre= '';
-  public fecha_inicial = '';
-  public nro_sot = '';
-  public nro_incidencia = '';
-  public codigo = '';
-  public site = '';
-  public cliente = '';
-  public region = '';
-  public departamento = '';
-  public provincia = '';
-  public distrito = '';
-  public latitud = '';
-  public longitud = '';
-  public distancia = '';
-  public zona = '';
+  bitacora: Bitacora = {} as any;
+  // fecha_inicial = '';
+  // nro_sot = '';
+  // nro_incidencia = '';
+  codigo = '';
+  site = '';
+  cliente = '';
+  region = '';
+  departamento = '';
+  provincia = '';
+  distrito = '';
+  // latitud = '';
+  // longitud = '';
+  // distancia = '';
+  zona = '';
 
-  public latitudsite = '';
-  public longitudsite = '';
+  latitudsite = '';
+  longitudsite = '';
 
-  public tipo_Averia: any = [];
-  public red: any = [];
-  public serv: any = [];
+  tipo_Averia: Tipo[] = [];
+  red: Tipo[] = [];
+  serv: Tipo[] = [];
 
   myControl = new FormControl();
   options!: any;
   filteredOptions!: Observable<any>;
 
   constructor(
-    public bitacoraService: BitacorasService,
-    public siteService: SiteService,
-    public cuadrillaService: CuadrillaService,
-    public usuarioService: UsuariosService,
+    private bitacoraService: BitacorasService,
+    private siteService: SiteService,
+    private cuadrillaService: CuadrillaService,
+    private usuarioService: UsuariosService,
     private _snackBar: MatSnackBar,
-    private router: Router,
-  ) {
-
-  }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.bitacoraService.listConfig().subscribe((resp: any) => {
+    this.bitacoraService.listConfig().subscribe((resp) => {
+      console.log(resp);
       this.tipo_Averia = resp.tipoaveria;
       this.red = resp.red;
       this.serv = resp.serv;
-    })
+    });
 
-    this.siteService.showSiteAutocomplete().subscribe((resp: any) => {
-      this.onGetTaxList(resp.sites)
-    })
+    this.siteService.showSiteAutocomplete().subscribe((resp) => {
+      this.onGetTaxList(resp.sites);
+    });
 
     this.getTableData();
-
   }
 
   private getTableData(): void {
     this.cuadrillasList = [];
     this.serialNumberArray = [];
 
-    this.cuadrillaService.brigadaactiva().subscribe((resp: any) => {
-      this.totalData = resp.brigadas.data.length;
-      this.cuadrillas_generals = resp.brigadas.data;
-
+    this.cuadrillaService.activa().subscribe((resp) => {
+      this.totalData = resp.data.length;
+      this.cuadrillas_generals = resp.data;
       this.getTableDataGeneral();
     });
   }
@@ -124,19 +116,18 @@ export class AddBitacorasComponent {
   getTableDataGeneral() {
     this.cuadrillasList = [];
     this.serialNumberArray = [];
-    this.cuadrillas_generals.map((res: any, index: number) => {
+    this.cuadrillas_generals.map((res: Cuadrilla, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-
         this.cuadrillasList.push(res);
         this.serialNumberArray.push(serialNumber);
       }
     });
-    this.dataSource = new MatTableDataSource<any>(this.cuadrillasList);
+    this.dataSource = new MatTableDataSource<Cuadrilla>(this.cuadrillasList);
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
-  public sortData(sort: any) {
+  sortData(sort: any) {
     const data = this.cuadrillasList.slice();
 
     if (!sort.active || sort.direction === '') {
@@ -152,7 +143,7 @@ export class AddBitacorasComponent {
     }
   }
 
-  public getMoreData(event: string): void {
+  getMoreData(event: string): void {
     if (event == 'next') {
       this.currentPage++;
       this.pageIndex = this.currentPage - 1;
@@ -168,7 +159,7 @@ export class AddBitacorasComponent {
     }
   }
 
-  public moveToPage(pageNumber: number): void {
+  moveToPage(pageNumber: number): void {
     this.currentPage = pageNumber;
     this.skip = this.pageSelection[pageNumber - 1].skip;
     this.limit = this.pageSelection[pageNumber - 1].limit;
@@ -180,7 +171,7 @@ export class AddBitacorasComponent {
     this.getTableDataGeneral();
   }
 
-  public PageSize(): void {
+  PageSize(): void {
     this.pageSelection = [];
     this.limit = this.pageSize;
     this.skip = 0;
@@ -204,32 +195,34 @@ export class AddBitacorasComponent {
     }
   }
 
-
-  countTecnicos(cuadrilla: any) {
-    return cuadrilla.user_movil.length
+  countTecnicos(cuadrilla: Cuadrilla) {
+    return cuadrilla.user_movil.length;
   }
 
-  showSegment(cuadrilla: any) {
+  showSegment(cuadrilla: Cuadrilla) {
     this.CUADRILLA_SELECTED = cuadrilla;
   }
 
-  addCuadrilla(cuadrilla: any) {
-    const INDEX = this.cuadrilla_add.findIndex((us: any) =>
-      us.id == cuadrilla.id);
+  addCuadrilla(cuadrilla: Cuadrilla) {
+    console.log(cuadrilla);
+    const INDEX = this.cuadrilla_add.findIndex(
+      (us: any) => us.id == cuadrilla.id
+    );
     if (INDEX != -1) {
       this.cuadrilla_add.splice(INDEX, 1);
     } else {
       this.cuadrilla_add.push({
-        "cuadrilla_id": cuadrilla.id,
-        "tipocuadrilla": cuadrilla.tipo_brigada.nombre,
-        "zona": cuadrilla.zona.nombre
+        cuadrilla_id: cuadrilla.id,
+        tipocuadrilla: cuadrilla.tipo_brigada.nombre,
+        zona: cuadrilla.zona.nombre,
       });
     }
   }
 
-  searchadd(cuadrilla: any) {
-
-    const INDEX = this.cuadrilla_add.findIndex((cuadri: any) => cuadri.cuadrilla_id == cuadrilla.id);
+  searchadd(cuadrilla: Cuadrilla) {
+    const INDEX = this.cuadrilla_add.findIndex(
+      (cuadri: any) => cuadri.cuadrilla_id == cuadrilla.id
+    );
 
     if (INDEX != -1) {
       return false;
@@ -241,95 +234,87 @@ export class AddBitacorasComponent {
   onGetTaxList(val: any) {
     this.options = val;
 
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => value.length >= 1 ? this._filter(value) : [])
-      );
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => (value.length >= 1 ? this._filter(value) : []))
+    );
   }
 
   private _filter(value: any) {
     const filterValue = value.toLowerCase();
-    return this.options.filter((option: any) => option.nombre.toLowerCase().includes(filterValue));
+    console.log(filterValue);
+    return this.options.filter((option: any) =>
+      option.nombre.toLowerCase().includes(filterValue)
+    );
   }
 
   displayFn(value: any) {
-
     return value ? value.nombre : undefined;
   }
 
-  detallesite(value: any) {
-    this.selectedSite = value.id
-    this.latitudsite = value.latitud
-    this.longitudsite = value.longitud
-    this.region = value.region.nombre
-    this.distrito = value.distrito.nombre
-    this.departamento = value.distrito.provincia.departamento.nombre
-    this.provincia = value.distrito.provincia.nombre
-    this.zona = value.zona.nombre
+  detallesite(value: Site) {
+    if (!this.bitacora) return;
+    this.bitacora.site = value;
+    this.bitacora.site.id = value.id;
+    this.bitacora.site.latitud = value.latitud;
+    this.bitacora.site.longitud = value.longitud;
+    this.region = value.region.nombre;
+    this.distrito = value.distrito.nombre;
+    this.departamento = value.distrito.provincia.departamento.nombre;
+    this.provincia = value.distrito.provincia.nombre;
+    this.zona = value.zona.nombre;
 
-    this.dataResponsables(value.zona.id)
-    this.codigo = value.codigo
+    this.dataResponsables(value.zona.id);
+    this.codigo = value.codigo;
   }
 
-  dataResponsables(idzona: any) {
-    this.usuarioService.showResponsables(idzona).subscribe((resp: any) => {
+  dataResponsables(idzona: number) {
+    this.usuarioService.showResponsables(idzona).subscribe((resp) => {
+      console.log('responsables');
+      console.log(resp);
       this.responsables_cicsa = resp.lidercicsa;
       this.responsables_claro = resp.liderclaro;
     });
   }
 
-
-  snackBar(comentario: any) {
+  snackBar(comentario: string) {
     this._snackBar.open(comentario, 'Cerrar', {
       horizontalPosition: 'right',
       verticalPosition: 'top',
-      duration: 3000
+      duration: 3000,
     });
   }
 
   saveBitacora() {
-
-    /*   if (this.user_selecteds.length == 0) {
-        console.log(this.user_selecteds.length);
-        this.snackBar('No selecciono tecnico')
-        return;
-      }
-  
-      const INDEX = this.user_selecteds.findIndex((us: any) => us.is_lider == 1);
-      console.log(INDEX);
-      if (INDEX == -1) {
-        console.log(this.user_selecteds.length);
-        this.snackBar('No selecciono Lider')
-        return;
-      } */
-
-
+    if (!this.bitacora) {
+      console.error('No Bitacora was created');
+      return;
+    }
     const formData = new FormData();
-    formData.append("nombre", this.nombre);
-    formData.append("fecha_inicial", this.fecha_inicial);
-    formData.append("sot", this.nro_sot);
-    formData.append("insidencia", this.nro_incidencia);
-    formData.append("tipo_averia_id", this.selectedTipoAveria);
-    formData.append("latitud", this.latitud);
-    formData.append("longitud", this.longitud);
-    formData.append("distancia", this.distancia);
-    formData.append("red_id", this.selectedRed);
-    formData.append("serv_id", this.selectedServ);
-    formData.append("site_id", this.selectedSite);
-    formData.append("resp_cicsa_id", this.selectedlidercicsa);
-    formData.append("resp_claro_id", this.selectedliderclaro);
-    formData.append("cuadrilla", JSON.stringify(this.cuadrilla_add));
+    formData.append('nombre', this.bitacora.nombre);
+    formData.append('fecha_inicial', this.bitacora.fecha_inicial);
+    formData.append('sot', this.bitacora.sot);
+    formData.append('insidencia', this.bitacora.incidencia);
+    formData.append('tipo_averia_id', this.bitacora.tipo_averia.id.toString());
+    formData.append('latitud', this.bitacora.latitud?.toString() ?? '');
+    formData.append('longitud', this.bitacora.longitud?.toString() ?? '');
+    formData.append('distancia', this.bitacora.distancia.toString());
+    formData.append('red_id', this.bitacora.red.id.toString());
+    formData.append('serv_id', this.bitacora.serv.id.toString());
+    formData.append('site_id', this.bitacora.site.id.toString());
+    formData.append('resp_cicsa_id', this.bitacora.resp_cicsa.id.toString());
+    formData.append('resp_claro_id', this.bitacora.resp_claro.id.toString());
+    formData.append('cuadrilla', JSON.stringify(this.cuadrilla_add));
 
-
-    this.bitacoraService.registerBitacora(formData).subscribe((resp: any) => {
+    this.bitacoraService.create(formData).subscribe((resp) => {
+      console.log(resp);
       if (resp.message == 403) {
         this.snackBar('Falta ingresar datos');
       } else {
         this.snackBar('Registro Exitoso');
         this.router.navigate(['/bitacoras/list-bitacora']);
       }
-    })
+    });
   }
 
   step = 0;
@@ -345,6 +330,4 @@ export class AddBitacorasComponent {
   prevStep() {
     this.step--;
   }
-
-
 }

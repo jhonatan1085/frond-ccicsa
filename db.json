@@ -1,0 +1,178 @@
+{
+  "config": {
+    "tipoaveria": [
+      { "id": 1, "nombre": "Tipo Averia 1" },
+      { "id": 2, "nombre": "Tipo Averia 2" }
+    ],
+    "red": [
+      { "id": 1, "nombre": "Red 1" },
+      { "id": 2, "nombre": "Red 2" }
+    ],
+    "serv": [
+      { "id": 1, "nombre": "Serv 1" },
+      { "id": 2, "nombre": "Serv 2" }
+    ]
+  },
+  "bitacoras": [
+    {
+      "id": 1,
+      "nombre": "Bitacora 1",
+      "fecha_inicial": "2024-01-01",
+      "sot": "SOT123",
+      "incidencia": "Incidencia",
+      "tipo_averia": { "id": 1, "nombre": "Tipo Averia 1" },
+      "red": { "id": 1, "nombre": "Red 1" },
+      "serv": { "id": 1, "nombre": "Serv 1" },
+      "resp_cicsa": {
+        "id": 1,
+        "nombres": "Responsable 1",
+        "telefono": "123456789"
+      },
+      "resp_claro": {
+        "id": 2,
+        "nombres": "Responsable 2",
+        "telefono": "987654321"
+      },
+      "estado": "0",
+      "estadotext": "Incompleta",
+      "latitud": -33.4489,
+      "longitud": -70.6693,
+      "distancia": 100,
+      "site": {
+        "id": 1,
+        "nombre": "Site 1",
+        "region": "Region 1",
+        "distrito": { "id": 1, "nombre": "Distrito 1" },
+        "departamento": { "id": 1, "nombre": "Departamento 1" },
+        "tipo_site": { "id": 1, "nombre": "Tipo Site 1" }
+      },
+      "brigada": [
+        {
+          "id": 1,
+          "estado": "Estado",
+          "estadotext": "Estado Texto",
+          "contratista": { "id": 1, "nombre": "Contratista 1" },
+          "tipo_brigada": { "id": 1, "nombre": "Tipo Brigada 1" },
+          "zona": { "id": 1, "nombre": "Zona 1" },
+          "user_movil": [
+            {
+              "id": 1,
+              "is_lider": "1",
+              "user": {
+                "id": 1,
+                "nombre": "Usuario 1",
+                "celular": "123456789"
+              },
+              "unidad_movil": { "id": 1, "placa": "ABC123" }
+            }
+          ]
+        }
+      ],
+      "atenciones": [
+        {
+          "atencion": {
+            "id": 1,
+            "hora": "10:00",
+            "descripcion": "Descripción",
+            "orden": 1,
+            "atencion_id": 1,
+            "bitacora_id": 1,
+            "parent_id": 1
+          },
+          "id": 1,
+          "hora": "10:00",
+          "orden": 1,
+          "atencion_id": 1,
+          "bitacora_id": 1,
+          "parent_id": 1,
+          "descripcion": "Descripción",
+          "bitacora_atencion": []
+        }
+      ],
+      "causa_averia": { "nombre": "Causa de la Averia", "id": 1 },
+      "consecuencia_averia": { "nombre": "Concecuencia de la Averia", "id": 1 },
+      "tipo_reparacion": { "nombre": "reparacion", "id": 1 },
+      "herramientas": "chuzo",
+      "tiempo_solucion": "romper  todo"
+    }
+  ],
+  "sites": [
+    {
+      "id": 1,
+      "codigo": "SITE123",
+      "nombre": "Site Example",
+      "suministro": "Electrical",
+      "latitud": -33.4489,
+      "longitud": -70.6693,
+      "direccion": "123 Main St, City, Country",
+      "tiempo_sla": 24,
+      "autonomia_bts": 12,
+      "autonomia_tx": 8,
+      "tiempo_auto": 2,
+      "tiempo_caminata": 15,
+      "tiempo_acceso": 5,
+      "tipo_site_id": 1,
+      "zona_id": 2,
+      "region_id": 3,
+      "region_geografica_id": 4,
+      "consesionaria_id": 5,
+      "distrito_id": 6,
+      "room_type_id": 7,
+      "contratista_id": 8,
+      "tipo_acceso_id": 9,
+      "prioridad_site_id": 10,
+      "municipalidade_id": 11,
+      "tipo_energia_id": 12
+    }
+  ],
+  "brigadaactiva": {
+    "id": "brigadaactiva",
+    "estado": "activa",
+    "estadotext": "activa",
+    "contratista": { "nombre": "Contratista", "id": 1 },
+    "tipo_brigada": { "id": 1, "nombre": "Brigada" },
+    "zona": { "id": 1, "nombre": "Zona" },
+    "user_movil": "UsuarioMovil"
+  },
+  "brigadas": [
+    {
+      "id": "brigadaactiva",
+      "estado": "activa",
+      "estadotext": "activa",
+      "contratista": { "nombre": "Contratista", "id": 1 },
+      "tipo_brigada": { "id": 1, "nombre": "Brigada" },
+      "zona": { "id": 1, "nombre": "Zona" },
+      "user_movil": "UsuarioMovil"
+    }
+  ],
+  "tipoaveria": [
+    { "id": 1, "nombre": "Tipo Averia 1" },
+    { "id": 2, "nombre": "Tipo Averia 2" }
+  ],
+  "red": [
+    { "id": 1, "nombre": "Red 1" },
+    { "id": 2, "nombre": "Red 2" }
+  ],
+  "serv": [
+    { "id": 1, "nombre": "Serv 1" },
+    { "id": 2, "nombre": "Serv 2" }
+  ],
+  "atenciones": [
+    {
+      "id": 1,
+      "descripcion": "Descripción",
+      "orden": 1,
+      "bitacora_atencion": [
+        {
+          "id": 1,
+          "hora": "10:00",
+          "descripcion": "Descripción",
+          "orden": 1,
+          "atencion_id": 1,
+          "bitacora_id": 1,
+          "parent_id": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,21 +1,20 @@
-import { Component, ViewChild } from '@angular/core';
-import { CuadrillaService } from '../service/cuadrilla.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CuadrillaService } from '../../services/cuadrilla.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Cuadrilla } from '../../modelos';
 
 @Component({
   selector: 'app-list-cuadrilla',
   templateUrl: './list-cuadrilla.component.html',
-  styleUrls: ['./list-cuadrilla.component.scss']
+  styleUrls: ['./list-cuadrilla.component.scss'],
 })
-export class ListCuadrillaComponent {
-  public cuadrillasList: any = [];
-  dataSource!: MatTableDataSource<any>;
-  @ViewChild('closebutton') closebutton: any;
+export class ListCuadrillaComponent implements OnInit {
+  public cuadrillasList: Cuadrilla[] = [];
+  dataSource!: MatTableDataSource<Cuadrilla>;
 
   public searchDataValue = '';
-  public cuenta: number = 0;
-
+  public cuenta = 0;
 
   CUADRILLA_SELECTED: any;
 
@@ -26,45 +25,43 @@ export class ListCuadrillaComponent {
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<any> = [];
+  public pageNumberArray: number[] = [];
+  public pageSelection: any[] = [];
   public totalPages = 0;
 
-  public cuadrilla_generals: any = [];
-  public cuadrilla_selected: any;
+  public cuadrilla_generals: Cuadrilla[] = [];
+  public cuadrilla_selected?: Cuadrilla;
 
   constructor(
     public cuadrillaService: CuadrillaService,
     private _snackBar: MatSnackBar
-  ) {
-
-  }
+  ) {}
   ngOnInit() {
     this.getTableData();
   }
 
-
-
   /*   ngOnChanges(changes: SimpleChanges): void {
       //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
       //Add '${implements OnChanges}' to the class.
-      
+
     } */
 
   public getTableData(page = 1): void {
     this.cuadrillasList = [];
     this.serialNumberArray = [];
 
-    this.cuadrillaService.listCuadrillas(page, this.searchDataValue).subscribe((resp: any) => {
-      console.log(resp);
-      this.totalData = resp.total;
-      this.cuadrillasList = resp.brigadas.data;
-      this.dataSource = new MatTableDataSource<any>(this.cuadrillasList);
-      this.calculateTotalPages(this.totalData, this.pageSize);
-      //this.getTableDataGeneral();
-    });
+    this.cuadrillaService
+      .readAll({ page, search: this.searchDataValue })
+      .subscribe((resp) => {
+        console.log(resp);
+        this.totalData = resp.total;
+        this.cuadrillasList = resp.data;
+        this.dataSource = new MatTableDataSource<any>(this.cuadrillasList);
+        this.calculateTotalPages(this.totalData, this.pageSize);
+        //this.getTableDataGeneral();
+      });
   }
 
   getTableDataGeneral() {
@@ -73,7 +70,6 @@ export class ListCuadrillaComponent {
     this.cuadrilla_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-
         this.cuadrillasList.push(res);
         this.serialNumberArray.push(serialNumber);
       }
@@ -82,9 +78,7 @@ export class ListCuadrillaComponent {
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
-
   public searchData(): void {
-
     this.pageSelection = [];
     this.limit = this.pageSize;
     this.skip = 0;
@@ -92,7 +86,6 @@ export class ListCuadrillaComponent {
 
     this.getTableData();
   }
-
 
   public sortData(sort: any) {
     const data = this.cuadrillasList.slice();
@@ -147,7 +140,6 @@ export class ListCuadrillaComponent {
     this.getTableData();
   }
 
-
   private calculateTotalPages(totalData: number, pageSize: number): void {
     this.pageNumberArray = [];
     this.totalPages = totalData / pageSize;
@@ -163,40 +155,33 @@ export class ListCuadrillaComponent {
     }
   }
 
-  countTecnicos(cuadrilla: any) {
-    return cuadrilla.user_movil.length
+  countTecnicos(cuadrilla: Cuadrilla) {
+    return cuadrilla.user_movil.length;
   }
 
-  showSegment(cuadrilla: any) {
+  showSegment(cuadrilla: Cuadrilla) {
     this.CUADRILLA_SELECTED = cuadrilla;
   }
 
-  inactiva(cuadrilla: any) {
-
+  inactiva(cuadrilla: Cuadrilla) {
     console.log(cuadrilla);
     if (cuadrilla.estado == '1') {
-      this.cuadrillaService.inactivaCuadrilla(cuadrilla.id).subscribe((resp: any) => {
-
+      this.cuadrillaService.delete(cuadrilla.id).subscribe((resp: any) => {
         if (resp.message == 403) {
           this._snackBar.open('Error ', 'Cerrar', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
-            duration: 2000
+            duration: 2000,
           });
         } else {
           this._snackBar.open('Se dio de baja a brigada', 'Cerrar', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
-            duration: 2000
+            duration: 2000,
           });
           this.getTableData();
         }
-
-
-
-
       });
-
     }
   }
 
