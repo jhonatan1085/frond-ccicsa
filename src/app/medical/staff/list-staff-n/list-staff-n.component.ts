@@ -1,20 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
-import { StaffService } from '../service/staff.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Sort } from '@angular/material/sort';
-declare var $:any;
+import { UsuariosService } from 'src/app/cicsa/services/usuarios.service';
+declare var $: any;
 
 @Component({
   selector: 'app-list-staff-n',
   templateUrl: './list-staff-n.component.html',
-  styleUrls: ['./list-staff-n.component.scss']
+  styleUrls: ['./list-staff-n.component.scss'],
 })
-export class ListStaffNComponent {
-
-public usersList:any = [];
+export class ListStaffNComponent implements OnInit {
+  public usersList: any[] = [];
   dataSource!: MatTableDataSource<any>;
 
-  @ViewChild('closebutton') closebutton:any;
+  @ViewChild('closebutton') closebutton: any;
 
   public showFilter = false;
   public searchDataValue = '';
@@ -24,20 +22,16 @@ public usersList:any = [];
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<any> = [];
+  public pageNumberArray: number[] = [];
+  public pageSelection: any[] = [];
   public totalPages = 0;
 
-  public role_generals:any = []
-  public staff_selected:any;
+  public role_generals: any[] = [];
+  public staff_selected: any;
 
-  constructor(
-    public StaffService: StaffService
-  ) {
-
-  }
+  constructor(public StaffService: UsuariosService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -46,23 +40,22 @@ public usersList:any = [];
     this.usersList = [];
     this.serialNumberArray = [];
 
-    this.StaffService.listUsers().subscribe((resp: any) => {
+    this.StaffService.readAll().subscribe((resp) => {
       console.log(resp);
 
-      this.totalData = resp.users.data.length;
-      this.role_generals = resp.users.data;
+      this.totalData = resp.total;
+      this.role_generals = resp.data;
 
       this.getTableDataGeneral();
     });
   }
 
-  getTableDataGeneral(){
+  getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];
     this.role_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-
         this.usersList.push(res);
         this.serialNumberArray.push(serialNumber);
       }
@@ -71,33 +64,30 @@ public usersList:any = [];
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
-
-  selectUser(rol:any){
+  selectUser(rol: any) {
     this.staff_selected = rol;
   }
 
-  deleteUser(){
+  deleteUser() {
+    this.StaffService.delete(this.staff_selected.id).subscribe((resp: any) => {
+      console.log(resp);
+      const INDEX = this.usersList.findIndex(
+        (item: any) => item.id == this.staff_selected.id
+      );
+      if (INDEX != -1) {
+        this.usersList.splice(INDEX, 1);
+        //TODO: fixme
+        $('#delete_staff').hide();
+        $('#delete_staff').removeClass('show');
+        $('.modal-backdrop').remove();
+        $('body').removeClass();
+        $('body').removeAttr('style');
 
-      this.StaffService.deleteUSer(this.staff_selected.id).subscribe((resp:any) => {
-        console.log(resp);
-        let INDEX = this.usersList.findIndex((item:any) => item.id == this.staff_selected.id);
-        if(INDEX != -1){
-          this.usersList.splice(INDEX,1);
-
-          $('#delete_staff').hide();
-          $('#delete_staff').removeClass("show");
-          $(".modal-backdrop").remove();
-          $("body").removeClass();
-          $("body").removeAttr("style");
-
-
-          this.staff_selected = null;
-         // this.closebutton.nativeElement.click();
-        }
-      });
-      
+        this.staff_selected = null;
+        // this.closebutton.nativeElement.click();
+      }
+    });
   }
-
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
@@ -111,7 +101,7 @@ public usersList:any = [];
     if (!sort.active || sort.direction === '') {
       this.usersList = data;
     } else {
-      this.usersList = data.sort((a:any, b:any) => {
+      this.usersList = data.sort((a: any, b: any) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

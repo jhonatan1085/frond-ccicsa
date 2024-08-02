@@ -2,19 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, payments } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  payments,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 interface data {
-  value: string ;
+  value: string;
 }
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
-  styleUrls: ['./payments.component.scss']
+  styleUrls: ['./payments.component.scss'],
 })
 export class PaymentsComponent implements OnInit {
   public routes = routes;
-  public selectedValue! : string  ;
+  public selectedValue!: string;
 
   public payments: Array<payments> = [];
   dataSource!: MatTableDataSource<payments>;
@@ -27,15 +31,13 @@ export class PaymentsComponent implements OnInit {
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -48,7 +50,6 @@ export class PaymentsComponent implements OnInit {
       data.data.map((res: payments, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-         
           this.payments.push(res);
           this.serialNumberArray.push(serialNumber);
         }
@@ -57,12 +58,12 @@ export class PaymentsComponent implements OnInit {
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.payments = this.dataSource.filteredData;
   }
- 
+
   public sortData(sort: Sort) {
     const data = this.payments.slice();
 
@@ -130,9 +131,9 @@ export class PaymentsComponent implements OnInit {
     }
   }
   selectedList: data[] = [
-    {value: 'Select Payment Status'},
-    {value: 'Paid'},
-    {value: 'Un Paid'},
-    {value: 'Partially Paid'},
+    { value: 'Select Payment Status' },
+    { value: 'Paid' },
+    { value: 'Un Paid' },
+    { value: 'Partially Paid' },
   ];
 }

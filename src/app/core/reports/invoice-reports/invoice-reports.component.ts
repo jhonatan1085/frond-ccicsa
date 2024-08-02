@@ -2,19 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, invoicereport } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  invoicereport,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 interface data {
-  value: string ;
+  value: string;
 }
 @Component({
   selector: 'app-invoice-reports',
   templateUrl: './invoice-reports.component.html',
-  styleUrls: ['./invoice-reports.component.scss']
+  styleUrls: ['./invoice-reports.component.scss'],
 })
 export class InvoiceReportsComponent implements OnInit {
   public routes = routes;
-  public selectedValue !: string  ;
+  public selectedValue!: string;
   public invoiceReports: Array<invoicereport> = [];
   dataSource!: MatTableDataSource<invoicereport>;
 
@@ -26,15 +30,13 @@ export class InvoiceReportsComponent implements OnInit {
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -47,16 +49,17 @@ export class InvoiceReportsComponent implements OnInit {
       data.data.map((res: invoicereport, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-        
           this.invoiceReports.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<invoicereport>(this.invoiceReports);
+      this.dataSource = new MatTableDataSource<invoicereport>(
+        this.invoiceReports
+      );
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.invoiceReports = this.dataSource.filteredData;
@@ -129,9 +132,9 @@ export class InvoiceReportsComponent implements OnInit {
     }
   }
   selectedList: data[] = [
-    {value: 'Select Patient'},
-    {value: 'Bernardo James'},
-    {value: 'Galaviz Lalema'},
-    {value: 'Tarah Williams'},
+    { value: 'Select Patient' },
+    { value: 'Bernardo James' },
+    { value: 'Galaviz Lalema' },
+    { value: 'Tarah Williams' },
   ];
 }

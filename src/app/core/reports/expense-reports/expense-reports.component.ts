@@ -2,19 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, exponsesreport } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  exponsesreport,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 interface data {
-  value: string ;
+  value: string;
 }
 @Component({
   selector: 'app-expense-reports',
   templateUrl: './expense-reports.component.html',
-  styleUrls: ['./expense-reports.component.scss']
+  styleUrls: ['./expense-reports.component.scss'],
 })
-export class ExpenseReportsComponent implements OnInit{
+export class ExpenseReportsComponent implements OnInit {
   public routes = routes;
-  public selectedValue !: string  ;
+  public selectedValue!: string;
   public expenseReports: Array<exponsesreport> = [];
   dataSource!: MatTableDataSource<exponsesreport>;
 
@@ -26,15 +30,13 @@ export class ExpenseReportsComponent implements OnInit{
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -47,16 +49,17 @@ export class ExpenseReportsComponent implements OnInit{
       data.data.map((res: exponsesreport, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          
           this.expenseReports.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<exponsesreport>(this.expenseReports);
+      this.dataSource = new MatTableDataSource<exponsesreport>(
+        this.expenseReports
+      );
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.expenseReports = this.dataSource.filteredData;
@@ -69,9 +72,9 @@ export class ExpenseReportsComponent implements OnInit{
       this.expenseReports = data;
     } else {
       this.expenseReports = data.sort((a, b) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
       });
@@ -129,9 +132,9 @@ export class ExpenseReportsComponent implements OnInit{
     }
   }
   selectedList: data[] = [
-    {value: 'Select Purchase by'},
-    {value: 'Bernardo James'},
-    {value: 'Galaviz Lalema'},
-    {value: 'Tarah Williams'},
+    { value: 'Select Purchase by' },
+    { value: 'Bernardo James' },
+    { value: 'Galaviz Lalema' },
+    { value: 'Tarah Williams' },
   ];
 }

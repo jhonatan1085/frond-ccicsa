@@ -59,9 +59,11 @@
             <!-- /Table Header -->
 
             <div class="table-responsive">
-              <table matSort (matSortChange)="sortData($event)"
-                class="table border-0 custom-table comman-table datatable mb-0">
-
+              <table
+                matSort
+                (matSortChange)="sortData($event)"
+                class="table border-0 custom-table comman-table datatable mb-0"
+              >
                 <thead>
                   <tr>
                     <th mat-sort-header="nombre" class="col-sm-4">Nombre</th>
@@ -77,137 +79,169 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of bitacoraList">
-                    <td style="max-width: 24rem; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" [matTooltip]="data.nombre ">{{ data.nombre }} </td>
-                    <td>{{data.fecha_inicial}}</td>
-                    <td>{{data.sot}}</td>
-                    <td>{{data.incidencia}}</td>
-                    <td>{{data.tipo_averia.nombre}}</td>
-                    <td>{{data.red.nombre}}</td>
-                    <td> <a [ngClass]="{'status-red': data.estado ==='1', 'status-green': data.estado ==='0' }"
-                        class="custom-badge">{{data.estadotext}}</a>
-                    </td>
-                    <td class="text-end">
-                      <button class="btn btn-primary ms-1"><i class="fa fa-pencil"></i></button>
-                      <button  class="btn btn-primary ms-1"><i class="fa fa-clock" [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]"></i></button>
-                      <button class="btn btn-primary ms-1"><i class="fas fa-map-marker-alt" (click)="openDialogLocation(data)" aria-hidden="true"></i></button>
-                      <button  class="btn btn-primary ms-1"><i class="fa fa-check-circle" (click)="openDialogEnd(data)" aria-hidden="true"></i></button>
-                      <button class="btn btn-primary ms-1"><i class="fa fa-eye" (click)="openDialog(data.id)" aria-hidden="true"></i></button>
-=======
                   <tr *ngFor="let data of bitacoras">
-                    <td>{{ data.nombre }}</td>
+                    <td
+                      style="
+                        max-width: 24rem;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                      "
+                      [matTooltip]="data.nombre"
+                    >
+                      {{ data.nombre }}
+                    </td>
                     <td>{{ data.fecha_inicial }}</td>
                     <td>{{ data.sot }}</td>
                     <td>{{ data.incidencia }}</td>
                     <td>{{ data.tipo_averia.nombre }}</td>
                     <td>{{ data.red.nombre }}</td>
-                    {{ serialNumberArray[serialNumberArray.length - 1] }} of
-                    {{ totalData }} entries
-                  </div>
-                </div>
-
-                <div class="col-sm-12 col-md-7">
-                  <div class="pagination_section">
-                    <ul class="pagination">
-                      <li
-                        class="page-item"
+                    <td>
+                      <a
                         [ngClass]="{
-                          disabled: currentPage === 1
+                          'status-red': data.estado === '1',
+                          'status-green': data.estado === '0'
                         }"
+                        class="custom-badge"
+                        >{{ data.estadotext }}</a
                       >
-                        <a
-                          (click)="getMoreData('previous')"
-                          class="page-link"
-                          href="javascript:void(0);"
-                          tabindex="-1"
-                          >Previous</a
-                        >
-                      </li>
+                    </td>
+                    <td class="text-end">
+                      <button class="btn btn-primary ms-1">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                      <button class="btn btn-primary ms-1">
+                        <i
+                          class="fa fa-clock"
+                          [routerLink]="[
+                            '/bitacoras/list-bitacora/detalle-bitacora/',
+                            data.id
+                          ]"
+                        ></i>
+                      </button>
+                      <button class="btn btn-primary ms-1">
+                        <i
+                          class="fas fa-map-marker-alt"
+                          (click)="openDialogLocation(data)"
+                          aria-hidden="true"
+                        ></i>
+                      </button>
+                      <button class="btn btn-primary ms-1">
+                        <i
+                          class="fa fa-check-circle"
+                          (click)="openDialogEnd(data)"
+                          aria-hidden="true"
+                        ></i>
+                      </button>
+                      <button class="btn btn-primary ms-1">
+                        <i
+                          class="fa fa-eye"
+                          (click)="openDialog(data.id)"
+                          aria-hidden="true"
+                        ></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              {{ serialNumberArray[serialNumberArray.length - 1] }} of
+              {{ totalData }} entries
+            </div>
+          </div>
 
-                      <ng-container
-                        *ngFor="let item of pageNumberArray; let i = index"
-                      >
-                        <li
-                          class="page-item"
-                          [class.active]="item === currentPage"
-                          [ngClass]="
-                            (pageNumberArray[currentPage - 2] > item &&
-                              item !== 1 &&
-                              pageNumberArray.length > 6) ||
-                            (pageNumberArray[currentPage] < item &&
-                              item !== 1 &&
-                              pageNumberArray.length > 6 &&
-                              pageNumberArray.length !== item)
-                              ? 'hide-page-no'
-                              : 'show-page-no'
-                          "
-                        >
-                          <a
-                            (click)="moveToPage(item)"
-                            class="page-link"
-                            href="javascript:void(0);"
-                          >
-                            {{ item }}
-                          </a>
-                        </li>
-                        <li
-                          class="page-item"
-                          *ngIf="
-                            i === 0 &&
-                            pageNumberArray.length > 6 &&
-                            currentPage > 2
-                          "
-                          [hidden]="currentPage === 1"
-                          (click)="moveToPage(currentPage - 2)"
-                          (keyup.enter)="moveToPage(currentPage - 2)"
-                          tabindex="0"
-                        >
-                          <a class="page-link" href="javascript:void(0);">
-                            ...
-                          </a>
-                        </li>
-                        <li
-                          *ngIf="
-                            i === pageNumberArray.length - 2 &&
-                            pageNumberArray.length > 6
-                          "
-                          [hidden]="
-                            currentPage >=
-                              pageNumberArray[pageNumberArray.length - 2] ||
-                            totalData <
-                              serialNumberArray[serialNumberArray.length - 1]
-                          "
-                          class="page-item"
-                          (click)="moveToPage(currentPage + 2)"
-                          (keyup.enter)="moveToPage(currentPage + 2)"
-                          tabindex="0"
-                        >
-                          <a class="page-link" href="javascript:void(0);">
-                            ...
-                          </a>
-                        </li>
-                      </ng-container>
+          <div class="col-sm-12 col-md-7">
+            <div class="pagination_section">
+              <ul class="pagination">
+                <li
+                  class="page-item"
+                  [ngClass]="{
+                    disabled: currentPage === 1
+                  }"
+                >
+                  <a
+                    (click)="getMoreData('previous')"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    tabindex="-1"
+                    >Previous</a
+                  >
+                </li>
 
-                      <li
-                        class="page-item"
-                        [ngClass]="{
-                          disabled:
-                            currentPage ===
-                              pageNumberArray[pageNumberArray.length - 1] ||
-                            bitacoras.length === 0
-                        }"
-                      >
-                        <a
-                          (click)="getMoreData('next')"
-                          class="page-link"
-                          href="javascript:void(0);"
-                          >Next
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+                <ng-container
+                  *ngFor="let item of pageNumberArray; let i = index"
+                >
+                  <li
+                    class="page-item"
+                    [class.active]="item === currentPage"
+                    [ngClass]="
+                      (pageNumberArray[currentPage - 2] > item &&
+                        item !== 1 &&
+                        pageNumberArray.length > 6) ||
+                      (pageNumberArray[currentPage] < item &&
+                        item !== 1 &&
+                        pageNumberArray.length > 6 &&
+                        pageNumberArray.length !== item)
+                        ? 'hide-page-no'
+                        : 'show-page-no'
+                    "
+                  >
+                    <a
+                      (click)="moveToPage(item)"
+                      class="page-link"
+                      href="javascript:void(0);"
+                    >
+                      {{ item }}
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    *ngIf="
+                      i === 0 && pageNumberArray.length > 6 && currentPage > 2
+                    "
+                    [hidden]="currentPage === 1"
+                    (click)="moveToPage(currentPage - 2)"
+                    (keyup.enter)="moveToPage(currentPage - 2)"
+                    tabindex="0"
+                  >
+                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                  </li>
+                  <li
+                    *ngIf="
+                      i === pageNumberArray.length - 2 &&
+                      pageNumberArray.length > 6
+                    "
+                    [hidden]="
+                      currentPage >=
+                        pageNumberArray[pageNumberArray.length - 2] ||
+                      totalData <
+                        serialNumberArray[serialNumberArray.length - 1]
+                    "
+                    class="page-item"
+                    (click)="moveToPage(currentPage + 2)"
+                    (keyup.enter)="moveToPage(currentPage + 2)"
+                    tabindex="0"
+                  >
+                    <a class="page-link" href="javascript:void(0);"> ... </a>
+                  </li>
+                </ng-container>
+
+                <li
+                  class="page-item"
+                  [ngClass]="{
+                    disabled:
+                      currentPage ===
+                        pageNumberArray[pageNumberArray.length - 1] ||
+                      bitacoras.length === 0
+                  }"
+                >
+                  <a
+                    (click)="getMoreData('next')"
+                    class="page-link"
+                    href="javascript:void(0);"
+                    >Next
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

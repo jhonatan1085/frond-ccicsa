@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SiteService } from '../../services/site.service';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-add-site',
   templateUrl: './add-site.component.html',
   styleUrls: ['./add-site.component.scss'],
 })
-export class AddSiteComponent {
+export class AddSiteComponent implements OnInit {
   public selectedDepartamento!: string;
   public selectedProvincia!: string;
   public selectedDistrito!: string;
@@ -22,45 +23,48 @@ export class AddSiteComponent {
   public selectedPrioridad!: string;
   public selectedTipoEnergia!: string;
 
-  public codigo: string = '';
-  public nombre: string = '';
-  public latitud: string = '';
-  public longitud: string = '';
-  public direccion: string = '';
-  public tiempoSla: string = '';
-  public autonomiaBts: string = '';
-  public autonomiaTx: string = '';
-  public tiempoAuto: string = '';
-  public tiempoCaminando: string = '';
-  public tiempoAcceso: string = '';
-  public suministro: string = '';
-  public observacion: string = '';
+  public codigo = '';
+  public nombre = '';
+  public latitud = '';
+  public longitud = '';
+  public direccion = '';
+  public tiempoSla = '';
+  public autonomiaBts = '';
+  public autonomiaTx = '';
+  public tiempoAuto = '';
+  public tiempoCaminando = '';
+  public tiempoAcceso = '';
+  public suministro = '';
+  public observacion = '';
 
-  public roles: any = [];
-  public educacions: any = [];
+  public roles: any[] = [];
+  public educacions: any[] = [];
 
-  public departamentos: any = [];
-  public provincias: any = [];
-  public municipalidades: any = [];
-  public distritos: any = [];
-  public tiposites: any = [];
-  public zonas: any = [];
-  public regions: any = [];
-  public regionGeograficas: any = [];
-  public consesionarias: any = [];
-  public roomtypes: any = [];
-  public contratistas: any = [];
-  public tipoAcceso: any = [];
-  public prioridad: any = [];
-  public tipoEnergia: any = [];
+  public departamentos: any[] = [];
+  public provincias: any[] = [];
+  public municipalidades: any[] = [];
+  public distritos: any[] = [];
+  public tiposites: any[] = [];
+  public zonas: any[] = [];
+  public regions: any[] = [];
+  public regionGeograficas: any[] = [];
+  public consesionarias: any[] = [];
+  public roomtypes: any[] = [];
+  public contratistas: any[] = [];
+  public tipoAcceso: any[] = [];
+  public prioridad: any[] = [];
+  public tipoEnergia: any[] = [];
 
-  public text_success: string = '';
-  public text_validation: string = '';
+  public text_success = '';
+  public text_validation = '';
 
-  constructor(public siteService: SiteService) {}
+  constructor(
+    public siteService: SiteService,
+    public configService: ConfigService
+  ) {}
 
   ngOnInit(): void {
-    this.siteService.listConfig().subscribe((resp: any) => {
+    this.configService.sites().subscribe((resp) => {
       console.log(resp);
       this.municipalidades = resp.municipalidades;
       this.tiposites = resp.tiposites;
@@ -82,9 +86,9 @@ export class AddSiteComponent {
 
     this.siteService
       .showProvinciasDep(this.selectedDepartamento)
-      .subscribe((resp: any) => {
+      .subscribe((resp) => {
         console.log(resp);
-        this.provincias = resp.provincias;
+        this.provincias = resp.data;
       });
   }
 
@@ -92,9 +96,9 @@ export class AddSiteComponent {
     //console.log(this.selectedDepartamento);
     this.siteService
       .showDistritoProv(this.selectedProvincia)
-      .subscribe((resp: any) => {
+      .subscribe((resp) => {
         console.log(resp);
-        this.distritos = resp.distritos;
+        this.distritos = resp.data;
       });
   }
   save() {
@@ -107,7 +111,7 @@ export class AddSiteComponent {
 
     //console.log(this.selectedValue);
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('codigo', this.codigo);
     formData.append('nombre', this.nombre);
     formData.append('latitud', this.latitud);
@@ -135,7 +139,7 @@ export class AddSiteComponent {
     formData.append('tipo_energia_id', this.selectedTipoEnergia);
     formData.append('observacion', this.observacion);
 
-    this.siteService.create(formData).subscribe((resp: any) => {
+    this.siteService.create(formData).subscribe((resp) => {
       console.log(resp);
       if (resp.message == 403) {
         this.text_validation = resp.message_text;

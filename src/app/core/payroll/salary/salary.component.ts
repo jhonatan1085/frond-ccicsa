@@ -2,19 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, salary } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  salary,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 interface data {
-  value: string ;
+  value: string;
 }
 @Component({
   selector: 'app-salary',
   templateUrl: './salary.component.html',
-  styleUrls: ['./salary.component.scss']
+  styleUrls: ['./salary.component.scss'],
 })
-export class SalaryComponent implements OnInit{
+export class SalaryComponent implements OnInit {
   public routes = routes;
-  public selectedValue !: string  ;
+  public selectedValue!: string;
   public salary: Array<salary> = [];
   dataSource!: MatTableDataSource<salary>;
 
@@ -26,15 +30,13 @@ export class SalaryComponent implements OnInit{
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -47,7 +49,6 @@ export class SalaryComponent implements OnInit{
       data.data.map((res: salary, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-         
           this.salary.push(res);
           this.serialNumberArray.push(serialNumber);
         }
@@ -56,7 +57,7 @@ export class SalaryComponent implements OnInit{
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.salary = this.dataSource.filteredData;
@@ -69,9 +70,9 @@ export class SalaryComponent implements OnInit{
       this.salary = data;
     } else {
       this.salary = data.sort((a, b) => {
-         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
-         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
       });
@@ -129,15 +130,15 @@ export class SalaryComponent implements OnInit{
     }
   }
   selectedList1: data[] = [
-    {value: 'Select Role'},
-    {value: 'Accountant'},
-    {value: 'Nurse'},
-    {value: 'Pharmacist'},
+    { value: 'Select Role' },
+    { value: 'Accountant' },
+    { value: 'Nurse' },
+    { value: 'Pharmacist' },
   ];
   selectedList2: data[] = [
-    {value: 'Select Leave Status'},
-    {value: 'Pending'},
-    {value: 'Approved'},
-    {value: 'Rejected'},
+    { value: 'Select Leave Status' },
+    { value: 'Pending' },
+    { value: 'Approved' },
+    { value: 'Rejected' },
   ];
 }

@@ -42,12 +42,12 @@ export abstract class AbstractCrudService<T> {
   update(id: number, data: T | FormData) {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/${id}`;
-    return this.http.post<CrudResponse>(URL, data, { headers: headers });
+    return this.http.put<CrudResponse>(URL, data, { headers: headers });
   }
 
   delete(id: number) {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/${id}`;
-    return this.http.delete<T>(URL, { headers: headers });
+    return this.http.delete<CrudResponse>(URL, { headers: headers });
   }
 }

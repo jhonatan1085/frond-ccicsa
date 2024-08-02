@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { routes } from 'src/app/shared/routes/routes';
 import { Sort } from '@angular/material/sort';
-import { MatTableDataSource } from "@angular/material/table";
-import { pageSelection, apiResultFormat, staffholidays } from 'src/app/shared/models/models';
+import { MatTableDataSource } from '@angular/material/table';
+import {
+  pageSelection,
+  apiResultFormat,
+  staffholidays,
+} from 'src/app/shared/models/models';
 import { DataService } from 'src/app/shared/data/data.service';
 
 @Component({
   selector: 'app-staff-holiday',
   templateUrl: './staff-holiday.component.html',
-  styleUrls: ['./staff-holiday.component.scss']
+  styleUrls: ['./staff-holiday.component.scss'],
 })
 export class StaffHolidayComponent implements OnInit {
   public routes = routes;
@@ -24,15 +28,13 @@ export class StaffHolidayComponent implements OnInit {
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -45,16 +47,17 @@ export class StaffHolidayComponent implements OnInit {
       data.data.map((res: staffholidays, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-         
           this.staffHoliday.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<staffholidays>(this.staffHoliday);
+      this.dataSource = new MatTableDataSource<staffholidays>(
+        this.staffHoliday
+      );
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.staffHoliday = this.dataSource.filteredData;

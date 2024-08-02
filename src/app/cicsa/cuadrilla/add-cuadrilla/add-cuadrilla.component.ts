@@ -1,38 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { ListCuadrillaComponent } from '../list-cuadrilla/list-cuadrilla.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-declare var $: any;
+import { ConfigService } from '../../services/config.service';
+declare const $: any;
+
 @Component({
   selector: 'app-add-cuadrilla',
   templateUrl: './add-cuadrilla.component.html',
   styleUrls: ['./add-cuadrilla.component.scss'],
 })
-export class AddCuadrillaComponent {
+export class AddCuadrillaComponent implements OnInit {
   public selectedTipobrigadas!: string;
   public selectedContratistas!: string;
   public selectedZona!: string;
 
-  public tipobrigadas: any = [];
-  public contratistas: any = [];
-  public zonas: any = [];
-  public users: any = [];
+  public tipobrigadas: any[] = [];
+  public contratistas: any[] = [];
+  public zonas: any[] = [];
+  public users: any[] = [];
 
   public text_success = '';
   public text_validation = '';
 
-  public user_selecteds: any = [];
+  public user_selecteds: any[] = [];
 
   constructor(
     public cuadrillaService: CuadrillaService,
+    public configService: ConfigService,
     public usuarioService: UsuariosService,
     public listaCuadrilla: ListCuadrillaComponent,
     private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.cuadrillaService.listConfig().subscribe((resp: any) => {
+    this.configService.cuadrillas().subscribe((resp) => {
       console.log(resp);
       this.tipobrigadas = resp.tipobrigadas;
       this.zonas = resp.zonas;
@@ -42,12 +45,10 @@ export class AddCuadrillaComponent {
 
   tecnicos() {
     this.user_selecteds = [];
-    this.usuarioService
-      .showUserZona(this.selectedZona)
-      .subscribe((resp: any) => {
-        console.log(resp);
-        this.users = resp.usuarios;
-      });
+    this.usuarioService.showUserZona(this.selectedZona).subscribe((resp) => {
+      console.log(resp);
+      this.users = resp.data;
+    });
   }
 
   addUser(user: any, islider = 0) {
@@ -60,7 +61,7 @@ export class AddCuadrillaComponent {
         id_movil = movil.id;
       });
     }
-    let INDEX = this.user_selecteds.findIndex(
+    const INDEX = this.user_selecteds.findIndex(
       (us: any) => us.user_id == user.id
     );
     if (INDEX != -1) {
@@ -95,11 +96,11 @@ export class AddCuadrillaComponent {
         console.log('no se puede agregar otro cliente');
       }
     } else {
-      let exislider = this.user_selecteds.findIndex(
+      const exislider = this.user_selecteds.findIndex(
         (us: any) => us.user_id == user.id
       );
       if (exislider != -1) {
-        let replace = {
+        const replace = {
           user_id: this.user_selecteds[exislider].user_id,
           movil_id: this.user_selecteds[exislider].movil_id,
           is_lider: 1,
@@ -114,7 +115,7 @@ export class AddCuadrillaComponent {
   }
 
   isCheck(user: any) {
-    let INDEX = this.user_selecteds.findIndex(
+    const INDEX = this.user_selecteds.findIndex(
       (us: any) => us.user_id == user.id
     );
     if (INDEX != -1) {
@@ -125,13 +126,13 @@ export class AddCuadrillaComponent {
   }
 
   islider(user: any) {
-    let INDEX = this.user_selecteds.findIndex(
+    const INDEX = this.user_selecteds.findIndex(
       (us: any) => us.user_id == user.id && us.is_lider == 1
     );
     if (INDEX != -1) {
       return false;
     } else {
-      let exis = this.user_selecteds.findIndex((us: any) => us.is_lider == 1);
+      const exis = this.user_selecteds.findIndex((us: any) => us.is_lider == 1);
       if (exis != -1) {
         return true;
       } else {
@@ -162,13 +163,13 @@ export class AddCuadrillaComponent {
       return;
     }
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('zona_id', this.selectedZona);
     formData.append('tipo_brigada_id', this.selectedTipobrigadas);
     formData.append('contratista_id', this.selectedContratistas);
     formData.append('tecnicos', JSON.stringify(this.user_selecteds));
 
-    this.cuadrillaService.create(formData).subscribe((resp: any) => {
+    this.cuadrillaService.create(formData).subscribe((resp) => {
       console.log(resp);
       if (resp.message == 403) {
         this.snackBar('Falta ingresar datos');

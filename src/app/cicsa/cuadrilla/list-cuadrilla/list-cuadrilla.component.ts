@@ -166,7 +166,7 @@ export class ListCuadrillaComponent implements OnInit {
   inactiva(cuadrilla: Cuadrilla) {
     console.log(cuadrilla);
     if (cuadrilla.estado == '1') {
-      this.cuadrillaService.delete(cuadrilla.id).subscribe((resp: any) => {
+      this.cuadrillaService.delete(cuadrilla.id).subscribe((resp) => {
         if (resp.message == 403) {
           this._snackBar.open('Error ', 'Cerrar', {
             horizontalPosition: 'right',

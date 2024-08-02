@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractCrudService } from './abstract-crud.service';
-import { Site } from '../modelos';
+import { CrudResponse, Site } from '../modelos';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { URL_SERVICIOS } from 'src/app/config/config';
 
@@ -26,5 +26,11 @@ export class LocationService extends AbstractCrudService<Site> {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/distritoprov/${dist_id}`;
     return this.http.get(URL, { headers: headers });
+  }
+
+  createLocationBitacora(data: any) {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/bitacoras/locationBitacora`;
+    return this.http.post<CrudResponse>(URL, data, { headers: headers });
   }
 }

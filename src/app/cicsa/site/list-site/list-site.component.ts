@@ -21,10 +21,10 @@ export class ListSiteComponent implements OnInit {
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<any> = [];
+  public pageNumberArray: number[] = [];
+  public pageSelection: any[] = [];
   public totalPages = 0;
 
   public site_generals: Site[] = [];

@@ -2,15 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, schedule } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  schedule,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.scss']
+  styleUrls: ['./schedule.component.scss'],
 })
-export class ScheduleComponent implements OnInit{
+export class ScheduleComponent implements OnInit {
   public routes = routes;
 
   public schedule: Array<schedule> = [];
@@ -24,15 +28,13 @@ export class ScheduleComponent implements OnInit{
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -45,7 +47,6 @@ export class ScheduleComponent implements OnInit{
       data.data.map((res: schedule, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-         
           this.schedule.push(res);
           this.serialNumberArray.push(serialNumber);
         }
@@ -67,11 +68,11 @@ export class ScheduleComponent implements OnInit{
       this.schedule = data;
     } else {
       this.schedule = data.sort((a, b) => {
-         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
-         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const bValue = (b as any)[sort.active];
-        
+
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
       });
     }

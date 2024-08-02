@@ -4,7 +4,6 @@ import {
   AtencionBitacora,
   Bitacora,
   CrudResponse,
-  Tipo,
 } from 'src/app/cicsa/modelos';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { AuthService } from 'src/app/shared/auth/auth.service';
@@ -33,14 +32,16 @@ export class BitacorasService extends AbstractCrudService<Bitacora> {
     return this.http.get<AtencionBitacora[]>(URL, { headers: headers });
   }
 
-  listConfig() {
-    const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/config`;
-    return this.http.get<{ tipoaveria: Tipo[]; red: Tipo[]; serv: Tipo[] }>(
-      URL,
-      {
-        headers: headers,
-      }
-    );
+  getPosition(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (resp) => {
+          resolve({ lng: resp.coords.longitude, lat: resp.coords.latitude });
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
   }
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { AbstractCrudService } from './abstract-crud.service';
-import { Site } from '../modelos';
+import { CrudResponse, Distrito, Page, Provincia, Site } from '../modelos';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,22 +15,16 @@ export class SiteService extends AbstractCrudService<Site> {
     super(http, authService, 'sites');
   }
 
-  listConfig() {
-    const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/config`;
-    return this.http.get(URL, { headers: headers });
-  }
-
   showProvinciasDep(dep_id: string) {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/provinciasdep/${dep_id}`;
-    return this.http.get(URL, { headers: headers });
+    return this.http.get<Page<Provincia>>(URL, { headers: headers });
   }
 
   showDistritoProv(dist_id: string) {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/distritoprov/${dist_id}`;
-    return this.http.get(URL, { headers: headers });
+    return this.http.get<Page<Distrito>>(URL, { headers: headers });
   }
 
   showSiteAutocomplete(site_search = '') {

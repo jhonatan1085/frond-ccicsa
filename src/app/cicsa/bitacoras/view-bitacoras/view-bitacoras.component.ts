@@ -2,8 +2,8 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BitacorasService } from '../services/bitacoras.service';
 import { Atencion, Bitacora, Cuadrilla, UsuarioMovil } from '../../modelos';
+import { BitacorasService } from '../../services/bitacoras.service';
 
 @Component({
   selector: 'app-view-bitacoras',
@@ -22,7 +22,7 @@ export class ViewBitacorasComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ViewBitacorasComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { id: string },
+    @Inject(MAT_DIALOG_DATA) public data: { id: number },
     private clipboard: Clipboard,
     private _snackBar: MatSnackBar,
     private bitacoraService: BitacorasService
@@ -68,7 +68,8 @@ export class ViewBitacorasComponent {
         element.user_movil.forEach((item: UsuarioMovil) => {
           if (item.is_lider == '1') {
             this.brigadas =
-            this.brigadas +'\n'+
+              this.brigadas +
+              '\n' +
               '_Bri' +
               this.count +
               ':_ ' +

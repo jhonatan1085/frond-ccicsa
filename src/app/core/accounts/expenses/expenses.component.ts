@@ -2,21 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, expenses } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  expenses,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 
 interface data {
-  value: string ;
+  value: string;
 }
 @Component({
   selector: 'app-expenses',
   templateUrl: './expenses.component.html',
-  styleUrls: ['./expenses.component.scss']
+  styleUrls: ['./expenses.component.scss'],
 })
 export class ExpensesComponent implements OnInit {
   public routes = routes;
 
-  public selectedValue ! : string  ;
+  public selectedValue!: string;
   public expenses: Array<expenses> = [];
   dataSource!: MatTableDataSource<expenses>;
 
@@ -28,15 +32,13 @@ export class ExpensesComponent implements OnInit {
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -49,7 +51,6 @@ export class ExpensesComponent implements OnInit {
       data.data.map((res: expenses, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          
           this.expenses.push(res);
           this.serialNumberArray.push(serialNumber);
         }
@@ -58,7 +59,7 @@ export class ExpensesComponent implements OnInit {
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.expenses = this.dataSource.filteredData;
@@ -73,7 +74,7 @@ export class ExpensesComponent implements OnInit {
       this.expenses = data.sort((a, b) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
-       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
       });
@@ -131,15 +132,15 @@ export class ExpensesComponent implements OnInit {
     }
   }
   selectedList1: data[] = [
-    {value: 'Select Purchase by'},
-    {value: 'Bernardo James'},
-    {value: 'Galaviz Lalema'},
-    {value: 'Tarah Williams'},
+    { value: 'Select Purchase by' },
+    { value: 'Bernardo James' },
+    { value: 'Galaviz Lalema' },
+    { value: 'Tarah Williams' },
   ];
   selectedList2: data[] = [
-    {value: 'Select Paid by'},
-    {value: 'Paypal'},
-    {value: 'Cheque'},
-    {value: 'Debit Card'},
+    { value: 'Select Paid by' },
+    { value: 'Paypal' },
+    { value: 'Cheque' },
+    { value: 'Debit Card' },
   ];
 }

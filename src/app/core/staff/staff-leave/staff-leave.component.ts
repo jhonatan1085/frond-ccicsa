@@ -2,19 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, staffleave } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  staffleave,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 interface data {
-  value: string ;
+  value: string;
 }
 @Component({
   selector: 'app-staff-leave',
   templateUrl: './staff-leave.component.html',
-  styleUrls: ['./staff-leave.component.scss']
+  styleUrls: ['./staff-leave.component.scss'],
 })
-export class StaffLeaveComponent implements OnInit{
+export class StaffLeaveComponent implements OnInit {
   public routes = routes;
-  public selectedValue ! : string  ;
+  public selectedValue!: string;
   public staffLeave: Array<staffleave> = [];
   dataSource!: MatTableDataSource<staffleave>;
 
@@ -25,16 +29,14 @@ export class StaffLeaveComponent implements OnInit{
   public totalData = 0;
   public skip = 0;
   public limit: number = this.pageSize;
-  public pageIndex  = 0;
-  public serialNumberArray: Array<number> = [];
+  public pageIndex = 0;
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -47,7 +49,6 @@ export class StaffLeaveComponent implements OnInit{
       data.data.map((res: staffleave, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-         
           this.staffLeave.push(res);
           this.serialNumberArray.push(serialNumber);
         }
@@ -56,7 +57,7 @@ export class StaffLeaveComponent implements OnInit{
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.staffLeave = this.dataSource.filteredData;
@@ -129,15 +130,15 @@ export class StaffLeaveComponent implements OnInit{
     }
   }
   selectedList1: data[] = [
-    {value: 'Select Leave Type'},
-    {value: 'Medical Leave'},
-    {value: 'Casual Leave'},
-    {value: 'Loss of Pay'},
+    { value: 'Select Leave Type' },
+    { value: 'Medical Leave' },
+    { value: 'Casual Leave' },
+    { value: 'Loss of Pay' },
   ];
   selectedList2: data[] = [
-    {value: 'Leave Status'},
-    {value: 'Pending'},
-    {value: 'Approved'},
-    {value: 'Declined'},
+    { value: 'Leave Status' },
+    { value: 'Pending' },
+    { value: 'Approved' },
+    { value: 'Declined' },
   ];
 }

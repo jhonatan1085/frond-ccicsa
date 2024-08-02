@@ -1,12 +1,11 @@
-import { Component, Inject} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {  Bitacora,  Tipo } from 'src/app/modelos/Modelos';
-import { BitacorasService } from '../services/bitacoras.service';
 import { Router } from '@angular/router';
+import { Bitacora, Tipo } from '../../modelos';
+import { BitacorasService } from '../../services/bitacoras.service';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-end-bitacoras',
@@ -31,16 +30,17 @@ export class EndBitacorasComponent {
     private clipboard: Clipboard,
     private _snackBar: MatSnackBar,
     private bitacoraService: BitacorasService,
+    private configService: ConfigService,
     private router: Router
   ) {
     console.log(data.bitacora);
     this.bitacora = data.bitacora;
-    this.bitacora.causa_averia = this.bitacora.causa_averia??{}
-    this.bitacora.consecuencia_averia = this.bitacora.consecuencia_averia??{}
-    this.bitacora.tipo_reparacion = this.bitacora.tipo_reparacion??{}
-    this.bitacora.herramientas??=''
-    this.bitacora.incidencia??=''
-    this.bitacoraService.listEndConfig().subscribe((resp: any) => {
+    this.bitacora.causa_averia = this.bitacora.causa_averia ?? {};
+    this.bitacora.consecuencia_averia = this.bitacora.consecuencia_averia ?? {};
+    this.bitacora.tipo_reparacion = this.bitacora.tipo_reparacion ?? {};
+    this.bitacora.herramientas ??= '';
+    this.bitacora.incidencia ??= '';
+    this.configService.bitacorasFinalizar().subscribe((resp) => {
       this.causa = resp.causa;
       this.consecuencia = resp.consecuencia;
       this.tipoReparacion = resp.tipoReparacion;
@@ -49,16 +49,16 @@ export class EndBitacorasComponent {
 
   guardar() {
     const formData = new FormData();
-    formData.append("id", ""+this.bitacora.id);
-    formData.append("causa",""+ this.bitacora.causa_averia.id);
-    formData.append("consecuencia", "" + this.bitacora.consecuencia_averia.id);
-    formData.append("tipoReparacion", "" + this.bitacora.tipo_reparacion.id);
-    formData.append("herramientas", this.bitacora.herramientas);
-    formData.append("tiempo", this.bitacora.tiempo_solucion);
+    formData.append('id', '' + this.bitacora.id);
+    formData.append('causa', '' + this.bitacora.causa_averia.id);
+    formData.append('consecuencia', '' + this.bitacora.consecuencia_averia.id);
+    formData.append('tipoReparacion', '' + this.bitacora.tipo_reparacion.id);
+    formData.append('herramientas', this.bitacora.herramientas);
+    formData.append('tiempo', this.bitacora.tiempo_solucion);
 
     this.bitacoraService
-      .registerEndBitacora(formData)
-      .subscribe((resp: any) => {
+      .update(this.bitacora.id, formData)
+      .subscribe((resp) => {
         console.log(resp);
         if (resp.message == 403) {
           this.snackBar('Falta ingresar datos');

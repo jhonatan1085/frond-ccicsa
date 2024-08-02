@@ -77,6 +77,7 @@ export interface Distrito {
   nombre: string;
 }
 export interface Provincia {
+  id: number;
   nombre: string;
   departamento: Departamento;
 }
@@ -114,9 +115,27 @@ export interface UsuarioMovil {
 }
 
 export interface Usuario {
-  id: number;
+  avatar: string;
+  address: string;
+  designation: string;
+  gender: number;
+  birth_date: string | number | Date;
+  email: string;
+  cel_per: string;
+  dni: string;
+  cel_corp: string;
+  surname: string;
+  name: string;
+  zona?: Tipo;
+  educacion?: Tipo;
+  role?: Tipo;
+  id?: number;
   nombre: string;
   celular?: string;
+  password?: string;
+  role_id?: number | string;
+  zona_id?: number | string;
+  educacion_id?: number | string;
 }
 
 export interface UnidadMovil {
@@ -164,4 +183,12 @@ export interface BitacoraAtencion {
   parent_id?: number;
   descripcion: string;
   bitacora_atencion: BitacoraAtencion[]; // Recursividad para los padres de la atención
+}
+
+export interface Role {
+  id: number;
+  name: string;
+  guard_name: string;
+  created_at: string;
+  updated_at: string;
 }

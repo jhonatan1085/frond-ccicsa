@@ -4,7 +4,7 @@ export interface pageSelection {
 }
 export interface apiResultFormat {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: Array<any>;
+  data: any[];
   totalData: number;
 }
 export interface expenses {

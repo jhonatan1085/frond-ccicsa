@@ -2,15 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, invoicerecurring } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  invoicerecurring,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 
 @Component({
   selector: 'app-invoices-recurring',
   templateUrl: './invoices-recurring.component.html',
-  styleUrls: ['./invoices-recurring.component.scss']
+  styleUrls: ['./invoices-recurring.component.scss'],
 })
-export class InvoicesRecurringComponent  implements OnInit{
+export class InvoicesRecurringComponent implements OnInit {
   public routes = routes;
   public checkboxes: string[] = [];
 
@@ -25,15 +29,13 @@ export class InvoicesRecurringComponent  implements OnInit{
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -46,16 +48,17 @@ export class InvoicesRecurringComponent  implements OnInit{
       data.data.map((res: invoicerecurring, index: number) => {
         var serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          
           this.invoicesRecurring.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<invoicerecurring>(this.invoicesRecurring);
+      this.dataSource = new MatTableDataSource<invoicerecurring>(
+        this.invoicesRecurring
+      );
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.invoicesRecurring = this.dataSource.filteredData;
@@ -128,7 +131,7 @@ export class InvoicesRecurringComponent  implements OnInit{
     }
   }
 
-  public openCheckBoxes(val: string){
+  public openCheckBoxes(val: string) {
     if (this.checkboxes[0] != val) {
       this.checkboxes[0] = val;
     } else {

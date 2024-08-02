@@ -2,22 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, invoicedraft } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  invoicedraft,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 
 @Component({
   selector: 'app-invoices-draft',
   templateUrl: './invoices-draft.component.html',
-  styleUrls: ['./invoices-draft.component.scss']
+  styleUrls: ['./invoices-draft.component.scss'],
 })
-export class InvoicesDraftComponent implements OnInit{
+export class InvoicesDraftComponent implements OnInit {
   public routes = routes;
   public checkboxes: string[] = [];
-  
+
   public invoicesDraft: Array<invoicedraft> = [];
   dataSource!: MatTableDataSource<invoicedraft>;
 
-  public showFilter  = false;
+  public showFilter = false;
   public searchDataValue = '';
   public lastIndex = 0;
   public pageSize = 10;
@@ -25,15 +29,13 @@ export class InvoicesDraftComponent implements OnInit{
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -46,16 +48,17 @@ export class InvoicesDraftComponent implements OnInit{
       data.data.map((res: invoicedraft, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-          
           this.invoicesDraft.push(res);
           this.serialNumberArray.push(serialNumber);
         }
       });
-      this.dataSource = new MatTableDataSource<invoicedraft>(this.invoicesDraft);
+      this.dataSource = new MatTableDataSource<invoicedraft>(
+        this.invoicesDraft
+      );
       this.calculateTotalPages(this.totalData, this.pageSize);
     });
   }
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
     this.dataSource.filter = value.trim().toLowerCase();
     this.invoicesDraft = this.dataSource.filteredData;
@@ -128,7 +131,7 @@ export class InvoicesDraftComponent implements OnInit{
     }
   }
 
-  public openCheckBoxes(val: string){
+  public openCheckBoxes(val: string) {
     if (this.checkboxes[0] != val) {
       this.checkboxes[0] = val;
     } else {

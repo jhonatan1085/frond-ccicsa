@@ -10,6 +10,7 @@ import { BitacorasService } from '../../services/bitacoras.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { SiteService } from '../../services/site.service';
 import { UsuariosService } from '../../services/usuarios.service';
+import { ConfigService } from '../../services/config.service';
 @Component({
   selector: 'app-add-bitacoras',
   templateUrl: './add-bitacoras.component.html',
@@ -28,19 +29,19 @@ export class AddBitacorasComponent implements OnInit {
   skip = 0;
   limit: number = this.pageSize;
   pageIndex = 0;
-  serialNumberArray: Array<number> = [];
+  serialNumberArray: number[] = [];
   currentPage = 1;
-  pageNumberArray: Array<number> = [];
-  pageSelection: Array<any> = [];
+  pageNumberArray: number[] = [];
+  pageSelection: any[] = [];
   totalPages = 0;
   cuadrillas_generals: Cuadrilla[] = [];
   CUADRILLA_SELECTED: any;
 
-  cuadrilla_add: any = [];
+  cuadrilla_add: any[] = [];
 
-  responsables_cicsa: any = [];
+  responsables_cicsa: any[] = [];
 
-  responsables_claro: any = [];
+  responsables_claro: any[] = [];
   //fin paginacion cuadrillas
 
   panelOpenState = false;
@@ -79,6 +80,7 @@ export class AddBitacorasComponent implements OnInit {
   filteredOptions!: Observable<any>;
 
   constructor(
+    private configService: ConfigService,
     private bitacoraService: BitacorasService,
     private siteService: SiteService,
     private cuadrillaService: CuadrillaService,
@@ -88,7 +90,7 @@ export class AddBitacorasComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.bitacoraService.listConfig().subscribe((resp) => {
+    this.configService.bitacoras().subscribe((resp) => {
       console.log(resp);
       this.tipo_Averia = resp.tipoaveria;
       this.red = resp.red;
@@ -272,8 +274,8 @@ export class AddBitacorasComponent implements OnInit {
     this.usuarioService.showResponsables(idzona).subscribe((resp) => {
       console.log('responsables');
       console.log(resp);
-      this.responsables_cicsa = resp.lidercicsa;
-      this.responsables_claro = resp.liderclaro;
+      this.responsables_cicsa = resp.lidercicsa as Tipo[];
+      this.responsables_claro = resp.liderclaro as Tipo[];
     });
   }
 

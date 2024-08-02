@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SiteService } from '../../services/site.service';
+import { ConfigService } from '../../services/config.service';
+import { Distrito, Provincia } from '../../modelos';
 
 @Component({
   selector: 'app-edit-site',
   templateUrl: './edit-site.component.html',
   styleUrls: ['./edit-site.component.scss'],
 })
-export class EditSiteComponent {
+export class EditSiteComponent implements OnInit {
   public selectedDepartamento!: string;
   public selectedProvincia!: string;
   public selectedDistrito!: string;
@@ -23,51 +25,52 @@ export class EditSiteComponent {
   public selectedPrioridad!: string;
   public selectedTipoEnergia!: string;
 
-  public codigo: string = '';
-  public nombre: string = '';
-  public latitud: string = '';
-  public longitud: string = '';
-  public direccion: string = '';
-  public tiempoSla: string = '';
-  public autonomiaBts: string = '';
-  public autonomiaTx: string = '';
-  public tiempoAuto: string = '';
-  public tiempoCaminando: string = '';
-  public tiempoAcceso: string = '';
-  public suministro: string = '';
-  public observacion: string = '';
+  public codigo = '';
+  public nombre = '';
+  public latitud = '';
+  public longitud = '';
+  public direccion = '';
+  public tiempoSla = '';
+  public autonomiaBts = '';
+  public autonomiaTx = '';
+  public tiempoAuto = '';
+  public tiempoCaminando = '';
+  public tiempoAcceso = '';
+  public suministro = '';
+  public observacion = '';
 
-  public roles: any = [];
-  public educacions: any = [];
+  public roles: any[] = [];
+  public educacions: any[] = [];
 
-  public departamentos: any = [];
-  public provincias: any = [];
-  public municipalidades: any = [];
-  public distritos: any = [];
-  public tiposites: any = [];
-  public zonas: any = [];
-  public regions: any = [];
-  public regionGeograficas: any = [];
-  public consesionarias: any = [];
-  public roomtypes: any = [];
-  public contratistas: any = [];
-  public tipoAcceso: any = [];
-  public prioridad: any = [];
-  public tipoEnergia: any = [];
+  public departamentos: any[] = [];
+  public provincias: Provincia[] = [];
+  public municipalidades: any[] = [];
+  public distritos: Distrito[] = [];
+  public tiposites: any[] = [];
+  public zonas: any[] = [];
+  public regions: any[] = [];
+  public regionGeograficas: any[] = [];
+  public consesionarias: any[] = [];
+  public roomtypes: any[] = [];
+  public contratistas: any[] = [];
+  public tipoAcceso: any[] = [];
+  public prioridad: any[] = [];
+  public tipoEnergia: any[] = [];
 
-  public text_success: string = '';
-  public text_validation: string = '';
+  public text_success = '';
+  public text_validation = '';
 
   public site_id: any;
   public site_selected: any;
 
   constructor(
     public siteService: SiteService,
+    public configService: ConfigService,
     public activeRoute: ActivatedRoute // para las variables enviadas al formulario
   ) {}
 
   ngOnInit(): void {
-    this.siteService.listConfig().subscribe((resp: any) => {
+    this.configService.sites().subscribe((resp) => {
       console.log(resp);
       this.municipalidades = resp.municipalidades;
       this.tiposites = resp.tiposites;
@@ -85,14 +88,14 @@ export class EditSiteComponent {
       this.distritos = resp.distritos;
     });
 
-    this.activeRoute.params.subscribe((resp: any) => {
+    this.activeRoute.params.subscribe((resp) => {
       console.log(resp);
-      this.site_id = resp.id;
+      this.site_id = resp['id'];
     });
 
-    this.siteService.read(this.site_id).subscribe((resp: any) => {
+    this.siteService.read(this.site_id).subscribe((resp) => {
       console.log(resp);
-      this.site_selected = resp.site;
+      this.site_selected = resp;
 
       this.codigo = this.site_selected.codigo;
       this.nombre = this.site_selected.nombre;
@@ -151,9 +154,9 @@ export class EditSiteComponent {
 
     this.siteService
       .showProvinciasDep(this.selectedDepartamento)
-      .subscribe((resp: any) => {
+      .subscribe((resp) => {
         console.log(resp);
-        this.provincias = resp.provincias;
+        this.provincias = resp.data;
       });
   }
 
@@ -161,9 +164,9 @@ export class EditSiteComponent {
     //console.log(this.selectedDepartamento);
     this.siteService
       .showDistritoProv(this.selectedProvincia)
-      .subscribe((resp: any) => {
+      .subscribe((resp) => {
         console.log(resp);
-        this.distritos = resp.distritos;
+        this.distritos = resp.data;
       });
   }
   save() {
@@ -176,7 +179,7 @@ export class EditSiteComponent {
 
     //console.log(this.selectedValue);
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('codigo', this.codigo);
     formData.append('nombre', this.nombre);
     formData.append('latitud', this.latitud);
@@ -204,7 +207,7 @@ export class EditSiteComponent {
     formData.append('tipo_energia_id', this.selectedTipoEnergia);
     formData.append('observacion', this.observacion);
 
-    this.siteService.update(this.site_id, formData).subscribe((resp: any) => {
+    this.siteService.update(this.site_id, formData).subscribe((resp) => {
       console.log(resp);
       if (resp.message == 403) {
         this.text_validation = resp.message_text;

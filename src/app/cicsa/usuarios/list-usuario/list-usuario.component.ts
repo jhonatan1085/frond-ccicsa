@@ -9,7 +9,7 @@ declare var $: any;
   styleUrls: ['./list-usuario.component.scss'],
 })
 export class ListUsuarioComponent implements OnInit {
-  public usersList: any = [];
+  public usersList: any[] = [];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild('closebutton') closebutton: any;
@@ -22,13 +22,13 @@ export class ListUsuarioComponent implements OnInit {
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
-  public pageSelection: Array<any> = [];
+  public pageNumberArray: number[] = [];
+  public pageSelection: any[] = [];
   public totalPages = 0;
 
-  public role_generals: any = [];
+  public role_generals: any[] = [];
   public staff_selected: any;
 
   constructor(public UsuarioService: UsuariosService) {}

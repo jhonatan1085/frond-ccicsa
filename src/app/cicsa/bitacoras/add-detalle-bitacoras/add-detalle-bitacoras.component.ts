@@ -1,19 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
-
-import { BitacorasService } from '../services/bitacoras.service';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AtencionBitacora, BitacoraAtencion } from '../../modelos';
+import { BitacorasService } from '../../services/bitacoras.service';
 
 @Component({
   selector: 'app-add-detalle-bitacoras',
   templateUrl: './add-detalle-bitacoras.component.html',
   styleUrls: ['./add-detalle-bitacoras.component.scss'],
 })
-export class AddDetalleBitacorasComponent {
+export class AddDetalleBitacorasComponent implements OnInit {
   //bitacora: Bitacora;
 
   public itemDetails: number[] = [0];
@@ -30,8 +29,8 @@ export class AddDetalleBitacorasComponent {
   ) {}
 
   ngOnInit(): void {
-    this.activeRoute.params.subscribe((resp: any) => {
-      this.bitacora_id = resp.bitacora;
+    this.activeRoute.params.subscribe((resp) => {
+      this.bitacora_id = resp['bitacora'];
     });
 
     this.bitacorasServices
@@ -103,8 +102,8 @@ export class AddDetalleBitacorasComponent {
     formData.append('atenciones', JSON.stringify(this.atenciones));
 
     this.bitacorasServices
-      .registerAtencionBitacora(formData)
-      .subscribe((resp: any) => {
+      .createAtencionBitacora(formData)
+      .subscribe((resp) => {
         console.log(resp);
         if (resp.message == 403) {
           this.snackBar('Falta ingresar datos');

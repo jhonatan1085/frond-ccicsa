@@ -2,15 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, allInvoice } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  allInvoice,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 
 @Component({
   selector: 'app-all-invoice',
   templateUrl: './all-invoice.component.html',
-  styleUrls: ['./all-invoice.component.scss']
+  styleUrls: ['./all-invoice.component.scss'],
 })
-export class AllInvoiceComponent implements OnInit{
+export class AllInvoiceComponent implements OnInit {
   public routes = routes;
   public checkboxes: string[] = [];
 
@@ -25,15 +29,13 @@ export class AllInvoiceComponent implements OnInit{
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -46,7 +48,6 @@ export class AllInvoiceComponent implements OnInit{
       data.data.map((res: allInvoice, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-        
           this.allInvoice.push(res);
           this.serialNumberArray.push(serialNumber);
         }
@@ -68,9 +69,9 @@ export class AllInvoiceComponent implements OnInit{
       this.allInvoice = data;
     } else {
       this.allInvoice = data.sort((a, b) => {
-         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
-         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const bValue = (b as any)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
       });
@@ -127,7 +128,7 @@ export class AllInvoiceComponent implements OnInit{
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
-  public openCheckBoxes(val: string){
+  public openCheckBoxes(val: string) {
     if (this.checkboxes[0] != val) {
       this.checkboxes[0] = val;
     } else {

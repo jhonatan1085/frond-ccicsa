@@ -2,13 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from 'src/app/shared/data/data.service';
-import { pageSelection, apiResultFormat, datatables } from 'src/app/shared/models/models';
+import {
+  pageSelection,
+  apiResultFormat,
+  datatables,
+} from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 
 @Component({
   selector: 'app-tables-datatables',
   templateUrl: './tables-datatables.component.html',
-  styleUrls: ['./tables-datatables.component.scss']
+  styleUrls: ['./tables-datatables.component.scss'],
 })
 export class TablesDatatablesComponent implements OnInit {
   public routes = routes;
@@ -24,15 +28,13 @@ export class TablesDatatablesComponent implements OnInit {
   public skip = 0;
   public limit: number = this.pageSize;
   public pageIndex = 0;
-  public serialNumberArray: Array<number> = [];
+  public serialNumberArray: number[] = [];
   public currentPage = 1;
-  public pageNumberArray: Array<number> = [];
+  public pageNumberArray: number[] = [];
   public pageSelection: Array<pageSelection> = [];
   public totalPages = 0;
 
-  constructor(public data : DataService){
-
-  }
+  constructor(public data: DataService) {}
   ngOnInit() {
     this.getTableData();
   }
@@ -45,7 +47,6 @@ export class TablesDatatablesComponent implements OnInit {
       data.data.map((res: datatables, index: number) => {
         const serialNumber = index + 1;
         if (index >= this.skip && serialNumber <= this.limit) {
-         
           this.dataTables.push(res);
           this.serialNumberArray.push(serialNumber);
         }
@@ -62,7 +63,7 @@ export class TablesDatatablesComponent implements OnInit {
 
   public sortData(sort: Sort) {
     const data = this.dataTables.slice();
-  
+
     if (!sort.active || sort.direction === '') {
       this.dataTables = data;
     } else {
