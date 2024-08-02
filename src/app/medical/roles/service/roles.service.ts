@@ -26,7 +26,7 @@ export class RolesService {
     return this.http.get(URL, { headers: headers });
   }
 
-  storeRoles(data: Role) {
+  storeRoles(data: { name: string; permisions: any[] }) {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + this.authService.token,
     });
@@ -34,7 +34,7 @@ export class RolesService {
     return this.http.post<CrudResponse>(URL, data, { headers: headers });
   }
 
-  editRoles(data: Role, id_role: number) {
+  editRoles(data: { name: string; permisions: any[] }, id_role: number) {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + this.authService.token,
     });
