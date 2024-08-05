@@ -4,6 +4,7 @@ import {
   AtencionBitacora,
   Bitacora,
   CrudResponse,
+  Page,
 } from 'src/app/cicsa/modelos';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { AuthService } from 'src/app/shared/auth/auth.service';
@@ -22,14 +23,20 @@ export class BitacorasService extends AbstractCrudService<Bitacora> {
 
   createAtencionBitacora(data: AtencionBitacora | FormData) {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/addAtencionBitacora`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/atenciones`;
+    return this.http.post<CrudResponse>(URL, data, { headers: headers });
+  }
+
+  finalizar(data: AtencionBitacora | FormData) {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/finalizar`;
     return this.http.post<CrudResponse>(URL, data, { headers: headers });
   }
 
   listAtencion(bitacora_id: number) {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/atencion/${bitacora_id}`;
-    return this.http.get<AtencionBitacora[]>(URL, { headers: headers });
+    return this.http.get<Page<AtencionBitacora>>(URL, { headers: headers });
   }
 
   getPosition(): Promise<any> {

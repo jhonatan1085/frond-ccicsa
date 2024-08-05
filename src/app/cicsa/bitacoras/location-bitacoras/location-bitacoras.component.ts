@@ -51,7 +51,7 @@ export class LocationBitacorasComponent {
     formData.append('distancia', '' + this.bitacora.distancia);
 
     this.locationService.createLocationBitacora(formData).subscribe((resp) => {
-      console.log(resp);
+     
       if (resp.message == 403) {
         this.snackBar('Falta ingresar datos');
       } else {

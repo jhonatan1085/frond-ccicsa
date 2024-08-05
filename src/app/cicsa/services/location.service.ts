@@ -30,7 +30,7 @@ export class LocationService extends AbstractCrudService<Site> {
 
   createLocationBitacora(data: any) {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/bitacoras/locationBitacora`;
+    const URL = `${URL_SERVICIOS}/bitacoras/localizacion`;
     return this.http.post<CrudResponse>(URL, data, { headers: headers });
   }
 }

@@ -17,19 +17,19 @@ export class SiteService extends AbstractCrudService<Site> {
 
   showProvinciasDep(dep_id: string) {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/provinciasdep/${dep_id}`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/provincias/depto/${dep_id}`;
     return this.http.get<Page<Provincia>>(URL, { headers: headers });
   }
 
   showDistritoProv(dist_id: string) {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/distritoprov/${dist_id}`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/distritos/provincia/${dist_id}`;
     return this.http.get<Page<Distrito>>(URL, { headers: headers });
   }
 
   showSiteAutocomplete(site_search = '') {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/sitesautocomplete?search=${site_search}`;
-    return this.http.get<{ sites: string }>(URL, { headers: headers });
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/autocomplete?search=${site_search}`;
+    return this.http.get<Page<Site>>(URL, { headers: headers });
   }
 }

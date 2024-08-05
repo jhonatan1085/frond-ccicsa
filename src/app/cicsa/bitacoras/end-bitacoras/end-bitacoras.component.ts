@@ -57,10 +57,11 @@ export class EndBitacorasComponent {
     formData.append('tiempo', this.bitacora.tiempo_solucion);
 
     this.bitacoraService
-      .update(this.bitacora.id, formData)
+      .finalizar( formData)
       .subscribe((resp) => {
         console.log(resp);
         if (resp.message == 403) {
+          //this.snackBar(resp.message_text);
           this.snackBar('Falta ingresar datos');
         } else {
           this.snackBar('Registro Exitoso');

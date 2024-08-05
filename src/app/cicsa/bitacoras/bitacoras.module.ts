@@ -36,6 +36,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     HttpClientModule,
     RouterModule,
     MatTooltipModule
+    
   ]
 })
 export class BitacorasModule { }

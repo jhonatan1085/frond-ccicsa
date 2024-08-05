@@ -24,7 +24,7 @@ export class ListBitacorasComponent {
   pageSelection: any[] = [];
   totalPages = 0;
   totalData = 0;
-  pageSize = 0;
+  pageSize = 3;
   searchDataValue = '';
   skip = 0;
   limit = 0;
@@ -48,12 +48,13 @@ export class ListBitacorasComponent {
       .readAll({ page, search: this.searchDataValue })
       .subscribe((resp) => {
         console.log(resp);
-        this.totalData = resp.total;
+         this.totalData = resp.total;
         this.bitacoras = resp.data;
         this.dataSource = new MatTableDataSource<Bitacora>(this.bitacoras);
-        this.calculateTotalPages(this.totalData, this.pageSize);
+        this.calculateTotalPages(this.totalData, this.pageSize); 
       });
   }
+
 
   getTableDataGeneral() {
     this.bitacoras = [];
@@ -162,5 +163,6 @@ export class ListBitacorasComponent {
     this.dialog.open(LocationBitacorasComponent, {
       data: { bitacora: bitacora },
     });
+    
   }
 }

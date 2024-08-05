@@ -1,5 +1,5 @@
 export const environment = {
   URL_BACKEND: 'http://api-ccicsa.test',
-  URL_SERVICIOS: 'http://api-ccicsa.test/api',
+  URL_SERVICIOS: 'http://127.0.0.1:8000/api',
   URL_FRONTEND: 'http://localhost:4200/',
 };

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { Bitacora, Cuadrilla, Site, Tipo } from 'src/app/cicsa/modelos/modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
@@ -52,7 +52,7 @@ export class AddBitacorasComponent implements OnInit {
   // selectedliderclaro!: string;
   // selectedlidercicsa!: string;
 
-  bitacora: Bitacora = {} as any;
+  bitacora: Bitacora={tipo_averia:{} as any,red:{} as any,serv:{} as any, resp_cicsa:{} as any , resp_claro:{} as any } as any;
   // fecha_inicial = '';
   // nro_sot = '';
   // nro_incidencia = '';
@@ -86,10 +86,16 @@ export class AddBitacorasComponent implements OnInit {
     private cuadrillaService: CuadrillaService,
     private usuarioService: UsuariosService,
     private _snackBar: MatSnackBar,
-    private router: Router
-  ) {}
+    private router: Router,
+    private activateRoute: ActivatedRoute
+  ) {
+    
+  }
 
   ngOnInit(): void {
+    
+  this.activateRoute.params.pipe(switchMap( params => this.bitacoraService.read(params['id']))).subscribe(resp => this.bitacora = resp )
+
     this.configService.bitacoras().subscribe((resp) => {
       console.log(resp);
       this.tipo_Averia = resp.tipoaveria;
@@ -98,7 +104,8 @@ export class AddBitacorasComponent implements OnInit {
     });
 
     this.siteService.showSiteAutocomplete().subscribe((resp) => {
-      this.onGetTaxList(resp.sites);
+      console.log(resp);
+      this.onGetTaxList(resp.data);
     });
 
     this.getTableData();
@@ -274,8 +281,8 @@ export class AddBitacorasComponent implements OnInit {
     this.usuarioService.showResponsables(idzona).subscribe((resp) => {
       console.log('responsables');
       console.log(resp);
-      this.responsables_cicsa = resp.lidercicsa as Tipo[];
-      this.responsables_claro = resp.liderclaro as Tipo[];
+      this.responsables_cicsa = resp.cicsa ;
+      this.responsables_claro = resp.claro ;
     });
   }
 
@@ -292,20 +299,22 @@ export class AddBitacorasComponent implements OnInit {
       console.error('No Bitacora was created');
       return;
     }
+
+    console.log(this.bitacora);
     const formData = new FormData();
-    formData.append('nombre', this.bitacora.nombre);
-    formData.append('fecha_inicial', this.bitacora.fecha_inicial);
-    formData.append('sot', this.bitacora.sot);
-    formData.append('insidencia', this.bitacora.incidencia);
-    formData.append('tipo_averia_id', this.bitacora.tipo_averia.id.toString());
+    formData.append('nombre', this.bitacora.nombre?? '');
+    formData.append('fecha_inicial', this.bitacora.fecha_inicial?? '');
+    formData.append('sot', this.bitacora.sot?? '');
+    formData.append('insidencia', this.bitacora.incidencia?? '');
+    formData.append('tipo_averia_id', this.bitacora.tipo_averia?.id.toString() ?? '');
     formData.append('latitud', this.bitacora.latitud?.toString() ?? '');
     formData.append('longitud', this.bitacora.longitud?.toString() ?? '');
-    formData.append('distancia', this.bitacora.distancia.toString());
-    formData.append('red_id', this.bitacora.red.id.toString());
-    formData.append('serv_id', this.bitacora.serv.id.toString());
-    formData.append('site_id', this.bitacora.site.id.toString());
-    formData.append('resp_cicsa_id', this.bitacora.resp_cicsa.id.toString());
-    formData.append('resp_claro_id', this.bitacora.resp_claro.id.toString());
+    formData.append('distancia', this.bitacora.distancia?.toString()?? '');
+    formData.append('red_id', this.bitacora.red?.id.toString()?? '');
+    formData.append('serv_id', this.bitacora.serv?.id.toString()?? '');
+    formData.append('site_id', this.bitacora.site?.id.toString()?? '');
+    formData.append('resp_cicsa_id', this.bitacora.resp_cicsa?.id.toString()?? '');
+    formData.append('resp_claro_id', this.bitacora.resp_claro?.id.toString()?? '');
     formData.append('cuadrilla', JSON.stringify(this.cuadrilla_add));
 
     this.bitacoraService.create(formData).subscribe((resp) => {

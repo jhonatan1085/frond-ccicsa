@@ -35,6 +35,7 @@ export class LoginComponent {
         .login(this.form.value.email ?? '', this.form.value.password ?? '')
         .subscribe({
           next: (resp: any) => {
+            console.log(resp)
             if (resp) {
               this.router.navigate([routes.adminDashboard]);
             } else {

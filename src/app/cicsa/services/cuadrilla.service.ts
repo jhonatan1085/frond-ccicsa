@@ -16,17 +16,11 @@ export class CuadrillaService extends AbstractCrudService<Cuadrilla> {
     super(http, authService, 'brigadas');
   }
 
-  listConfig() {
-    const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/config`;
-    return this.http.get(URL, { headers: headers });
-  }
+
 
   activa() {
-    const headers = new HttpHeaders({
-      Authorization: 'Bearer ' + this.authService.token,
-    });
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/brigadaactiva`;
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/activas`;
     return this.http.get<Page<Cuadrilla>>(URL, { headers: headers });
   }
 }

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AtencionBitacora, BitacoraAtencion } from '../../modelos';
+import { AtencionBitacora, BitacoraAtencion, Page } from '../../modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
 
 @Component({
@@ -35,8 +35,8 @@ export class AddDetalleBitacorasComponent implements OnInit {
 
     this.bitacorasServices
       .listAtencion(this.bitacora_id)
-      .subscribe((resp: AtencionBitacora[]) => {
-        this.atenciones = resp;
+      .subscribe((resp) => {
+        this.atenciones = resp.data;
       });
   }
 

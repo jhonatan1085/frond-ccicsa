@@ -126,6 +126,7 @@ export class ListUsuarioComponent implements OnInit {
     }
   }
 
+  
   public moveToPage(pageNumber: number): void {
     this.currentPage = pageNumber;
     this.skip = this.pageSelection[pageNumber - 1].skip;

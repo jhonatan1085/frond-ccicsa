@@ -81,7 +81,7 @@ export class ConfigService extends AbstractCrudService<Config> {
 
   bitacoras() {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/bitacoras`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/bitacoras/start`;
     return this.http.get<BitacorasConfig>(URL, {
       headers,
     });
@@ -89,7 +89,7 @@ export class ConfigService extends AbstractCrudService<Config> {
 
   bitacorasFinalizar() {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/bitacoras/finalizar`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/bitacoras/end`;
     return this.http.get<BitacorasFinalizarConfig>(URL, {
       headers,
     });

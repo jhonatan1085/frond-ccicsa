@@ -19,14 +19,14 @@ export class UsuariosService extends AbstractCrudService<Usuario> {
   //retorna la tecnicos por zona
   showUserZona(zona_id: string) {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/usuario-zona-tecnico/${zona_id}`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/tecnicos/zona/${zona_id}`;
     return this.http.get<Page<Usuario>>(URL, { headers: headers });
   }
 
   showResponsables(zona_id: number) {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/usuario-zona-responsables/${zona_id}`;
-    return this.http.get<{ lidercicsa: unknown; liderclaro: unknown }>(URL, {
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/responsables/zona/${zona_id}`;
+    return this.http.get<{ cicsa: Usuario[]; claro: Usuario[] }>(URL, {
       headers: headers,
     });
   }
