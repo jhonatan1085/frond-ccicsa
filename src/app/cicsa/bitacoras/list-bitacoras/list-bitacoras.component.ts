@@ -16,18 +16,20 @@ export class ListBitacorasComponent {
   public bitacoras: Bitacora[] = [];
   dataSource!: MatTableDataSource<Bitacora>;
 
-  showFilter = false;
-  lastIndex = 0;
-  serialNumberArray: number[] = [];
-  currentPage = 1;
-  pageNumberArray: number[] = [];
-  pageSelection: any[] = [];
-  totalPages = 0;
-  totalData = 0;
-  pageSize = 3;
-  searchDataValue = '';
-  skip = 0;
-  limit = 0;
+  public showFilter = false;
+  public searchDataValue = '';
+  public lastIndex = 0;
+  public pageSize = 3;
+  public totalData = 0;
+  public skip = 0;
+  public limit: number = this.pageSize;
+  public pageIndex = 0;
+
+  public serialNumberArray: number[] = [];
+  public currentPage = 1;
+  public pageNumberArray: number[] = [];
+  public pageSelection: any[] = [];
+  public totalPages = 0;
 
   bitacora_generals: Bitacora[] = [];
   bitacora_selected?: Bitacora;
@@ -35,7 +37,7 @@ export class ListBitacorasComponent {
   constructor(
     public bitacoraService: BitacorasService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getTableData();
@@ -48,18 +50,17 @@ export class ListBitacorasComponent {
       .readAll({ page, search: this.searchDataValue })
       .subscribe((resp) => {
         console.log(resp);
-         this.totalData = resp.total;
+        this.totalData = resp.total;
         this.bitacoras = resp.data;
         this.dataSource = new MatTableDataSource<Bitacora>(this.bitacoras);
-        this.calculateTotalPages(this.totalData, this.pageSize); 
+        this.calculateTotalPages(this.totalData, this.pageSize);
       });
   }
 
-
-  getTableDataGeneral() {
+/*   getTableDataGeneral() {
     this.bitacoras = [];
     this.serialNumberArray = [];
-    this.bitacora_generals.map((res: any, index: number) => {
+    this.bitacoras.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
         this.bitacoras.push(res);
@@ -68,7 +69,7 @@ export class ListBitacorasComponent {
     });
     this.dataSource = new MatTableDataSource<any>(this.bitacoras);
     this.calculateTotalPages(this.totalData, this.pageSize);
-  }
+  } */
 
   public searchData(): void {
     this.pageSelection = [];
@@ -98,27 +99,28 @@ export class ListBitacorasComponent {
   public getMoreData(event: string): void {
     if (event == 'next') {
       this.currentPage++;
-      this.currentPage = this.currentPage - 1;
+      this.pageIndex = this.currentPage - 1;
       this.limit += this.pageSize;
-      this.skip = this.pageSize * this.currentPage;
+      this.skip = this.pageSize * this.pageIndex;
       this.getTableData(this.currentPage);
     } else if (event == 'previous') {
       this.currentPage--;
-      this.currentPage = this.currentPage - 1;
+      this.pageIndex = this.currentPage - 1;
       this.limit -= this.pageSize;
-      this.skip = this.pageSize * this.currentPage;
+      this.skip = this.pageSize * this.pageIndex;
       this.getTableData(this.currentPage);
     }
   }
 
+  
   public moveToPage(pageNumber: number): void {
     this.currentPage = pageNumber;
     this.skip = this.pageSelection[pageNumber - 1].skip;
     this.limit = this.pageSelection[pageNumber - 1].limit;
     if (pageNumber > this.currentPage) {
-      this.currentPage = pageNumber - 1;
+      this.pageIndex = pageNumber - 1;
     } else if (pageNumber < this.currentPage) {
-      this.currentPage = pageNumber + 1;
+      this.pageIndex = pageNumber + 1;
     }
     this.getTableData(this.currentPage);
   }
@@ -163,6 +165,6 @@ export class ListBitacorasComponent {
     this.dialog.open(LocationBitacorasComponent, {
       data: { bitacora: bitacora },
     });
-    
+
   }
 }
