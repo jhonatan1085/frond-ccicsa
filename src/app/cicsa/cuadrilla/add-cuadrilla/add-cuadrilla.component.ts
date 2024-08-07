@@ -1,11 +1,8 @@
-import { Clipboard } from '@angular/cdk/clipboard';
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigService } from '../../services/config.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { UsuariosService } from '../../services/usuarios.service';
-import { ListCuadrillaComponent } from '../list-cuadrilla/list-cuadrilla.component';
 
 declare const $: any;
 
@@ -30,8 +27,6 @@ export class AddCuadrillaComponent {
   user_selecteds: any[] = [];
 
   constructor(
-    private dialogRef: MatDialogRef<AddCuadrillaComponent>,
-    private clipboard: Clipboard,
     private cuadrillaService: CuadrillaService,
     private configService: ConfigService,
     private usuarioService: UsuariosService,

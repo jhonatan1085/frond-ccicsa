@@ -1,7 +1,5 @@
-
 <div class="page-wrapper">
   <div class="content">
-
     <!-- Page Header -->
     <div class="page-header">
       <div class="row">
@@ -16,17 +14,19 @@
         </div>
       </div>
     </div>
-   
+
     <!-- /Page Header -->
     <div class="row">
-      
       <div class="col-sm-12">
         <div class="card">
           <div class="card-body">
-            <pre>{{bitacora | json}}</pre>
             <form>
               <mat-accordion class="example-headers-align">
-                <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                <mat-expansion-panel
+                  [expanded]="step === 0"
+                  (opened)="setStep(0)"
+                  hideToggle
+                >
                   <mat-expansion-panel-header>
                     <mat-panel-title> Bitacora </mat-panel-title>
                     <mat-panel-description>
@@ -34,7 +34,7 @@
                       <!-- <mat-icon>account_circle</mat-icon> -->
                     </mat-panel-description>
                   </mat-expansion-panel-header>
-                  <div class="row align-items-center">
+                  <div class="row align-items-center" [formGroup]="datosForm">
                     <div class="col-12">
                       <div class="form-heading">
                         <h4>Agregar Bitacora</h4>
@@ -42,42 +42,80 @@
                     </div>
                     <div class="col-12 col-md-6 col-xl-4">
                       <div class="form-group local-forms">
-                        <label for="nombre">Nombre <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="bitacora.nombre" name="nombre" type="text" />
+                        <mat-label for="nombre">
+                          Nombre
+                          <span class="login-danger">*</span>
+                        </mat-label>
+                        <input
+                          class="form-control"
+                          formControlName="nombre"
+                          name="nombre"
+                          type="text"
+                        />
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="fecha_inicial">Fecha Inicial
-                          <span class="login-danger">*</span></label>
-                        <input class="form-control datetimepicker" [(ngModel)]="bitacora.fecha_inicial"
-                          name="fecha_inicial" type="text" matInput [matDatepicker]="picker" />
+                        <mat-label for="fecha_inicial"
+                          >Fecha Inicial
+                          <span class="login-danger">*</span>
+                        </mat-label>
+                        <input
+                          formControlName="fecha_inicial"
+                          class="form-control datetimepicker"
+                          name="fecha_inicial"
+                          type="text"
+                          matInput
+                          [matDatepicker]="picker"
+                        />
                         <mat-datepicker #picker></mat-datepicker>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker-toggle
+                          matIconSuffix
+                          [for]="picker"
+                        ></mat-datepicker-toggle>
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="nro_sot">Nro Sot </label>
-                        <input class="form-control" [(ngModel)]="bitacora.sot" name="nro_sot" type="text" />
+                        <mat-label for="nro_sot">Nro Sot </mat-label>
+                        <input
+                          formControlName="sot"
+                          class="form-control"
+                          name="nro_sot"
+                          type="text"
+                        />
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="nro_incidencia">Nro Indidencia </label>
-                        <input class="form-control" [(ngModel)]="bitacora.incidencia" name="nro_incidencia"
-                          type="text" />
+                        <mat-label for="nro_incidencia"
+                          >Nro Indidencia
+                        </mat-label>
+                        <input
+                          formControlName="incidencia"
+                          class="form-control"
+                          name="nro_incidencia"
+                          type="text"
+                        />
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <mat-label>Tipo Averia
-                          <span class="login-danger">*</span></mat-label>
-                        <mat-select [(ngModel)]="bitacora.tipo_averia.id" [ngModelOptions]="{ standalone: true }"
-                          class="form-control select" placeholder="Selec. Tipo Averia">
-                          <mat-option *ngFor="let data of tipo_Averia" [value]="data.id">
+                        <mat-label
+                          >Tipo Averia
+                          <span class="login-danger">*</span></mat-label
+                        >
+                        <mat-select
+                          formControlName="tipo_averia_id"
+                          class="form-control select"
+                          placeholder="Selec. Tipo Averia"
+                        >
+                          <mat-option
+                            *ngFor="let data of tipo_Averia"
+                            [value]="data.id"
+                          >
                             {{ data.nombre }}
                           </mat-option>
                         </mat-select>
@@ -86,31 +124,54 @@
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="latitud">Latitud </label>
-                        <input class="form-control" [(ngModel)]="bitacora.latitud" name="latitud" type="text" />
+                        <mat-label for="latitud">Latitud </mat-label>
+                        <input
+                          formControlName="latitud"
+                          class="form-control"
+                          name="latitud"
+                          type="text"
+                        />
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="longitud">Longitud </label>
-                        <input class="form-control" [(ngModel)]="bitacora.longitud" name="longitud" type="text" />
+                        <mat-label for="longitud">Longitud </mat-label>
+                        <input
+                          formControlName="longitud"
+                          class="form-control"
+                          name="longitud"
+                          type="text"
+                        />
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="distancia">Distancia </label>
-                        <input class="form-control" [(ngModel)]="bitacora.distancia" name="distancia" type="number" />
+                        <mat-label for="distancia">Distancia </mat-label>
+                        <input
+                          formControlName="distancia"
+                          class="form-control"
+                          name="distancia"
+                          type="number"
+                        />
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="selectedRed">Red1 <span class="login-danger">*</span></label>
-                        <mat-select [(ngModel)]="bitacora.red.id" [ngModelOptions]="{ standalone: true }"
-                          class="form-control select" placeholder="Selec. Red1">
-                          <mat-option *ngFor="let data of red" [value]="data.id">
+                        <mat-label for="selectedRed"
+                          >Red1 <span class="login-danger">*</span>
+                        </mat-label>
+                        <mat-select
+                          formControlName="red_id"
+                          class="form-control select"
+                          placeholder="Selec. Red1"
+                        >
+                          <mat-option
+                            *ngFor="let data of red"
+                            [value]="data.id"
+                          >
                             {{ data.nombre }}
                           </mat-option>
                         </mat-select>
@@ -119,10 +180,18 @@
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <mat-label>Serv1 <span class="login-danger">*</span></mat-label>
-                        <mat-select [(ngModel)]="bitacora.serv.id" [ngModelOptions]="{ standalone: true }"
-                          class="form-control select" placeholder="Selec. Serv1">
-                          <mat-option *ngFor="let data of serv" [value]="data.id">
+                        <mat-label
+                          >Serv1 <span class="login-danger">*</span></mat-label
+                        >
+                        <mat-select
+                          formControlName="serv_id"
+                          class="form-control select"
+                          placeholder="Selec. Serv1"
+                        >
+                          <mat-option
+                            *ngFor="let data of serv"
+                            [value]="data.id"
+                          >
                             {{ data.nombre }}
                           </mat-option>
                         </mat-select>
@@ -131,13 +200,22 @@
                   </div>
 
                   <mat-action-row>
-                    <button mat-button color="primary" (click)="nextStep()">
+                    <button
+                      mat-button
+                      color="primary"
+                      [disabled]="datosForm.invalid"
+                      (click)="nextStep()"
+                    >
                       Siguiente
                     </button>
                   </mat-action-row>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                <mat-expansion-panel
+                  [expanded]="step === 1"
+                  (opened)="setStep(1)"
+                  hideToggle
+                >
                   <mat-expansion-panel-header>
                     <mat-panel-title> Sites </mat-panel-title>
                     <mat-panel-description>
@@ -146,148 +224,129 @@
                     </mat-panel-description>
                   </mat-expansion-panel-header>
 
-                  <div class="row align-items-center">
+                  <div class="row align-items-center" [formGroup]="siteForm">
                     <div class="col-12">
                       <div class="form-heading">
                         <h4>Datos Site</h4>
                       </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-xl-3">
+                    <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <mat-form-field style="text-align: right">
-                          <mat-label>Buscar Site</mat-label>
-                          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" />
-                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
-                              (click)="detallesite(option)">
-                              {{ option.codigo }} - {{ option.nombre }}
-                            </mat-option>
-                          </mat-autocomplete>
-                        </mat-form-field>
+                        <mat-label>Buscar Site</mat-label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [formControl]="myControl"
+                          [matAutocomplete]="auto"
+                        />
+                        <mat-autocomplete
+                          #auto="matAutocomplete"
+                          [displayWith]="displayFn"
+                        >
+                          <mat-option
+                            *ngFor="let option of filteredOptions | async"
+                            [value]="option"
+                            (click)="detallesite(option)"
+                          >
+                            {{ option.codigo }} - {{ option.nombre }}
+                          </mat-option>
+                        </mat-autocomplete>
                       </div>
                     </div>
-                    <!-- <div class="col-12 col-md-6 col-xl-3">
-                      <div class="form-group local-forms">
-                        <label for="codigo">Codigo <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="codigo" name="codigo" type="text" />
-                      </div>
-                    </div> -->
 
                     <div class="col-12 col-md-6 col-xl-2">
-                      <div class="invoice-counts">
-                        <h4>
-                          Codigo <br /><span> {{ codigo }}</span>
-                        </h4>
+                      <div class="form-group local-forms">
+                        <mat-label>Código</mat-label>
+                        <input
+                          class="form-control"
+                          [value]="codigo"
+                          [disabled]="true"
+                        />
                       </div>
                     </div>
-                    <!--
-                    <div class="col-12 col-md-6 col-xl-3">
-                      <div class="form-group local-forms">
-                        <label for="zona">Zona <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="zona" name="zona" type="text" />
-                      </div>
-                    </div> -->
 
                     <div class="col-12 col-md-6 col-xl-2">
-                      <div class="invoice-counts">
-                        <h4>
-                          Zona <br /><span> {{ zona }}</span>
-                        </h4>
+                      <div class="form-group local-forms">
+                        <mat-label>Zona</mat-label>
+                        <input
+                          class="form-control"
+                          [value]="zona"
+                          [disabled]="true"
+                        />
                       </div>
                     </div>
-
-                    <div class="col-12 col-md-6 col-xl-3">
-                      <div class="form-group local-forms">
-                        <label for="cliente">Cliente <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="cliente" name="cliente" type="text" />
-                      </div>
-                    </div>
-
-                    <!--  <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <label for="region">Region <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="region" name="region" type="text" />
-                      </div>
-                    </div> -->
-                    <div class="col-12 col-md-6 col-xl-2">
-                      <div class="invoice-counts">
-                        <h4>
-                          Region <br /><span> {{ region }}</span>
-                        </h4>
-                      </div>
-                    </div>
-
-                    <!--          <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <label for="departamento">Departamento <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="departamento" name="departamento" type="text" />
-                      </div>
-                    </div> -->
 
                     <div class="col-12 col-md-6 col-xl-2">
-                      <div class="invoice-counts">
-                        <h4>
-                          Departamento <br /><span> {{ departamento }}</span>
-                        </h4>
+                      <div class="form-group local-forms">
+                        <mat-label>Cliente </mat-label>
+                        <input class="form-control" formControlName="cliente" />
                       </div>
                     </div>
 
-                    <!-- <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <label for="provincia">Provincia <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="provincia" name="provincia" type="text" />
-                      </div>
-                    </div> -->
-
                     <div class="col-12 col-md-6 col-xl-2">
-                      <div class="invoice-counts">
-                        <h4>
-                          Provincia <br /><span> {{ provincia }}</span>
-                        </h4>
+                      <div class="form-group local-forms">
+                        <mat-label>Region</mat-label>
+                        <input
+                          class="form-control"
+                          [value]="region"
+                          [disabled]="true"
+                        />
                       </div>
                     </div>
 
-                    <!--  <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <label for="distrito">Distrito <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="distrito" name="distrito" type="text" />
-                      </div>
-                    </div> -->
                     <div class="col-12 col-md-6 col-xl-2">
-                      <div class="invoice-counts">
-                        <h4>
-                          Distrito <br /><span> {{ distrito }}</span>
-                        </h4>
+                      <div class="form-group local-forms">
+                        <mat-label>Departamento</mat-label>
+                        <input
+                          class="form-control"
+                          [value]="departamento"
+                          [disabled]="true"
+                        />
                       </div>
                     </div>
 
-                    <!-- <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <label for="latitud">Latitud <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="latitud" name="latitud" type="text" />
-                      </div>
-                    </div> -->
                     <div class="col-12 col-md-6 col-xl-2">
-                      <div class="invoice-counts">
-                        <h4>
-                          Latitud <br /><span> {{ latitudsite }}</span>
-                        </h4>
+                      <div class="form-group local-forms">
+                        <mat-label>Provincia</mat-label>
+                        <input
+                          class="form-control"
+                          [value]="provincia"
+                          [disabled]="true"
+                        />
                       </div>
                     </div>
 
-                    <!-- <div class="col-12 col-md-6 col-xl-2">
+                    <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <label for="longitud">Longitud <span class="login-danger">*</span></label>
-                        <input class="form-control" [(ngModel)]="longitud" name="longitud" type="text" />
+                        <mat-label>Distrito</mat-label>
+                        <input
+                          class="form-control"
+                          [value]="distrito"
+                          [disabled]="true"
+                        />
                       </div>
-                    </div> -->
+                    </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
-                      <div class="invoice-counts">
-                        <h4>
-                          Longitud <br /><span> {{ longitudsite }}</span>
-                        </h4>
+                      <div class="form-group local-forms">
+                        <mat-label>Latitud</mat-label>
+                        <input
+                          class="form-control"
+                          [value]="latitudsite"
+                          [disabled]="true"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label>Longitud</mat-label>
+                        <input
+                          class="form-control"
+                          [value]="longitudsite"
+                          [disabled]="true"
+                        />
                       </div>
                     </div>
                   </div>
@@ -296,13 +355,22 @@
                     <button mat-button color="warn" (click)="prevStep()">
                       Anterior
                     </button>
-                    <button mat-button color="primary" (click)="nextStep()">
+                    <button
+                      mat-button
+                      color="primary"
+                      (click)="nextStep()"
+                      [disabled]="siteForm.invalid"
+                    >
                       Siguiente
                     </button>
                   </mat-action-row>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                <mat-expansion-panel
+                  [expanded]="step === 2"
+                  (opened)="setStep(2)"
+                  hideToggle
+                >
                   <mat-expansion-panel-header>
                     <mat-panel-title> Cuadrillas </mat-panel-title>
                     <mat-panel-description>
@@ -326,7 +394,9 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <ng-container *ngFor="let cuadrilla of cuadrillasList">
+                                <ng-container
+                                  *ngFor="let cuadrilla of cuadrillasList"
+                                >
                                   <tr>
                                     <td>{{ cuadrilla.contratista.nombre }}</td>
                                     <td>{{ cuadrilla.tipo_brigada.nombre }}</td>
@@ -334,11 +404,17 @@
                                     <td>{{ countTecnicos(cuadrilla) }}</td>
                                     <td>
                                       <div class="add-group">
-                                        <button class="check-point status-blue me-1" (click)="showSegment(cuadrilla)">
+                                        <button
+                                          class="check-point status-blue me-1"
+                                          (click)="showSegment(cuadrilla)"
+                                        >
                                           <i class="feather icon-search"></i>
                                         </button>
-                                        <button class="check-point status-blue" *ngIf="searchadd(cuadrilla)"
-                                          (click)="addCuadrilla(cuadrilla)">
+                                        <button
+                                          class="check-point status-blue"
+                                          *ngIf="searchadd(cuadrilla)"
+                                          (click)="addCuadrilla(cuadrilla)"
+                                        >
                                           <i class="feather icon-plus"></i>
                                         </button>
                                       </div>
@@ -352,9 +428,9 @@
                                 <div class="dataTables_info">
                                   Showing {{ serialNumberArray[0] }} to
                                   {{
-                                  serialNumberArray[
-                                  serialNumberArray.length - 1
-                                  ]
+                                    serialNumberArray[
+                                      serialNumberArray.length - 1
+                                    ]
                                   }}
                                   of {{ totalData }} entries
                                 </div>
@@ -363,18 +439,31 @@
                               <div class="col-sm-12 col-md-7">
                                 <div class="pagination_section">
                                   <ul class="pagination">
-                                    <li class="page-item" [ngClass]="{
+                                    <li
+                                      class="page-item"
+                                      [ngClass]="{
                                         disabled: currentPage === 1
-                                      }">
-                                      <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
-                                        tabindex="-1">Previous</a>
+                                      }"
+                                    >
+                                      <a
+                                        (click)="getMoreData('previous')"
+                                        class="page-link"
+                                        href="javascript:void(0);"
+                                        tabindex="-1"
+                                        >Previous</a
+                                      >
                                     </li>
 
-                                    <ng-container *ngFor="
+                                    <ng-container
+                                      *ngFor="
                                         let item of pageNumberArray;
                                         let i = index
-                                      ">
-                                      <li class="page-item" [class.active]="item === currentPage" [ngClass]="
+                                      "
+                                    >
+                                      <li
+                                        class="page-item"
+                                        [class.active]="item === currentPage"
+                                        [ngClass]="
                                           (pageNumberArray[currentPage - 2] >
                                             item &&
                                             item !== 1 &&
@@ -386,27 +475,43 @@
                                             pageNumberArray.length !== item)
                                             ? 'hide-page-no'
                                             : 'show-page-no'
-                                        ">
-                                        <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
+                                        "
+                                      >
+                                        <a
+                                          (click)="moveToPage(item)"
+                                          class="page-link"
+                                          href="javascript:void(0);"
+                                        >
                                           {{ item }}
                                         </a>
                                       </li>
-                                      <li class="page-item" *ngIf="
+                                      <li
+                                        class="page-item"
+                                        *ngIf="
                                           i === 0 &&
                                           pageNumberArray.length > 6 &&
                                           currentPage > 2
-                                        " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)"
+                                        "
+                                        [hidden]="currentPage === 1"
+                                        (click)="moveToPage(currentPage - 2)"
                                         (keyup.enter)="
                                           moveToPage(currentPage - 2)
-                                        " tabindex="0">
-                                        <a class="page-link" href="javascript:void(0);">
+                                        "
+                                        tabindex="0"
+                                      >
+                                        <a
+                                          class="page-link"
+                                          href="javascript:void(0);"
+                                        >
                                           ...
                                         </a>
                                       </li>
-                                      <li *ngIf="
+                                      <li
+                                        *ngIf="
                                           i === pageNumberArray.length - 2 &&
                                           pageNumberArray.length > 6
-                                        " [hidden]="
+                                        "
+                                        [hidden]="
                                           currentPage >=
                                             pageNumberArray[
                                               pageNumberArray.length - 2
@@ -415,23 +520,38 @@
                                             serialNumberArray[
                                               serialNumberArray.length - 1
                                             ]
-                                        " class="page-item" (click)="moveToPage(currentPage + 2)" (keyup.enter)="
+                                        "
+                                        class="page-item"
+                                        (click)="moveToPage(currentPage + 2)"
+                                        (keyup.enter)="
                                           moveToPage(currentPage + 2)
-                                        " tabindex="0">
-                                        <a class="page-link" href="javascript:void(0);">
+                                        "
+                                        tabindex="0"
+                                      >
+                                        <a
+                                          class="page-link"
+                                          href="javascript:void(0);"
+                                        >
                                           ...
                                         </a>
                                       </li>
                                     </ng-container>
 
-                                    <li class="page-item" [ngClass]="{
+                                    <li
+                                      class="page-item"
+                                      [ngClass]="{
                                         disabled:
                                           currentPage ===
                                             pageNumberArray[
                                               pageNumberArray.length - 1
                                             ] || cuadrillasList.length === 0
-                                      }">
-                                      <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Next
+                                      }"
+                                    >
+                                      <a
+                                        (click)="getMoreData('next')"
+                                        class="page-link"
+                                        href="javascript:void(0);"
+                                        >Next
                                       </a>
                                     </li>
                                   </ul>
@@ -454,9 +574,11 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <ng-container *ngFor="
+                                <ng-container
+                                  *ngFor="
                                     let SEGMENT of CUADRILLA_SELECTED.user_movil
-                                  ">
+                                  "
+                                >
                                   <tr>
                                     <td>
                                       {{ SEGMENT.user.nombre }}
@@ -491,13 +613,18 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <ng-container *ngFor="let cuadriadd of cuadrilla_add">
+                                <ng-container
+                                  *ngFor="let cuadriadd of cuadrilla_add"
+                                >
                                   <tr>
                                     <td>{{ cuadriadd.zona }}</td>
                                     <td>{{ cuadriadd.tipocuadrilla }}</td>
                                     <td>
                                       <div class="add-group">
-                                        <button class="check-point status-red" (click)="addCuadrilla(cuadriadd)">
+                                        <button
+                                          class="check-point status-red"
+                                          (click)="addCuadrilla(cuadriadd)"
+                                        >
                                           <i class="feather icon-x"></i>
                                         </button>
                                       </div>
@@ -522,7 +649,11 @@
                   </mat-action-row>
                 </mat-expansion-panel>
 
-                <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+                <mat-expansion-panel
+                  [expanded]="step === 3"
+                  (opened)="setStep(3)"
+                  hideToggle
+                >
                   <mat-expansion-panel-header>
                     <mat-panel-title> Responsables </mat-panel-title>
                     <mat-panel-description>
@@ -546,21 +677,35 @@
                               <tbody>
                                 <tr>
                                   <td style="text-align: center !important">
-                                    <mat-radio-group aria-labelledby="example-radio-group-label"
-                                      class="example-radio-group" [(ngModel)]="bitacora.resp_cicsa.id"
-                                      [ngModelOptions]="{ standalone: true }">
-                                      <mat-radio-button class="example-radio-button"
-                                        *ngFor="let data of responsables_cicsa" [value]="data.id">{{ data.name }}
-                                        {{ data.surname }}</mat-radio-button>
+                                    <mat-radio-group
+                                      aria-labelledby="example-radio-group-label"
+                                      class="example-radio-group"
+                                      [(ngModel)]="bitacora.resp_cicsa.id"
+                                      [ngModelOptions]="{ standalone: true }"
+                                    >
+                                      <mat-radio-button
+                                        class="example-radio-button"
+                                        *ngFor="let data of responsables_cicsa"
+                                        [value]="data.id"
+                                        >{{ data.name }}
+                                        {{ data.surname }}</mat-radio-button
+                                      >
                                     </mat-radio-group>
                                   </td>
                                   <td style="text-align: center !important">
-                                    <mat-radio-group aria-labelledby="example-radio-group-label"
-                                      class="example-radio-group" [(ngModel)]="bitacora.resp_claro.id"
-                                      [ngModelOptions]="{ standalone: true }">
-                                      <mat-radio-button class="example-radio-button"
-                                        *ngFor="let data of responsables_claro" [value]="data.id">{{ data.name }}
-                                        {{ data.surname }}</mat-radio-button>
+                                    <mat-radio-group
+                                      aria-labelledby="example-radio-group-label"
+                                      class="example-radio-group"
+                                      [(ngModel)]="bitacora.resp_claro.id"
+                                      [ngModelOptions]="{ standalone: true }"
+                                    >
+                                      <mat-radio-button
+                                        class="example-radio-button"
+                                        *ngFor="let data of responsables_claro"
+                                        [value]="data.id"
+                                        >{{ data.name }}
+                                        {{ data.surname }}</mat-radio-button
+                                      >
                                     </mat-radio-group>
                                   </td>
                                 </tr>
@@ -576,13 +721,22 @@
                     <button mat-button color="warn" (click)="prevStep()">
                       Anterior
                     </button>
-                    <button mat-button color="primary" (click)="saveBitacora()">
+                    <button
+                      mat-button
+                      color="primary"
+                      [disabled]="datosForm.invalid"
+                      (click)="saveBitacora()"
+                    >
                       Registrar
                     </button>
                   </mat-action-row>
                 </mat-expansion-panel>
               </mat-accordion>
             </form>
+            <pre>{{ datosForm.value | json }}</pre>
+            <pre>{{ siteForm.value | json }}</pre>
+            <pre>{{ cuadrillaForm.value | json }}</pre>
+            <pre>{{ responsablesForm.value | json }}</pre>
           </div>
         </div>
       </div>

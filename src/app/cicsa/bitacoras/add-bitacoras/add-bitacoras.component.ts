@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { Bitacora, Cuadrilla, Site, Tipo } from 'src/app/cicsa/modelos/modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
@@ -84,6 +89,11 @@ export class AddBitacorasComponent implements OnInit {
   myControl = new FormControl();
   options!: any;
   filteredOptions!: Observable<any>;
+  // formularios
+  datosForm: FormGroup;
+  siteForm: FormGroup;
+  cuadrillaForm: FormGroup;
+  responsablesForm: FormGroup;
 
   constructor(
     private configService: ConfigService,
@@ -93,12 +103,35 @@ export class AddBitacorasComponent implements OnInit {
     private usuarioService: UsuariosService,
     private _snackBar: MatSnackBar,
     private router: Router,
-    private activateRoute: ActivatedRoute
-  ) {}
+    private activateRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {
+    this.datosForm = this.fb.group({
+      nombre: [null, Validators.required],
+      fecha_inicial: [null, Validators.required],
+      sot: [],
+      incidencia: [],
+      latitud: [],
+      longitud: [],
+      distancia: [],
+      tipo_averia_id: [null, Validators.required],
+      red_id: [null, Validators.required],
+      serv_id: [null, Validators.required],
+    });
+    this.siteForm = this.fb.group({
+      site_id: [null, Validators.required],
+      cliente: [null],
+    });
+    this.cuadrillaForm = this.fb.group({});
+    this.responsablesForm = this.fb.group({});
+  }
 
   ngOnInit(): void {
     this.activateRoute.params
-      .pipe(switchMap((params) => this.bitacoraService.read(params['id'])))
+      .pipe(
+        filter((params) => params['id']),
+        switchMap((params) => this.bitacoraService.read(params['id']))
+      )
       .subscribe((resp) => (this.bitacora = resp));
 
     this.configService.bitacoras().subscribe((resp) => {
@@ -268,10 +301,9 @@ export class AddBitacorasComponent implements OnInit {
 
   detallesite(value: Site) {
     if (!this.bitacora) return;
+    this.siteForm.patchValue({ site_id: value.id });
+
     this.bitacora.site = value;
-    this.bitacora.site.id = value.id;
-    this.bitacora.site.latitud = value.latitud;
-    this.bitacora.site.longitud = value.longitud;
     this.region = value.region.nombre;
     this.distrito = value.distrito.nombre;
     this.departamento = value.distrito.provincia.departamento.nombre;
@@ -306,6 +338,10 @@ export class AddBitacorasComponent implements OnInit {
     }
 
     console.log(this.bitacora);
+    console.log(this.datosForm.value);
+    const result = { ...this.bitacora, ...this.datosForm.value };
+    console.log(result);
+
     const formData = new FormData();
     formData.append('nombre', this.bitacora.nombre ?? '');
     formData.append('fecha_inicial', this.bitacora.fecha_inicial ?? '');
