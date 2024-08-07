@@ -1,11 +1,11 @@
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfigService } from '../../services/config.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { ListCuadrillaComponent } from '../list-cuadrilla/list-cuadrilla.component';
-import { ConfigService } from '../../services/config.service';
 
 declare const $: any;
 
@@ -14,39 +14,36 @@ declare const $: any;
   templateUrl: './add-cuadrilla.component.html',
   styleUrls: ['./add-cuadrilla.component.scss'],
 })
-
 export class AddCuadrillaComponent {
-  public selectedTipobrigadas!: string;
-  public selectedContratistas!: string;
-  public selectedZona!: string;
+  selectedTipobrigadas!: string;
+  selectedContratistas!: string;
+  selectedZona!: string;
 
-  public tipobrigadas: any[] = [];
-  public contratistas: any[] = [];
-  public zonas: any[] = [];
-  public users: any[] = [];
+  tipobrigadas: any[] = [];
+  contratistas: any[] = [];
+  zonas: any[] = [];
+  users: any[] = [];
 
-  public text_success = '';
-  public text_validation = '';
+  text_success = '';
+  text_validation = '';
 
-  public user_selecteds: any[] = [];
+  user_selecteds: any[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<AddCuadrillaComponent>,
-   
+
     private clipboard: Clipboard,
     public cuadrillaService: CuadrillaService,
     public configService: ConfigService,
     public usuarioService: UsuariosService,
-    public listaCuadrilla: ListCuadrillaComponent,
     private _snackBar: MatSnackBar
   ) {
-      this.configService.cuadrillas().subscribe((resp) => {
+    this.configService.cuadrillas().subscribe((resp) => {
       console.log(resp);
       this.tipobrigadas = resp.tipobrigadas;
       this.zonas = resp.zonas;
       this.contratistas = resp.contratistas;
     });
-
   }
 
   tecnicos() {
@@ -182,7 +179,7 @@ export class AddCuadrillaComponent {
       } else {
         this.snackBar('Registro Exitoso');
 
-        this.listaCuadrilla.getTableData();
+        // this.listaCuadrilla.getTableData();
         $('#add_cuadrilla').hide();
         $('#add_cuadrilla').removeClass('show');
         $('.modal-backdrop').remove();
