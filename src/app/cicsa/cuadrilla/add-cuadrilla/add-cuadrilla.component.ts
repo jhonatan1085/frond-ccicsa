@@ -30,12 +30,11 @@ export class AddCuadrillaComponent {
   user_selecteds: any[] = [];
 
   constructor(
-    public dialogRef: MatDialogRef<AddCuadrillaComponent>,
-
+    private dialogRef: MatDialogRef<AddCuadrillaComponent>,
     private clipboard: Clipboard,
-    public cuadrillaService: CuadrillaService,
-    public configService: ConfigService,
-    public usuarioService: UsuariosService,
+    private cuadrillaService: CuadrillaService,
+    private configService: ConfigService,
+    private usuarioService: UsuariosService,
     private _snackBar: MatSnackBar
   ) {
     this.configService.cuadrillas().subscribe((resp) => {
