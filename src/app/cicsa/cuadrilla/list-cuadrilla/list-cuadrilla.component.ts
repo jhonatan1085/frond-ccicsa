@@ -1,14 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Cuadrilla } from '../../modelos';
+import { AddCuadrillaComponent } from '../add-cuadrilla/add-cuadrilla.component';
 
 @Component({
   selector: 'app-list-cuadrilla',
   templateUrl: './list-cuadrilla.component.html',
   styleUrls: ['./list-cuadrilla.component.scss'],
 })
+
 export class ListCuadrillaComponent implements OnInit {
   public cuadrillasList: Cuadrilla[] = [];
   dataSource!: MatTableDataSource<Cuadrilla>;
@@ -30,23 +33,21 @@ export class ListCuadrillaComponent implements OnInit {
   public pageNumberArray: number[] = [];
   public pageSelection: any[] = [];
   public totalPages = 0;
-
   public cuadrilla_generals: Cuadrilla[] = [];
   public cuadrilla_selected?: Cuadrilla;
 
   constructor(
     public cuadrillaService: CuadrillaService,
-    private _snackBar: MatSnackBar
-  ) {}
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
+  ) { }
   ngOnInit() {
     this.getTableData();
   }
 
-  /*   ngOnChanges(changes: SimpleChanges): void {
-      //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-      //Add '${implements OnChanges}' to the class.
-
-    } */
+  openDialog() {
+    this.dialog.open(AddCuadrillaComponent);
+  }
 
   public getTableData(page = 1): void {
     this.cuadrillasList = [];
@@ -83,7 +84,6 @@ export class ListCuadrillaComponent implements OnInit {
     this.limit = this.pageSize;
     this.skip = 0;
     this.currentPage = 1;
-
     this.getTableData();
   }
 
@@ -188,4 +188,6 @@ export class ListCuadrillaComponent implements OnInit {
   public deleteUser() {
     console.log('hola');
   }
+
+
 }

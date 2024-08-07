@@ -97,7 +97,7 @@ export class ConfigService extends AbstractCrudService<Config> {
 
   cuadrillas() {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/cuadrillas`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/brigadas`;
     return this.http.get<CuadrillasConfig>(URL, {
       headers,
     });

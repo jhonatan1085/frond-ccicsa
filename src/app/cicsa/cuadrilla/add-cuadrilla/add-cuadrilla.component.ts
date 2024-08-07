@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { ListCuadrillaComponent } from '../list-cuadrilla/list-cuadrilla.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigService } from '../../services/config.service';
+
 declare const $: any;
 
 @Component({
@@ -11,7 +14,8 @@ declare const $: any;
   templateUrl: './add-cuadrilla.component.html',
   styleUrls: ['./add-cuadrilla.component.scss'],
 })
-export class AddCuadrillaComponent implements OnInit {
+
+export class AddCuadrillaComponent {
   public selectedTipobrigadas!: string;
   public selectedContratistas!: string;
   public selectedZona!: string;
@@ -27,20 +31,22 @@ export class AddCuadrillaComponent implements OnInit {
   public user_selecteds: any[] = [];
 
   constructor(
+    public dialogRef: MatDialogRef<AddCuadrillaComponent>,
+   
+    private clipboard: Clipboard,
     public cuadrillaService: CuadrillaService,
     public configService: ConfigService,
     public usuarioService: UsuariosService,
     public listaCuadrilla: ListCuadrillaComponent,
     private _snackBar: MatSnackBar
-  ) {}
-
-  ngOnInit(): void {
-    this.configService.cuadrillas().subscribe((resp) => {
+  ) {
+      this.configService.cuadrillas().subscribe((resp) => {
       console.log(resp);
       this.tipobrigadas = resp.tipobrigadas;
       this.zonas = resp.zonas;
       this.contratistas = resp.contratistas;
     });
+
   }
 
   tecnicos() {

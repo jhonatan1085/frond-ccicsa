@@ -23,8 +23,7 @@ const routes: Routes = [
         path:'bitacoras',
         loadChildren: () => 
           import('./bitacoras/bitacoras.module').then((m) => m.BitacorasModule),
-      }
-      ,
+      },
       {
         path:'cuadrilla',
         loadChildren: () => 

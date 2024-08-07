@@ -1,18 +1,17 @@
 <h2 mat-dialog-title>Finalizar Bitacora: {{bitacora.nombre}}</h2>
 <mat-dialog-content class="mat-typography">
-
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <form>
                         <div class="row">
-                            
                             <div class="col-12 col-md-6 col-xl-4">
                                 <div class="form-group local-forms">
                                     <label>Causa de Averia <span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="bitacora.causa_averia.id" [ngModelOptions]="{standalone: true}"
-                                        class="form-control select" placeholder="Seleccione Causa">
+                                    <mat-select [(ngModel)]="bitacora.causa_averia.id"
+                                        [ngModelOptions]="{standalone: true}" class="form-control select"
+                                        placeholder="Seleccione Causa">
                                         <mat-option *ngFor="let data of causa" [value]="data.id">
                                             {{data.nombre}}
                                         </mat-option>
@@ -22,8 +21,9 @@
                             <div class="col-12 col-md-6 col-xl-4">
                                 <div class="form-group local-forms">
                                     <label>Consecuencia Averia <span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="bitacora.consecuencia_averia.id" [ngModelOptions]="{standalone: true}"
-                                        class="form-control select" placeholder="Seleccione Consecuencia">
+                                    <mat-select [(ngModel)]="bitacora.consecuencia_averia.id"
+                                        [ngModelOptions]="{standalone: true}" class="form-control select"
+                                        placeholder="Seleccione Consecuencia">
                                         <mat-option *ngFor="let data of consecuencia" [value]="data.id">
                                             {{data.nombre}}
                                         </mat-option>
@@ -33,8 +33,9 @@
                             <div class="col-12 col-md-6 col-xl-4">
                                 <div class="form-group local-forms">
                                     <label>Tipo de Reparación<span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="bitacora.tipo_reparacion.id" [ngModelOptions]="{standalone: true}"
-                                        class="form-control select" placeholder="Seleccione Tipo Rep.">
+                                    <mat-select [(ngModel)]="bitacora.tipo_reparacion.id"
+                                        [ngModelOptions]="{standalone: true}" class="form-control select"
+                                        placeholder="Seleccione Tipo Rep.">
                                         <mat-option *ngFor="let data of tipoReparacion" [value]="data.id">
                                             {{data.nombre}}
                                         </mat-option>
@@ -44,18 +45,17 @@
                             <div class="col-12 col-md-6 col-xl-3">
                                 <div class="form-group local-forms">
                                     <label for="tiempo">Tiempo atención </label>
-                                    <input class="form-control" [(ngModel)]="bitacora.tiempo_solucion" name="tiempo" type="text">
+                                    <input class="form-control" [(ngModel)]="bitacora.tiempo_solucion" name="tiempo"
+                                        type="text">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-xl-6">
                                 <div class="form-group local-forms">
                                     <label for="herramientas">Material Utilizado </label>
-                                    <textarea class="form-control" name="herramientas"
-                                        rows="5" cols="10" [(ngModel)]="bitacora.herramientas"
-                                        ></textarea>
+                                    <textarea class="form-control" name="herramientas" rows="5" cols="10"
+                                        [(ngModel)]="bitacora.herramientas"></textarea>
                                 </div>
                             </div>
-
                         </div>
                     </form>
                 </div>

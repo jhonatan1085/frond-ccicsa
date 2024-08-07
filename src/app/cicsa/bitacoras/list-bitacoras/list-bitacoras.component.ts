@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Bitacora } from '../../modelos';
@@ -12,7 +12,7 @@ import { BitacorasService } from '../../services/bitacoras.service';
   templateUrl: './list-bitacoras.component.html',
   styleUrls: ['./list-bitacoras.component.scss'],
 })
-export class ListBitacorasComponent {
+export class ListBitacorasComponent implements OnInit{
   public bitacoras: Bitacora[] = [];
   dataSource!: MatTableDataSource<Bitacora>;
 

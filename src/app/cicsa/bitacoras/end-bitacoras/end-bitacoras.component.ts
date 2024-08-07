@@ -33,7 +33,6 @@ export class EndBitacorasComponent {
     private configService: ConfigService,
     private router: Router
   ) {
-    console.log(data.bitacora);
     this.bitacora = data.bitacora;
     this.bitacora.causa_averia = this.bitacora.causa_averia ?? {};
     this.bitacora.consecuencia_averia = this.bitacora.consecuencia_averia ?? {};

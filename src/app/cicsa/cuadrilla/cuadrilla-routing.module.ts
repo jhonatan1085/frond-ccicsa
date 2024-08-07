@@ -11,8 +11,6 @@ const routes: Routes = [{
       path:'list-cuadrilla',
       component:ListCuadrillaComponent
     },
-    
-
   ]
 }];
 

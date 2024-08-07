@@ -33,21 +33,16 @@
                         <a class="btn"><img src="assets/img/icons/search-normal.svg" alt="" /></a>
                       </div>
                       <div class="add-group">
-                        <a class="btn btn-primary add-pluss ms-2" data-bs-toggle="modal"
-                          data-bs-target="#add_cuadrilla"><img src="assets/img/icons/plus.svg" alt="" /></a>
-
-                        <a href="javascript:;" class="btn btn-primary doctor-refresh ms-2"><img
-                            src="assets/img/icons/re-fresh.svg" alt="" /></a>
+                        <button class="btn btn-primary ms-2" (click)="openDialog()">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                        <button class="btn btn-primary ms-2" (click)="openDialog()">
+                          <i class="fa fa-refresh" aria-hidden="true"></i>
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!-- <div class="col-auto text-end float-end ms-auto download-grp">
-                  <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-01.svg" alt="" /></a>
-                  <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-02.svg" alt="" /></a>
-                  <a href="javascript:;" class="me-2"><img src="assets/img/icons/pdf-icon-03.svg" alt="" /></a>
-                  <a href="javascript:;"><img src="assets/img/icons/pdf-icon-04.svg" alt="" /></a>
-                </div> -->
               </div>
             </div>
             <!-- /Table Header -->
@@ -77,15 +72,14 @@
                           <td>
                             <button
                               [ngClass]="{'status-pink': cuadrilla.estado ==='0', 'status-green': cuadrilla.estado ==='1' }"
-                              class="custom-badge" (click)="inactiva(cuadrilla)" >{{cuadrilla.estadotext}}</button>
+                              class="custom-badge" (click)="inactiva(cuadrilla)">{{cuadrilla.estadotext}}</button>
                           </td>
                           <td>
                             <div class="add-group">
-                              <a href="javascript:;" (click)="showSegment(cuadrilla)"
-                                class="btn btn-primary doctor-refresh ms-2"><img
-                                  src="assets/img/icons/search-normal.svg" alt="" /></a>
+                              <button class="btn btn-primary ms-2" (click)="showSegment(cuadrilla)">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                              </button>
                             </div>
-
                             <!-- <a class="btn btn-primary add-pluss ms-2" (click)="showSegment(cuadrilla)" ><img
                                                             src="assets/img/icons/search-normal.svg" alt="" /></a>
                                                     -->
@@ -210,4 +204,3 @@
     </div>
   </div>
 </div>
-<app-add-cuadrilla></app-add-cuadrilla>
