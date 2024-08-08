@@ -122,9 +122,15 @@ export class AddBitacorasComponent implements OnInit {
       site_id: [null, Validators.required],
       cliente: [null],
     });
-    this.cuadrillaForm = this.fb.group({});
-    this.responsablesForm = this.fb.group({});
-  }
+    this.cuadrillaForm = this.fb.group({
+      cuadrilla: this.fb.array([])
+    });
+
+    this.responsablesForm = this.fb.group({
+      resp_cicsa_id: [null, Validators.required],
+      resp_claro_id: [null, Validators.required],
+    });
+}
 
   ngOnInit(): void {
     this.activateRoute.params
@@ -316,7 +322,6 @@ export class AddBitacorasComponent implements OnInit {
   detallesite(value: Site) {
     if (!this.bitacora) return;
     this.siteForm.patchValue({ site_id: value.id });
-
     this.bitacora.site = value;
     this.region = value.region.nombre;
     this.distrito = value.distrito.nombre;
@@ -330,8 +335,6 @@ export class AddBitacorasComponent implements OnInit {
 
   dataResponsables(idzona: number) {
     this.usuarioService.showResponsables(idzona).subscribe((resp) => {
-      console.log('responsables');
-      console.log(resp);
       this.responsables_cicsa = resp.cicsa;
       this.responsables_claro = resp.claro;
     });

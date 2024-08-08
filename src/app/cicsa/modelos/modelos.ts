@@ -15,6 +15,7 @@ export interface Bitacora {
   longitud?: string;
   distancia: number;
   site: Site;
+  cliente?: string;
   brigada: Cuadrilla[];
   atenciones: Atencion[];
   causa_averia: Tipo;
