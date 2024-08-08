@@ -40,7 +40,7 @@ export class AddBitacorasComponent implements OnInit {
   pageSelection: any[] = [];
   totalPages = 0;
   cuadrillas_generals: Cuadrilla[] = [];
-  CUADRILLA_SELECTED: any;
+  CUADRILLA_SELECTED?: Cuadrilla;
 
   cuadrilla_add: any[] = [];
 
@@ -132,7 +132,21 @@ export class AddBitacorasComponent implements OnInit {
         filter((params) => params['id']),
         switchMap((params) => this.bitacoraService.read(params['id']))
       )
-      .subscribe((resp) => (this.bitacora = resp));
+      .subscribe((resp) => {
+        this.bitacora = resp;
+        this.datosForm.patchValue({
+          ...this.bitacora, //los campos que tiene bitacora
+          tipo_averia_id: resp.tipo_averia.id, //campos especiales
+          red_id: resp.red.id,
+          serv_id: resp.serv.id,
+        });
+        this.siteForm.patchValue({
+          site_id: resp.site.id,
+          // cliente: resp.site.cliente,// de donde obtengo el cliente
+        });
+        this.cuadrillaForm.patchValue(this.bitacora);
+        this.responsablesForm.patchValue(this.bitacora);
+      });
 
     this.configService.bitacoras().subscribe((resp) => {
       console.log(resp);
@@ -180,7 +194,7 @@ export class AddBitacorasComponent implements OnInit {
     if (!sort.active || sort.direction === '') {
       this.cuadrillasList = data;
     } else {
-      this.cuadrillasList = data.sort((a: any, b: any) => {
+      this.cuadrillasList = data.sort((a: Cuadrilla, b: Cuadrilla) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -339,7 +353,13 @@ export class AddBitacorasComponent implements OnInit {
 
     console.log(this.bitacora);
     console.log(this.datosForm.value);
-    const result = { ...this.bitacora, ...this.datosForm.value };
+    const result = {
+      ...this.bitacora,
+      ...this.datosForm.value,
+      ...this.siteForm.value,
+      ...this.cuadrillaForm.value,
+      ...this.responsablesForm.value,
+    };
     console.log(result);
 
     const formData = new FormData();
@@ -367,7 +387,7 @@ export class AddBitacorasComponent implements OnInit {
     );
     formData.append('cuadrilla', JSON.stringify(this.cuadrilla_add));
 
-    this.bitacoraService.create(formData).subscribe((resp) => {
+    this.bitacoraService.create(result).subscribe((resp) => {
       console.log(resp);
       if (resp.message == 403) {
         this.snackBar('Falta ingresar datos');

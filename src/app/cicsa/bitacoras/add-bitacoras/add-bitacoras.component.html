@@ -379,7 +379,7 @@
                     </mat-panel-description>
                   </mat-expansion-panel-header>
                   <div class="row align-items-center">
-                    <div class="col-8">
+                    <div class="col-12">
                       <div class="card">
                         <div class="card-body">
                           <div class="table-responsive">
@@ -426,13 +426,13 @@
                             <div class="table_footer">
                               <div class="col-sm-12 col-md-5">
                                 <div class="dataTables_info">
-                                  Showing {{ serialNumberArray[0] }} to
+                                  Mostrando {{ serialNumberArray[0] }} a
                                   {{
                                     serialNumberArray[
                                       serialNumberArray.length - 1
                                     ]
                                   }}
-                                  of {{ totalData }} entries
+                                  de {{ totalData }} cuadrillas
                                 </div>
                               </div>
 
@@ -450,7 +450,7 @@
                                         class="page-link"
                                         href="javascript:void(0);"
                                         tabindex="-1"
-                                        >Previous</a
+                                        >Anterior</a
                                       >
                                     </li>
 
@@ -551,7 +551,7 @@
                                         (click)="getMoreData('next')"
                                         class="page-link"
                                         href="javascript:void(0);"
-                                        >Next
+                                        >Siguiente
                                       </a>
                                     </li>
                                   </ul>
@@ -562,7 +562,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-4" *ngIf="CUADRILLA_SELECTED">
+                    <div class="col-12" *ngIf="CUADRILLA_SELECTED">
                       <div class="card-box">
                         <div class="card-block">
                           <div class="table-responsive">
@@ -724,7 +724,12 @@
                     <button
                       mat-button
                       color="primary"
-                      [disabled]="datosForm.invalid"
+                      [disabled]="
+                        datosForm.invalid ||
+                        siteForm.invalid ||
+                        cuadrillaForm.invalid ||
+                        responsablesForm.invalid
+                      "
                       (click)="saveBitacora()"
                     >
                       Registrar
