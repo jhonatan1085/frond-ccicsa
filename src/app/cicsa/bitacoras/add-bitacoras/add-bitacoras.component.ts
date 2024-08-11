@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -12,10 +13,13 @@ import { Observable } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { Bitacora, Cuadrilla, Site, Tipo } from 'src/app/cicsa/modelos/modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
+import { ConfigService } from '../../services/config.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { SiteService } from '../../services/site.service';
 import { UsuariosService } from '../../services/usuarios.service';
-import { ConfigService } from '../../services/config.service';
+import { AddCuadrillaComponent } from '../../cuadrilla/add-cuadrilla/add-cuadrilla.component';
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-add-bitacoras',
   templateUrl: './add-bitacoras.component.html',
@@ -23,7 +27,7 @@ import { ConfigService } from '../../services/config.service';
 })
 export class AddBitacorasComponent implements OnInit {
   //paginacion cuadrillas
-  cuadrillasList: Cuadrilla[] = [];
+  brigadas: Cuadrilla[] = [];
   dataSource!: MatTableDataSource<Cuadrilla>;
 
   showFilter = false;
@@ -39,10 +43,10 @@ export class AddBitacorasComponent implements OnInit {
   pageNumberArray: number[] = [];
   pageSelection: any[] = [];
   totalPages = 0;
-  cuadrillas_generals: Cuadrilla[] = [];
-  CUADRILLA_SELECTED?: Cuadrilla;
+  brigadasGeneral: Cuadrilla[] = [];
+  brigadaSelected?: Cuadrilla;
 
-  cuadrilla_add: any[] = [];
+  // cuadrilla_add: any[] = [];
 
   responsables_cicsa: any[] = [];
 
@@ -50,12 +54,6 @@ export class AddBitacorasComponent implements OnInit {
   //fin paginacion cuadrillas
 
   panelOpenState = false;
-  // selectedTipoAveria!: string;
-  // selectedRed!: string;
-  // selectedServ!: string;
-  // selectedSite!: string;
-  // selectedliderclaro!: string;
-  // selectedlidercicsa!: string;
 
   bitacora: Bitacora = {
     tipo_averia: {} as any,
@@ -67,44 +65,46 @@ export class AddBitacorasComponent implements OnInit {
   // fecha_inicial = '';
   // nro_sot = '';
   // nro_incidencia = '';
-  codigo = '';
-  site = '';
-  cliente = '';
-  region = '';
-  departamento = '';
-  provincia = '';
-  distrito = '';
+  site?: Site;
+  // codigo = '';
+  // site = '';
+  // cliente = '';
+  // region = '';
+  // departamento = '';
+  // provincia = '';
+  // distrito = '';
   // latitud = '';
   // longitud = '';
   // distancia = '';
-  zona = '';
+  // zona = '';
 
-  latitudsite = '';
-  longitudsite = '';
+  // latitudsite = '';
+  // longitudsite = '';
 
   tipo_Averia: Tipo[] = [];
   red: Tipo[] = [];
   serv: Tipo[] = [];
 
-  myControl = new FormControl();
-  options!: any;
-  filteredOptions!: Observable<any>;
+  siteControl = new FormControl();
+  sites!: Site[];
+  filteredSites!: Observable<Site[]>;
   // formularios
   datosForm: FormGroup;
   siteForm: FormGroup;
-  cuadrillaForm: FormGroup;
+  brigadasForm: FormGroup;
   responsablesForm: FormGroup;
 
   constructor(
     private configService: ConfigService,
     private bitacoraService: BitacorasService,
     private siteService: SiteService,
-    private cuadrillaService: CuadrillaService,
+    private brigadasService: CuadrillaService,
     private usuarioService: UsuariosService,
     private _snackBar: MatSnackBar,
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog
   ) {
     this.datosForm = this.fb.group({
       nombre: [null, Validators.required],
@@ -122,17 +122,23 @@ export class AddBitacorasComponent implements OnInit {
       site_id: [null, Validators.required],
       cliente: [null],
     });
-    this.cuadrillaForm = this.fb.group({
-      cuadrilla: this.fb.array([])
+    this.brigadasForm = this.fb.group({
+      brigadas: this.fb.array([], Validators.required),
     });
-
     this.responsablesForm = this.fb.group({
       resp_cicsa_id: [null, Validators.required],
       resp_claro_id: [null, Validators.required],
     });
-}
+  }
 
   ngOnInit(): void {
+    this.getBitacoraFromParams();
+    this.getConfigBitacora();
+    this.getSites();
+    this.getTableData();
+  }
+
+  private getBitacoraFromParams() {
     this.activateRoute.params
       .pipe(
         filter((params) => params['id']),
@@ -150,57 +156,59 @@ export class AddBitacorasComponent implements OnInit {
           site_id: resp.site.id,
           // cliente: resp.site.cliente,// de donde obtengo el cliente
         });
-        this.cuadrillaForm.patchValue(this.bitacora);
+        this.brigadasForm.patchValue(this.bitacora);
         this.responsablesForm.patchValue(this.bitacora);
+        //
+        this.getSites();
       });
+  }
 
+  private getConfigBitacora() {
     this.configService.bitacoras().subscribe((resp) => {
-      console.log(resp);
       this.tipo_Averia = resp.tipoaveria;
       this.red = resp.red;
       this.serv = resp.serv;
     });
+  }
 
-    this.siteService.showSiteAutocomplete().subscribe((resp) => {
-      console.log(resp);
-      this.onGetTaxList(resp.data);
+  private getSites() {
+    this.siteService.autocomplete().subscribe((resp) => {
+      this.setSites(resp.data);
     });
-
-    this.getTableData();
   }
 
   private getTableData(): void {
-    this.cuadrillasList = [];
+    this.brigadas = [];
     this.serialNumberArray = [];
 
-    this.cuadrillaService.activa().subscribe((resp) => {
+    this.brigadasService.activa().subscribe((resp) => {
       this.totalData = resp.data.length;
-      this.cuadrillas_generals = resp.data;
+      this.brigadasGeneral = resp.data;
       this.getTableDataGeneral();
     });
   }
 
   getTableDataGeneral() {
-    this.cuadrillasList = [];
+    this.brigadas = [];
     this.serialNumberArray = [];
-    this.cuadrillas_generals.map((res: Cuadrilla, index: number) => {
+    this.brigadasGeneral.map((res: Cuadrilla, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-        this.cuadrillasList.push(res);
+        this.brigadas.push(res);
         this.serialNumberArray.push(serialNumber);
       }
     });
-    this.dataSource = new MatTableDataSource<Cuadrilla>(this.cuadrillasList);
+    this.dataSource = new MatTableDataSource<Cuadrilla>(this.brigadas);
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
   sortData(sort: any) {
-    const data = this.cuadrillasList.slice();
+    const data = this.brigadas.slice();
 
     if (!sort.active || sort.direction === '') {
-      this.cuadrillasList = data;
+      this.brigadas = data;
     } else {
-      this.cuadrillasList = data.sort((a: Cuadrilla, b: Cuadrilla) => {
+      this.brigadas = data.sort((a: Cuadrilla, b: Cuadrilla) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -262,55 +270,58 @@ export class AddBitacorasComponent implements OnInit {
     }
   }
 
-  countTecnicos(cuadrilla: Cuadrilla) {
-    return cuadrilla.user_movil.length;
+  countTecnicos(brigada: Cuadrilla) {
+    return brigada.user_movil.length;
   }
 
-  showSegment(cuadrilla: Cuadrilla) {
-    this.CUADRILLA_SELECTED = cuadrilla;
+  showSegment(brigada: Cuadrilla) {
+    this.brigadaSelected = brigada;
   }
 
-  addCuadrilla(cuadrilla: Cuadrilla) {
-    console.log(cuadrilla);
-    const INDEX = this.cuadrilla_add.findIndex(
-      (us: any) => us.id == cuadrilla.id
+  addBrigada(brigada: Cuadrilla) {
+    const brigadas = this.brigadasForm.get('cuadrillas') as FormArray;
+    const brigadasValue = brigadas.value;
+    const INDEX = brigadasValue.findIndex(
+      (item: Cuadrilla) => item.id == brigada.id
     );
     if (INDEX != -1) {
-      this.cuadrilla_add.splice(INDEX, 1);
+      brigadas.removeAt(INDEX);
     } else {
-      this.cuadrilla_add.push({
-        cuadrilla_id: cuadrilla.id,
-        tipocuadrilla: cuadrilla.tipo_brigada.nombre,
-        zona: cuadrilla.zona.nombre,
-      });
+      brigadas.push(
+        this.fb.group({
+          id: [brigada.id],
+          tipo: [brigada.tipo_brigada.nombre],
+          zona: [brigada.zona.nombre],
+        })
+      );
     }
   }
 
-  searchadd(cuadrilla: Cuadrilla) {
-    const INDEX = this.cuadrilla_add.findIndex(
-      (cuadri: any) => cuadri.cuadrilla_id == cuadrilla.id
+  searchadd(brigada: Cuadrilla) {
+    const brigadas = this.brigadasForm.value.brigadas;
+    const INDEX = brigadas.findIndex(
+      (item: Cuadrilla) => item.id == brigada.id
     );
-
-    if (INDEX != -1) {
-      return false;
-    } else {
-      return true;
-    }
+    return INDEX == -1;
   }
   // Auth Complete
-  onGetTaxList(val: any) {
-    this.options = val;
+  setSites(sites: Site[]) {
+    this.sites = sites;
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredSites = this.siteControl.valueChanges.pipe(
       startWith(''),
       map((value) => (value.length >= 1 ? this._filter(value) : []))
     );
+
+    if (this.bitacora) {
+      this.site = this.sites.find((s) => s.id === this.bitacora.site.id);
+      this.siteControl.patchValue(this.site);
+    }
   }
 
   private _filter(value: any) {
     const filterValue = value.toLowerCase();
-    console.log(filterValue);
-    return this.options.filter((option: any) =>
+    return this.sites.filter((option: any) =>
       option.nombre.toLowerCase().includes(filterValue)
     );
   }
@@ -319,22 +330,17 @@ export class AddBitacorasComponent implements OnInit {
     return value ? value.nombre : undefined;
   }
 
-  detallesite(value: Site) {
+  detalleSite(value: Site) {
     if (!this.bitacora) return;
     this.siteForm.patchValue({ site_id: value.id });
     this.bitacora.site = value;
-    this.region = value.region.nombre;
-    this.distrito = value.distrito.nombre;
-    this.departamento = value.distrito.provincia.departamento.nombre;
-    this.provincia = value.distrito.provincia.nombre;
-    this.zona = value.zona.nombre;
-
+    this.site = value;
     this.dataResponsables(value.zona.id);
-    this.codigo = value.codigo;
   }
 
   dataResponsables(idzona: number) {
     this.usuarioService.showResponsables(idzona).subscribe((resp) => {
+      console.log(resp);
       this.responsables_cicsa = resp.cicsa;
       this.responsables_claro = resp.claro;
     });
@@ -353,18 +359,17 @@ export class AddBitacorasComponent implements OnInit {
       console.error('No Bitacora was created');
       return;
     }
-
     console.log(this.bitacora);
     console.log(this.datosForm.value);
     const result = {
       ...this.bitacora,
       ...this.datosForm.value,
       ...this.siteForm.value,
-      ...this.cuadrillaForm.value,
+      ...this.brigadasForm.value,
       ...this.responsablesForm.value,
     };
     console.log(result);
-
+    /*
     const formData = new FormData();
     formData.append('nombre', this.bitacora.nombre ?? '');
     formData.append('fecha_inicial', this.bitacora.fecha_inicial ?? '');
@@ -384,11 +389,16 @@ export class AddBitacorasComponent implements OnInit {
       'resp_cicsa_id',
       this.bitacora.resp_cicsa?.id.toString() ?? ''
     );
+
     formData.append(
       'resp_claro_id',
       this.bitacora.resp_claro?.id.toString() ?? ''
     );
-    formData.append('cuadrilla', JSON.stringify(this.cuadrilla_add));
+    formData.append(
+      'cuadrilla',
+      JSON.stringify(this.cuadrillaForm.value.cuadrillas)
+    );
+    */
 
     this.bitacoraService.create(result).subscribe((resp) => {
       console.log(resp);
@@ -398,6 +408,13 @@ export class AddBitacorasComponent implements OnInit {
         this.snackBar('Registro Exitoso');
         this.router.navigate(['/bitacoras/list-bitacora']);
       }
+    });
+  }
+
+  onAddBrigada() {
+    const ref = this.dialog.open(AddCuadrillaComponent);
+    ref.afterClosed().subscribe(() => {
+      this.getTableData();
     });
   }
 

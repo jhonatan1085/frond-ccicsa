@@ -3,8 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigService } from '../../services/config.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { UsuariosService } from '../../services/usuarios.service';
+import { Tipo } from '../../modelos';
 
-declare const $: any;
+// declare const $: any;
 
 @Component({
   selector: 'app-add-cuadrilla',
@@ -18,7 +19,7 @@ export class AddCuadrillaComponent {
 
   tipobrigadas: any[] = [];
   contratistas: any[] = [];
-  zonas: any[] = [];
+  zonas: Tipo[] = [];
   users: any[] = [];
 
   text_success = '';
@@ -33,7 +34,6 @@ export class AddCuadrillaComponent {
     private _snackBar: MatSnackBar
   ) {
     this.configService.cuadrillas().subscribe((resp) => {
-      console.log(resp);
       this.tipobrigadas = resp.tipobrigadas;
       this.zonas = resp.zonas;
       this.contratistas = resp.contratistas;
@@ -174,18 +174,28 @@ export class AddCuadrillaComponent {
         this.snackBar('Registro Exitoso');
 
         // this.listaCuadrilla.getTableData();
-        $('#add_cuadrilla').hide();
-        $('#add_cuadrilla').removeClass('show');
-        $('.modal-backdrop').remove();
-        $('body').removeClass();
-        $('body').removeAttr('style');
+        // $('#add_cuadrilla').hide();
+        // $('#add_cuadrilla').removeClass('show');
+        // $('.modal-backdrop').remove();
+        // $('body').removeClass();
+        // $('body').removeAttr('style');
 
         this.selectedZona = '';
         this.selectedTipobrigadas = '';
         this.selectedContratistas = '';
         this.user_selecteds = [];
         this.users = [];
+        //
+        this.refresh();
       }
+    });
+  }
+
+  refresh() {
+    this.configService.cuadrillas().subscribe((resp) => {
+      this.tipobrigadas = resp.tipobrigadas;
+      this.zonas = resp.zonas;
+      this.contratistas = resp.contratistas;
     });
   }
 }

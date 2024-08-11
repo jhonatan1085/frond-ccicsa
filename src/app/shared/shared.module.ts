@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxBootstrapModule } from './ngx-bootstrap/ngx-bootstrap.module';
 import { CountUpModule } from 'ngx-countup';
-import { NgApexchartsModule } from "ng-apexcharts";
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgCircleProgressModule } from 'ng-circle-progress';
-import { materialModule } from './material.module';
+import { MaterialModule } from './material.module';
 import { NgxEditorModule } from 'ngx-editor';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -17,35 +17,30 @@ import { HeaderComponent } from '../common-component/header/header.component';
 import { SidebarComponent } from '../common-component/sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 
-
-
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    SidebarComponent,
-  ],
+  declarations: [HeaderComponent, SidebarComponent],
   imports: [
     CommonModule,
     NgxBootstrapModule,
     CountUpModule,
     NgApexchartsModule,
     NgCircleProgressModule.forRoot({
-      "radius": 40,
-      "space": -10,
-      "outerStrokeWidth": 10,
-      "innerStrokeWidth": 10,
-      "animationDuration": 1000,
-      "clockwise": false,
-      "startFromZero": false,
-      "lazy": false,
-      "outerStrokeLinecap":"square",
-      "showSubtitle": false,
-      "showTitle" : false,
-      "showUnits" : false,
-      "showBackground" : false
+      radius: 40,
+      space: -10,
+      outerStrokeWidth: 10,
+      innerStrokeWidth: 10,
+      animationDuration: 1000,
+      clockwise: false,
+      startFromZero: false,
+      lazy: false,
+      outerStrokeLinecap: 'square',
+      showSubtitle: false,
+      showTitle: false,
+      showUnits: false,
+      showBackground: false,
     }),
     SlickCarouselModule,
-    materialModule,
+    MaterialModule,
     NgxEditorModule,
     FullCalendarModule,
     HttpClientModule,
@@ -53,8 +48,7 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     //NgxMaterialTimepickerModule,
-    RouterModule
-    
+    RouterModule,
   ],
   exports: [
     CommonModule,
@@ -63,7 +57,7 @@ import { RouterModule } from '@angular/router';
     NgApexchartsModule,
     NgCircleProgressModule,
     SlickCarouselModule,
-    materialModule,
+    MaterialModule,
     NgxEditorModule,
     FullCalendarModule,
     HttpClientModule,
@@ -73,10 +67,7 @@ import { RouterModule } from '@angular/router';
     //NgxMaterialTimepickerModule,
     HeaderComponent,
     SidebarComponent,
-    
   ],
-  providers: [
-    DataService,
-  ]
+  providers: [DataService],
 })
-export class SharedModule { }
+export class SharedModule {}

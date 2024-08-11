@@ -1,13 +1,13 @@
-export interface pageSelection {
+export interface PageSelection {
   skip: number;
   limit: number;
 }
-export interface apiResultFormat {
+export interface ApiResultFormat {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   totalData: number;
 }
-export interface expenses {
+export interface Expenses {
   item: string;
   purchaseFrom: string;
   purchaseBy: string;
@@ -17,13 +17,13 @@ export interface expenses {
   status: string;
   img: string;
 }
-export interface staffholidays {
+export interface StaffHolidays {
   title: string;
   holidayDate: number;
   day: string;
   description: string;
 }
-export interface staffleave {
+export interface StaffLeave {
   employeeName: string;
   leaveType: string;
   from: number;
@@ -33,72 +33,7 @@ export interface staffleave {
   status: string;
   img: string;
 }
-export interface invoices {
-  invoiceNumber: string;
-  patient: string;
-  createdDate: number;
-  dueDate: number;
-  amount: number;
-  status: string;
-  img: string;
-}
-export interface invoicereport {
-  invoiceNumber: string;
-  client: string;
-  createdDate: number;
-  dueDate: number;
-  amount: string;
-  status: string;
-  img: string;
-}
-export interface invoicescancelled {
-  invoiceId: string;
-  category: string;
-  createdOn: string | number;
-  invoiceTo: string;
-  amount: string;
-  cancelledOn: string | number;
-  status: string | number;
-  img: string;
-}
-export interface invoicedraft {
-  createdOn: string | number;
-  invoiceTo: string;
-  amount: string;
-  img: string;
-}
-export interface invoiceoverdue {
-  invoiceId: string;
-  category: string;
-  createdOn: string | number;
-  invoiceTo: string;
-  amount: string | number;
-  lastDate: string | number;
-  status: string | number;
-  img: string;
-}
-export interface invoicespaid {
-  invoiceNumber: string | number;
-  category: string;
-  createdOn: string | number;
-  invoiceTo: string;
-  amount: string;
-  paidOn: string | number;
-  status: string;
-  img: string;
-}
-export interface invoicerecurring {
-  invoiceNumber: string;
-  category: string;
-  createdOn: string | number;
-  invoiceTo: string;
-  amount: string;
-  lastInvoice: string | number;
-  nextInvoice: string | number;
-  frequency: string | number;
-  status: string;
-  img: string;
-}
+
 export interface doctorlist {
   name: string;
   department: string;
@@ -286,16 +221,7 @@ export interface patientProfile {
   treatment: string;
   charges: string;
 }
-export interface invoicesGrid {
-  invoiceNumber: string;
-  name: string;
-  img: string;
-  amount: string;
-  amounts: string | number;
-  text: string;
-  dueDate: string | number;
-  status: string;
-}
+
 export interface SubMenu {
   menuValue: string;
   route: string;

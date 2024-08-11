@@ -7,29 +7,31 @@ interface MainMenu {
 
 interface MenuItem {
   menuValue: string;
-  showSubRoute: boolean;  
+  showSubRoute: boolean;
 }
 @Injectable({
   providedIn: 'root',
 })
 export class SideBarService {
-  public toggleSideBar: BehaviorSubject<string> = new BehaviorSubject<string>(
-    localStorage.getItem('isMiniSidebar') || "false"
-  );
-
-  public toggleMobileSideBar: BehaviorSubject<string> = new BehaviorSubject<string>(
-    localStorage.getItem('isMobileSidebar') || "false"
-  );
-
-  public expandSideBar: BehaviorSubject<string> = new BehaviorSubject<string>("false");
-
+  public toggleSideBar: BehaviorSubject<boolean>;
+  public toggleMobileSideBar: BehaviorSubject<boolean>;
+  public expandSideBar: BehaviorSubject<boolean>;
   constructor(private data: DataService) {
-   
+    const toggleSideBar = this.getBooleanValue(
+      localStorage.getItem('isMiniSidebar') || 'false'
+    );
+    const toggleMobileSideBar = this.getBooleanValue(
+      localStorage.getItem('isMobileSidebar') || 'false'
+    );
+    const expandSideBar = false;
+    this.toggleSideBar = new BehaviorSubject(toggleSideBar);
+    this.toggleMobileSideBar = new BehaviorSubject(toggleMobileSideBar);
+    this.expandSideBar = new BehaviorSubject(expandSideBar);
   }
 
   public switchSideMenuPosition(): void {
-    if (localStorage.getItem('isMiniSidebar')) {
-      this.toggleSideBar.next("false");
+    if (this.toggleSideBar.value) {
+      this.toggleSideBar.next(false);
       localStorage.removeItem('isMiniSidebar');
       this.data.sideBar.map((mainMenus: MainMenu) => {
         mainMenus.menu.map((resMenu: MenuItem) => {
@@ -40,7 +42,7 @@ export class SideBarService {
         });
       });
     } else {
-      this.toggleSideBar.next('true');
+      this.toggleSideBar.next(true);
       localStorage.setItem('isMiniSidebar', 'true');
       this.data.sideBar.map((mainMenus: MainMenu) => {
         mainMenus.menu.map((resMenu: MenuItem) => {
@@ -51,13 +53,19 @@ export class SideBarService {
   }
 
   public switchMobileSideBarPosition(): void {
+    console.log(localStorage.getItem('isMobileSidebar'));
     if (localStorage.getItem('isMobileSidebar')) {
-      this.toggleMobileSideBar.next("false");
+      this.toggleMobileSideBar.next(false);
       localStorage.removeItem('isMobileSidebar');
     } else {
-      this.toggleMobileSideBar.next("true");
+      this.toggleMobileSideBar.next(true);
       localStorage.setItem('isMobileSidebar', 'true');
     }
   }
 
+  private getBooleanValue(value: string): boolean {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return Boolean(value);
+  }
 }

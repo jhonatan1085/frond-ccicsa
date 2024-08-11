@@ -55,4 +55,4 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatListModule,
   ],
 })
-export class materialModule {}
+export class MaterialModule {}

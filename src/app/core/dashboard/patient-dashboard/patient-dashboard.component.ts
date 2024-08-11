@@ -21,8 +21,8 @@ import { DataService } from 'src/app/shared/data/data.service';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import {
-  pageSelection,
-  apiResultFormat,
+  PageSelection,
+  ApiResultFormat,
   patientDashboard,
 } from 'src/app/shared/models/models';
 interface data {
@@ -101,7 +101,7 @@ export class PatientDashboardComponent implements OnInit {
   public serialNumberArray: number[] = [];
   public currentPage = 1;
   public pageNumberArray: number[] = [];
-  public pageSelection: Array<pageSelection> = [];
+  public pageSelection: Array<PageSelection> = [];
   public totalPages = 0;
 
   constructor(private data: DataService) {
@@ -364,7 +364,7 @@ export class PatientDashboardComponent implements OnInit {
     this.patientDashboard = [];
     this.serialNumberArray = [];
 
-    this.data.getPatientDashboard().subscribe((data: apiResultFormat) => {
+    this.data.getPatientDashboard().subscribe((data: ApiResultFormat) => {
       this.totalData = data.totalData;
       data.data.map((res: patientDashboard, index: number) => {
         const serialNumber = index + 1;

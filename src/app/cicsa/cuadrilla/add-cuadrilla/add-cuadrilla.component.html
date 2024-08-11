@@ -1,108 +1,146 @@
 <h2 mat-dialog-title>Agregar Brigadas</h2>
 <mat-dialog-content class="mat-typography">
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-heading">
-                                    <h4>Registro de Cuadrilla</h4>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-xl-6">
-                                <div class="form-group local-forms">
-                                    <label>Tipo Brigada <span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="selectedTipobrigadas" [ngModelOptions]="{standalone: true}"
-                                        class="form-control select" placeholder="Seleccione Zona">
-                                        <mat-option *ngFor="let data of tipobrigadas" [value]="data.id">
-                                            {{data.nombre}}
-                                        </mat-option>
-                                    </mat-select>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-xl-6">
-                                <div class="form-group local-forms">
-                                    <label>Contrata <span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="selectedContratistas" [ngModelOptions]="{standalone: true}"
-                                        class="form-control select" placeholder="Seleccione Zona">
-                                        <mat-option *ngFor="let data of contratistas" [value]="data.id">
-                                            {{data.nombre}}
-                                        </mat-option>
-                                    </mat-select>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-xl-6">
-                                <div class="form-group local-forms">
-                                    <label>Zona <span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="selectedZona" [ngModelOptions]="{standalone: true}"
-                                        class="form-control select" placeholder="Seleccione Zona"
-                                        (selectionChange)="tecnicos()">
-                                        <mat-option *ngFor="let data of zonas" [value]="data.id">
-                                            {{data.nombre}}
-                                        </mat-option>
-                                    </mat-select>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Seleccione Tecnicos de Brigada</h4>
-                                        <div class="table-responsive">
-                                            <table class="table mb-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>*</th>
-                                                        <th>Lider</th>
-                                                        <th>Nombres</th>
-                                                        <th>UM</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <ng-container *ngFor="let user of users">
-                                                        <tr>
-                                                            <td style=" text-align: center !important;">
-                                                                <div class="form-check check-tables">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        name="checkbox" [checked]="isCheck(user)"
-                                                                        (click)="addUser(user)">
-                                                                </div>
-                                                            </td>
-                                                            <td style=" text-align: center !important;">
-                                                                <div class="form-check check-tables">
-
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        name="checkbox" (click)="addLider(user)"
-                                                                        [disabled]="islider(user)">
-                                                                </div>
-                                                            </td>
-                                                            <td style=" text-align: left !important;">
-                                                                {{user.name}} {{user.surname}}
-                                                            </td>
-                                                            <td>
-                                                                <ng-container *ngFor="let movil of user.unidad_movil">
-                                                                    {{movil.placa}}
-                                                                </ng-container>
-
-                                                            </td>
-                                                        </tr>
-                                                    </ng-container>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-heading">
+                  <h4>Registro de Cuadrilla</h4>
                 </div>
+              </div>
+              <div class="col-12 col-md-6 col-xl-6">
+                <div class="form-group local-forms">
+                  <mat-label
+                    >Tipo Brigada <span class="login-danger">*</span></mat-label
+                  >
+                  <mat-select
+                    [(ngModel)]="selectedTipobrigadas"
+                    [ngModelOptions]="{ standalone: true }"
+                    class="form-control select"
+                    placeholder="Seleccione Tipo"
+                  >
+                    <mat-option
+                      *ngFor="let data of tipobrigadas"
+                      [value]="data.id"
+                    >
+                      {{ data.nombre }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xl-6">
+                <div class="form-group local-forms">
+                  <mat-label
+                    >Contrata <span class="login-danger">*</span></mat-label
+                  >
+                  <mat-select
+                    [(ngModel)]="selectedContratistas"
+                    [ngModelOptions]="{ standalone: true }"
+                    class="form-control select"
+                    placeholder="Seleccione Contrata"
+                  >
+                    <mat-option
+                      *ngFor="let data of contratistas"
+                      [value]="data.id"
+                    >
+                      {{ data.nombre }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xl-6">
+                <div class="form-group local-forms">
+                  <mat-label
+                    >Zona <span class="login-danger">*</span></mat-label
+                  >
+                  <mat-select
+                    [(ngModel)]="selectedZona"
+                    [ngModelOptions]="{ standalone: true }"
+                    class="form-control select"
+                    placeholder="Seleccione Zona"
+                    (selectionChange)="tecnicos()"
+                  >
+                    <mat-option *ngFor="let data of zonas" [value]="data.id">
+                      {{ data.nombre }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Seleccione Tecnicos de Brigada</h4>
+                    <div class="table-responsive">
+                      <table class="table mb-0">
+                        <thead>
+                          <tr>
+                            <th>*</th>
+                            <th>Lider</th>
+                            <th>Nombres</th>
+                            <th>UM</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let user of users">
+                            <tr>
+                              <td style="text-align: center !important">
+                                <div class="form-check check-tables">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="checkbox"
+                                    [checked]="isCheck(user)"
+                                    (click)="addUser(user)"
+                                  />
+                                </div>
+                              </td>
+                              <td style="text-align: center !important">
+                                <div class="form-check check-tables">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="checkbox"
+                                    (click)="addLider(user)"
+                                    [disabled]="islider(user)"
+                                  />
+                                </div>
+                              </td>
+                              <td style="text-align: left !important">
+                                {{ user.name }} {{ user.surname }}
+                              </td>
+                              <td>
+                                <ng-container
+                                  *ngFor="let movil of user.unidad_movil"
+                                >
+                                  {{ movil.placa }}
+                                </ng-container>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cerrar</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="saveCuadrilla()">Guardar</button>
+  <button mat-button mat-dialog-close>Cerrar</button>
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+    (click)="saveCuadrilla()"
+  >
+    Guardar
+  </button>
 </mat-dialog-actions>

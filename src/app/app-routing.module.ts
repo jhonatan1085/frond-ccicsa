@@ -8,19 +8,19 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'login',
   },
-
-  
   {
     path: '',
     loadChildren: () => import('./core/core.module').then((m) => m.CoreModule),
   },
   {
     path: '',
-    loadChildren: () => import('./cicsa/cicsa.module').then((m) => m.CicsaModule),
+    loadChildren: () =>
+      import('./cicsa/cicsa.module').then((m) => m.CicsaModule),
   },
   {
     path: '',
-    loadChildren: () => import('./medical/medical.module').then((m) => m.MedicalModule),
+    loadChildren: () =>
+      import('./medical/medical.module').then((m) => m.MedicalModule),
   },
   {
     path: '',

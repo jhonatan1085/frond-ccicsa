@@ -63,7 +63,7 @@ export class ViewBitacorasComponent {
         }
       }
 
-      this.bitacora?.brigada.forEach((element: Cuadrilla) => {
+      this.bitacora?.brigadas.forEach((element: Cuadrilla) => {
         // let zona = element.zona.nombre;
         element.user_movil.forEach((item: UsuarioMovil) => {
           if (item.is_lider == '1') {

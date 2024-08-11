@@ -15,21 +15,17 @@ export class HeaderComponent {
   public openBox = false;
   public miniSidebar = false;
   public addClass = false;
-  public user: UserAuth;
+  public user?: UserAuth;
 
   constructor(
     public router: Router,
     private sideBar: SideBarService,
     public auth: AuthService
   ) {
-    this.sideBar.toggleSideBar.subscribe((res: string) => {
-      if (res == 'true') {
-        this.miniSidebar = true;
-      } else {
-        this.miniSidebar = false;
-      }
+    this.sideBar.toggleSideBar.subscribe((res) => {
+      this.miniSidebar = res;
     });
-    this.user = this.auth.user!;
+    this.user = this.auth.user;
   }
 
   openBoxFunc() {

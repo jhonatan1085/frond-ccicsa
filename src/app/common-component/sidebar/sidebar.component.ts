@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/auth/auth.service';
 import { DataService } from 'src/app/shared/data/data.service';
 import { MenuItem, SideBarData, UserAuth } from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 import { SideBarService } from 'src/app/shared/side-bar/side-bar.service';
+
+const userStorageTag = 'user';
+const adminRole = 'Admin';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,25 +17,23 @@ export class SidebarComponent {
   base = '';
   page = '';
   currentUrl = '';
-  public classAdd = false;
+  classAdd = false;
 
-  public multilevel: Array<boolean> = [false, false, false];
+  multilevel: Array<boolean> = [false, false, false];
 
-  public routes = routes;
-  public sidebarData: Array<SideBarData> = [];
-  public user: UserAuth;
+  routes = routes;
+  sidebarData: SideBarData[] = [];
+  user: UserAuth;
 
   constructor(
     private data: DataService,
     private router: Router,
-    private sideBar: SideBarService,
-    public authService: AuthService
+    private sideBar: SideBarService
   ) {
-    //this.user = this.authService.user;
-    const USER = localStorage.getItem('user');
+    const USER = localStorage.getItem(userStorageTag);
     this.user = JSON.parse(USER ?? '');
     //inicio
-    if (this.user.roles.includes('Admin')) {
+    if (this.user.roles.includes(adminRole)) {
       this.sidebarData = this.data.sideBar;
     } else {
       //vamos a filtrar y validar que opciones puede ver ese rol
@@ -85,8 +85,8 @@ export class SidebarComponent {
     });
   }
   private getRoutes(route: { url: string }): void {
+    this.sideBar.expandSideBar.next(false);
     const bodyTag = document.body;
-
     bodyTag.classList.remove('slide-nav');
     bodyTag.classList.remove('opened');
     this.currentUrl = route.url;
@@ -96,11 +96,12 @@ export class SidebarComponent {
     this.base = splitVal[1];
     this.page = splitVal[2];
   }
+
   public miniSideBarMouseHover(position: string): void {
     if (position == 'over') {
-      this.sideBar.expandSideBar.next('true');
+      this.sideBar.expandSideBar.next(true);
     } else {
-      this.sideBar.expandSideBar.next('false');
+      this.sideBar.expandSideBar.next(false);
     }
   }
 }

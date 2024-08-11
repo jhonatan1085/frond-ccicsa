@@ -1,322 +1,568 @@
 <div class="page-wrapper">
-    <div class="content">
-
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Sites </a></li>
-                        <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
-                        <li class="breadcrumb-item active">Agregar Sites</li>
-                    </ul>
-                </div>
-            </div>
+  <div class="content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Sites </a></li>
+            <li class="breadcrumb-item">
+              <i class="feather icon-chevron-right"></i>
+            </li>
+            <li class="breadcrumb-item active">Agregar Sites</li>
+          </ul>
         </div>
-        <!-- /Page Header -->
-        <div class="row">
-            <div class="col-sm-12">
-
-                <div class="card">
-                    <div class="card-body">
-                        <form>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-heading">
-                                        <h4>Agregar Sites</h4>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label for="codigo">Codigo <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="codigo" name="codigo" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label for="nombre">Nombre <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="nombre" name="nombre" type="text">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label for="latitud">Latitud <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="latitud" name="latitud" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label for="longitud">Longitud <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="longitud" name="longitud" type="text">
-                                    </div>
-                                </div>
-
-
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Departamento <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedDepartamento" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Departamento" (selectionChange)="provincia()">
-                                            <mat-option *ngFor="let data of departamentos" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Provincia <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedProvincia" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Provincia" (selectionChange)="distrito()">
-                                            <mat-option *ngFor="let data of provincias" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Distrito <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedDistrito" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Distrito">
-                                            <mat-option *ngFor="let data of distritos" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Municipalidad <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedMunicipalidad" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Municipalidad" >
-                                            <mat-option *ngFor="let data of municipalidades" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-12">
-                                    <div class="form-group local-forms">
-                                        <label for="direccion">Direccion <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="direccion" name="direccion" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Tipo Site <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedTipoSite" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Tipo Site">
-                                            <mat-option *ngFor="let data of tiposites" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Zona <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedZona" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Zona">
-                                            <mat-option *ngFor="let data of zonas" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Region <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedRegion" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Región">
-                                            <mat-option *ngFor="let data of regions" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Region Geografica <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedRegionGeo" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Región Geografica">
-                                            <mat-option *ngFor="let data of regionGeograficas" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-2">
-                                    <div class="form-group local-forms">
-                                        <label for="tiemposla">Tiempo SLA <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="tiempoSla" name="tiempoSla"type="time">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-2">
-                                    <div class="form-group local-forms">
-                                        <label for="autonomiaBts">Autonomia BTS <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="autonomiaBts" name="autonomiaBts"type="time">
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12 col-md-6 col-xl-2">
-                                    <div class="form-group local-forms">
-                                        <label for="autonomiaTx">Autonomia TX <span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="autonomiaTx" name="autonomiaTx"type="time">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-2">
-                                    <div class="form-group local-forms">
-                                        <label for="tiempoAuto">Tiempo Auto<span class="login-danger">*</span></label>
-                                        <!-- <input class="form-control" [(ngModel)]="tiempoAuto" name="tiempoAuto" type="email"> -->
-                                        <input class="form-control" [(ngModel)]="tiempoAuto" name="tiempoAuto"type="time">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-2">
-                                    <div class="form-group local-forms">
-                                        <label for="tiempoCaminando">Tiempo Caminando<span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="tiempoCaminando" name="tiempoCaminando"type="time">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-2">
-                                    <div class="form-group local-forms">
-                                        <label for="tiempoAcceso">Tiempo Acceso<span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="tiempoAcceso" name="tiempoAcceso"type="time">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-2">
-                                    <div class="form-group local-forms">
-                                        <label for="suministro">Suministro<span class="login-danger">*</span></label>
-                                        <input class="form-control" [(ngModel)]="suministro" name="suministro" type="email">
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Consesionaria <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedConsesionaria" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Consesionaria">
-                                            <mat-option *ngFor="let data of consesionarias" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-3">
-                                    <div class="form-group local-forms">
-                                        <label>Room Type <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedRoomType" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Room Types">
-                                            <mat-option *ngFor="let data of roomtypes" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-
-                                
-                                <div class="col-12 col-md-6 col-xl-4">
-                                    <div class="form-group local-forms">
-                                        <label>Contratista <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedContratista" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Contratista">
-                                            <mat-option *ngFor="let data of contratistas" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-4">
-                                    <div class="form-group local-forms">
-                                        <label>Tipo Acceso <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedTipoAcceso" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Tipo Acceso">
-                                            <mat-option *ngFor="let data of tipoAcceso" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-4">
-                                    <div class="form-group local-forms">
-                                        <label>Prioridad <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedPrioridad" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Prioridad">
-                                            <mat-option *ngFor="let data of prioridad" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-xl-4">
-                                    <div class="form-group local-forms">
-                                        <label>Tipo Energia <span class="login-danger">*</span></label>
-                                        <mat-select [(ngModel)]="selectedTipoEnergia" [ngModelOptions]="{standalone: true}"
-                                            class="form-control select" placeholder="Seleccione Tipo Energia">
-                                            <mat-option *ngFor="let data of tipoEnergia" [value]="data.id">
-                                                {{data.nombre}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12 col-sm-12">
-                                    <div class="form-group local-forms">
-                                        <label for="observacion">Observación <span class="login-danger">*</span></label>
-                                        <textarea class="form-control" [(ngModel)]="observacion" name="observacion" rows="3"
-                                            cols="30"></textarea>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-
-                                    <div class="form-group row my-4" *ngIf="text_success">
-                                        <div class="col-md-8">
-                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                <strong>!</strong> {{ text_success }}
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true"> </span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row my-4" *ngIf="text_validation">
-                                        <div class="col-md-8">
-                                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                                <strong>!</strong> {{ text_validation }}
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true"> </span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="doctor-submit text-end">
-                                        <button type="button" (click)="save()"
-                                            class="btn btn-primary submit-form me-2">Guardar</button>
-                                        <!-- <button type="submit" class="btn btn-primary cancel-form">Cancel</button>-->
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <form>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-heading">
+                    <h4>Agregar Sites</h4>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="codigo"
+                      >Codigo <span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="codigo"
+                      name="codigo"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="nombre"
+                      >Nombre <span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="nombre"
+                      name="nombre"
+                      type="text"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="latitud"
+                      >Latitud <span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="latitud"
+                      name="latitud"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="longitud"
+                      >Longitud <span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="longitud"
+                      name="longitud"
+                      type="text"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Departamento
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedDepartamento"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Departamento"
+                      (selectionChange)="provincia()"
+                    >
+                      <mat-option
+                        *ngFor="let data of departamentos"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Provincia <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedProvincia"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Provincia"
+                      (selectionChange)="distrito()"
+                    >
+                      <mat-option
+                        *ngFor="let data of provincias"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Distrito <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedDistrito"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Distrito"
+                    >
+                      <mat-option
+                        *ngFor="let data of distritos"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Municipalidad
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedMunicipalidad"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Municipalidad"
+                    >
+                      <mat-option
+                        *ngFor="let data of municipalidades"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-12">
+                  <div class="form-group local-forms">
+                    <mat-label for="direccion"
+                      >Direccion <span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="direccion"
+                      name="direccion"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Tipo Site <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedTipoSite"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Tipo Site"
+                    >
+                      <mat-option
+                        *ngFor="let data of tiposites"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Zona <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedZona"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Zona"
+                    >
+                      <mat-option *ngFor="let data of zonas" [value]="data.id">
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Region <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedRegion"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Región"
+                    >
+                      <mat-option
+                        *ngFor="let data of regions"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Region Geografica
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedRegionGeo"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Región Geografica"
+                    >
+                      <mat-option
+                        *ngFor="let data of regionGeograficas"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-2">
+                  <div class="form-group local-forms">
+                    <mat-label for="tiemposla"
+                      >Tiempo SLA <span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="tiempoSla"
+                      name="tiempoSla"
+                      type="time"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-2">
+                  <div class="form-group local-forms">
+                    <mat-label for="autonomiaBts"
+                      >Autonomia BTS
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="autonomiaBts"
+                      name="autonomiaBts"
+                      type="time"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-2">
+                  <div class="form-group local-forms">
+                    <mat-label for="autonomiaTx"
+                      >Autonomia TX
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="autonomiaTx"
+                      name="autonomiaTx"
+                      type="time"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-2">
+                  <div class="form-group local-forms">
+                    <mat-label for="tiempoAuto"
+                      >Tiempo Auto<span class="login-danger">*</span></mat-label
+                    >
+                    <!-- <input class="form-control" [(ngModel)]="tiempoAuto" name="tiempoAuto" type="email"> -->
+                    <input
+                      class="form-control"
+                      [(ngModel)]="tiempoAuto"
+                      name="tiempoAuto"
+                      type="time"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-2">
+                  <div class="form-group local-forms">
+                    <mat-label for="tiempoCaminando"
+                      >Tiempo Caminando<span class="login-danger"
+                        >*</span
+                      ></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="tiempoCaminando"
+                      name="tiempoCaminando"
+                      type="time"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-2">
+                  <div class="form-group local-forms">
+                    <mat-label for="tiempoAcceso"
+                      >Tiempo Acceso<span class="login-danger"
+                        >*</span
+                      ></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="tiempoAcceso"
+                      name="tiempoAcceso"
+                      type="time"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-2">
+                  <div class="form-group local-forms">
+                    <mat-label for="suministro"
+                      >Suministro<span class="login-danger">*</span></mat-label
+                    >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="suministro"
+                      name="suministro"
+                      type="email"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Consesionaria
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedConsesionaria"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Consesionaria"
+                    >
+                      <mat-option
+                        *ngFor="let data of consesionarias"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Room Type <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedRoomType"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Room Types"
+                    >
+                      <mat-option
+                        *ngFor="let data of roomtypes"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Contratista
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedContratista"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Contratista"
+                    >
+                      <mat-option
+                        *ngFor="let data of contratistas"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Tipo Acceso
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedTipoAcceso"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Tipo Acceso"
+                    >
+                      <mat-option
+                        *ngFor="let data of tipoAcceso"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Prioridad <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedPrioridad"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Prioridad"
+                    >
+                      <mat-option
+                        *ngFor="let data of prioridad"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label
+                      >Tipo Energia
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <mat-select
+                      [(ngModel)]="selectedTipoEnergia"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control select"
+                      placeholder="Seleccione Tipo Energia"
+                    >
+                      <mat-option
+                        *ngFor="let data of tipoEnergia"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+
+                <div class="col-12 col-sm-12">
+                  <div class="form-group local-forms">
+                    <mat-label for="observacion"
+                      >Observación
+                      <span class="login-danger">*</span></mat-label
+                    >
+                    <textarea
+                      class="form-control"
+                      [(ngModel)]="observacion"
+                      name="observacion"
+                      rows="3"
+                      cols="30"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="form-group row my-4" *ngIf="text_success">
+                    <div class="col-md-8">
+                      <div
+                        class="alert alert-success alert-dismissible fade show"
+                        role="alert"
+                      >
+                        <strong>!</strong> {{ text_success }}
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="alert"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true"> </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row my-4" *ngIf="text_validation">
+                    <div class="col-md-8">
+                      <div
+                        class="alert alert-warning alert-dismissible fade show"
+                        role="alert"
+                      >
+                        <strong>!</strong> {{ text_validation }}
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="alert"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true"> </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="doctor-submit text-end">
+                    <button
+                      type="button"
+                      (click)="save()"
+                      class="btn btn-primary submit-form me-2"
+                    >
+                      Guardar
+                    </button>
+                    <!-- <button type="submit" class="btn btn-primary cancel-form">Cancel</button>-->
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

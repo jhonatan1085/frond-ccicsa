@@ -11,42 +11,42 @@ import { AddCuadrillaComponent } from '../add-cuadrilla/add-cuadrilla.component'
   templateUrl: './list-cuadrilla.component.html',
   styleUrls: ['./list-cuadrilla.component.scss'],
 })
-
 export class ListCuadrillaComponent implements OnInit {
-  public cuadrillasList: Cuadrilla[] = [];
+  cuadrillasList: Cuadrilla[] = [];
   dataSource!: MatTableDataSource<Cuadrilla>;
 
-  public searchDataValue = '';
-  public cuenta = 0;
+  searchDataValue = '';
+  cuenta = 0;
 
-  CUADRILLA_SELECTED: any;
+  CUADRILLA_SELECTED?: Cuadrilla;
 
-  public showFilter = false;
-  public lastIndex = 0;
-  public pageSize = 10;
-  public totalData = 0;
-  public skip = 0;
-  public limit: number = this.pageSize;
-  public pageIndex = 0;
-  public serialNumberArray: number[] = [];
-  public currentPage = 1;
-  public pageNumberArray: number[] = [];
-  public pageSelection: any[] = [];
-  public totalPages = 0;
-  public cuadrilla_generals: Cuadrilla[] = [];
-  public cuadrilla_selected?: Cuadrilla;
+  showFilter = false;
+  lastIndex = 0;
+  pageSize = 10;
+  totalData = 0;
+  skip = 0;
+  limit: number = this.pageSize;
+  pageIndex = 0;
+  serialNumberArray: number[] = [];
+  currentPage = 1;
+  pageNumberArray: number[] = [];
+  pageSelection: any[] = [];
+  totalPages = 0;
+  cuadrilla_generals: Cuadrilla[] = [];
+  cuadrilla_selected?: Cuadrilla;
 
   constructor(
-    public cuadrillaService: CuadrillaService,
+    private cuadrillaService: CuadrillaService,
     private _snackBar: MatSnackBar,
-    public dialog: MatDialog
-  ) { }
+    private dialog: MatDialog
+  ) {}
   ngOnInit() {
     this.getTableData();
   }
 
   openDialog() {
-    this.dialog.open(AddCuadrillaComponent);
+    const ref = this.dialog.open(AddCuadrillaComponent);
+    ref.afterClosed().subscribe(() => this.getTableData());
   }
 
   public getTableData(page = 1): void {
@@ -188,6 +188,4 @@ export class ListCuadrillaComponent implements OnInit {
   public deleteUser() {
     console.log('hola');
   }
-
-
 }

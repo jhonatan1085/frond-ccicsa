@@ -6,7 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { materialModule } from 'src/app/shared/material.module';
+import { MaterialModule } from 'src/app/shared/material.module';
 import { AddCuadrillaComponent } from './add-cuadrilla/add-cuadrilla.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ListCuadrillaComponent } from './list-cuadrilla/list-cuadrilla.component';
@@ -14,19 +14,19 @@ import { ListCuadrillaComponent } from './list-cuadrilla/list-cuadrilla.componen
   declarations: [
     CuadrillaComponent,
     ListCuadrillaComponent,
-    AddCuadrillaComponent
+    AddCuadrillaComponent,
   ],
   imports: [
     CommonModule,
     CuadrillaRoutingModule,
     SharedModule,
-    materialModule,
+    MaterialModule,
     //
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    MatTooltipModule
-  ]
+    MatTooltipModule,
+  ],
 })
-export class CuadrillaModule { }
+export class CuadrillaModule {}

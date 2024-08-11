@@ -8,13 +8,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { materialModule } from 'src/app/shared/material.module';
+import { MaterialModule } from 'src/app/shared/material.module';
 import { ListBitacorasComponent } from './list-bitacoras/list-bitacoras.component';
 import { ViewBitacorasComponent } from './view-bitacoras/view-bitacoras.component';
 import { AddDetalleBitacorasComponent } from './add-detalle-bitacoras/add-detalle-bitacoras.component';
 import { EndBitacorasComponent } from './end-bitacoras/end-bitacoras.component';
 import { LocationBitacorasComponent } from './location-bitacoras/location-bitacoras.component';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     BitacorasComponent,
@@ -23,20 +23,19 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ViewBitacorasComponent,
     AddDetalleBitacorasComponent,
     EndBitacorasComponent,
-    LocationBitacorasComponent
+    LocationBitacorasComponent,
   ],
   imports: [
     CommonModule,
     BitacorasRoutingModule,
     SharedModule,
-    materialModule,
+    MaterialModule,
     //
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    MatTooltipModule
-    
-  ]
+    MatTooltipModule,
+  ],
 })
-export class BitacorasModule { }
+export class BitacorasModule {}

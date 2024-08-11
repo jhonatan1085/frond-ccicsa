@@ -11,45 +11,41 @@ interface Route {
 @Component({
   selector: 'app-cicsa',
   templateUrl: './cicsa.component.html',
-  styleUrls: ['./cicsa.component.scss']
+  styleUrls: ['./cicsa.component.scss'],
 })
 export class CicsaComponent {
-  public miniSidebar = 'false';
-  public expandMenu = 'false';
-  public mobileSidebar = 'false';
+  public miniSidebar = false;
+  public expandMenu = false;
+  public mobileSidebar = false;
   public sideBarActivePath = false;
   public headerActivePath = false;
   base = '';
   page = '';
   currentUrl = '';
 
-  constructor(private sideBar: SideBarService, public router: Router, private data: DataService,) {
-    this.sideBar.toggleSideBar.subscribe((res: string) => {
-      if (res == 'true') {
-        this.miniSidebar = 'true';
-      } else {
-        this.miniSidebar = 'false';
-      }
+  constructor(
+    private sideBar: SideBarService,
+    public router: Router,
+    private data: DataService
+  ) {
+    this.sideBar.toggleSideBar.subscribe((res) => {
+      this.miniSidebar = res;
     });
 
-    this.sideBar.toggleMobileSideBar.subscribe((res: string) => {
-      if (res == 'true' || res == 'true') {
-        this.mobileSidebar = 'true';
-      } else {
-        this.mobileSidebar = 'false';
-      }
+    this.sideBar.toggleMobileSideBar.subscribe((res) => {
+      this.mobileSidebar = res;
     });
 
-    this.sideBar.expandSideBar.subscribe((res: string) => {
+    this.sideBar.expandSideBar.subscribe((res) => {
       this.expandMenu = res;
-      if (res == 'false' && this.miniSidebar == 'true') {
+      if (!res && this.miniSidebar) {
         this.data.sideBar.map((mainMenus: SideBarData) => {
           mainMenus.menu.map((resMenu: MenuItem) => {
             resMenu.showSubRoute = false;
           });
         });
       }
-      if (res == 'true' && this.miniSidebar == 'true') {
+      if (res && this.miniSidebar) {
         this.data.sideBar.map((mainMenus: SideBarData) => {
           mainMenus.menu.map((resMenu: MenuItem) => {
             const menuValue = sessionStorage.getItem('menuValue');
@@ -68,9 +64,7 @@ export class CicsaComponent {
     this.sideBar.switchMobileSideBarPosition();
   }
   private getRoutes(route: Route): void {
-    if (
-      route.url.split('/')[2] === 'confirm-mail'
-    ) {
+    if (route.url.split('/')[2] === 'confirm-mail') {
       this.sideBarActivePath = false;
       this.headerActivePath = false;
     } else {

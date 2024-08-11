@@ -11,46 +11,41 @@ interface Route {
 @Component({
   selector: 'app-core',
   templateUrl: './core.component.html',
-  styleUrls: ['./core.component.scss']
+  styleUrls: ['./core.component.scss'],
 })
 export class CoreComponent {
-  public miniSidebar = 'false';
-  public expandMenu = 'false';
-  public mobileSidebar = 'false';
+  public miniSidebar = false;
+  public expandMenu = false;
+  public mobileSidebar = false;
   public sideBarActivePath = false;
   public headerActivePath = false;
   base = '';
   page = '';
   currentUrl = '';
 
-  constructor(private sideBar: SideBarService,public router: Router,private data: DataService,) 
-  {
-    this.sideBar.toggleSideBar.subscribe((res: string) => {
-      if (res == 'true') {
-        this.miniSidebar = 'true';
-      } else {
-        this.miniSidebar = 'false';
-      }
+  constructor(
+    public sideBar: SideBarService,
+    public router: Router,
+    public data: DataService
+  ) {
+    this.sideBar.toggleSideBar.subscribe((res: boolean) => {
+      this.miniSidebar = res;
     });
 
-    this.sideBar.toggleMobileSideBar.subscribe((res: string) => {
-      if (res == 'true' || res == 'true') {
-        this.mobileSidebar = 'true';
-      } else {
-        this.mobileSidebar = 'false';
-      }
+    this.sideBar.toggleMobileSideBar.subscribe((res: boolean) => {
+      this.mobileSidebar = res;
     });
 
-    this.sideBar.expandSideBar.subscribe((res: string) => {
+    this.sideBar.expandSideBar.subscribe((res: boolean) => {
       this.expandMenu = res;
-      if (res == 'false' && this.miniSidebar == 'true') {
+      if (res == false && this.miniSidebar == true) {
         this.data.sideBar.map((mainMenus: SideBarData) => {
           mainMenus.menu.map((resMenu: MenuItem) => {
             resMenu.showSubRoute = false;
           });
         });
       }
-      if (res == 'true' && this.miniSidebar == 'true') {
+      if (res == true && this.miniSidebar == true) {
         this.data.sideBar.map((mainMenus: SideBarData) => {
           mainMenus.menu.map((resMenu: MenuItem) => {
             const menuValue = sessionStorage.getItem('menuValue');
@@ -69,9 +64,7 @@ export class CoreComponent {
     this.sideBar.switchMobileSideBarPosition();
   }
   private getRoutes(route: Route): void {
-    if (
-      route.url.split('/')[2] === 'confirm-mail'
-    ) {
+    if (route.url.split('/')[2] === 'confirm-mail') {
       this.sideBarActivePath = false;
       this.headerActivePath = false;
     } else {

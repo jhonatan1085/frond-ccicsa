@@ -27,7 +27,7 @@ export class SiteService extends AbstractCrudService<Site> {
     return this.http.get<Page<Distrito>>(URL, { headers: headers });
   }
 
-  showSiteAutocomplete(site_search = '') {
+  autocomplete(site_search = '') {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/autocomplete?search=${site_search}`;
     return this.http.get<Page<Site>>(URL, { headers: headers });
