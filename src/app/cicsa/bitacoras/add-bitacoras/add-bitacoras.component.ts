@@ -19,6 +19,8 @@ import { SiteService } from '../../services/site.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { AddCuadrillaComponent } from '../../cuadrilla/add-cuadrilla/add-cuadrilla.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AlertComponent } from 'src/app/shared/alert/alert.component';
+import { AlertService } from 'src/app/shared/alert/alert.service';
 
 @Component({
   selector: 'app-add-bitacoras',
@@ -104,7 +106,8 @@ export class AddBitacorasComponent implements OnInit {
     private router: Router,
     private activateRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private alertService: AlertService
   ) {
     this.datosForm = this.fb.group({
       nombre: [null, Validators.required],
@@ -160,12 +163,14 @@ export class AddBitacorasComponent implements OnInit {
         // brigadas form
         this.brigadasForm.reset();
         this.bitacora.brigadas.forEach((brigada) => {
-          console.log(brigada);
           this.addBrigada(brigada);
         });
 
         ////////////////////////////////
-        this.responsablesForm.patchValue(this.bitacora);
+        this.responsablesForm.patchValue({
+          resp_cicsa_id: this.bitacora.resp_cicsa.id,
+          resp_claro_id: this.bitacora.resp_claro.id,
+        });
         //
         this.getSites();
       });
@@ -323,7 +328,7 @@ export class AddBitacorasComponent implements OnInit {
 
     if (this.bitacora) {
       this.site = this.sites.find((s) => s.id === this.bitacora.site.id);
-      this.siteControl.patchValue(this.site);
+      if (this.site) this.onSetSite(this.site);
     }
   }
 
@@ -338,7 +343,7 @@ export class AddBitacorasComponent implements OnInit {
     return value ? value.nombre : undefined;
   }
 
-  detalleSite(value: Site) {
+  onSetSite(value: Site) {
     if (!this.bitacora) return;
     this.siteForm.patchValue({ site_id: value.id });
     this.bitacora.site = value;
@@ -407,7 +412,20 @@ export class AddBitacorasComponent implements OnInit {
       JSON.stringify(this.cuadrillaForm.value.cuadrillas)
     );
     */
-
+    if (this.bitacora.id) {
+      this.bitacoraService
+        .update(this.bitacora.id, result)
+        .subscribe((resp) => {
+          console.log(resp);
+          if (resp.message == 403) {
+            this.snackBar('Falta ingresar datos');
+          } else {
+            this.snackBar('Registro Exitoso');
+            this.router.navigate(['/bitacoras/list-bitacora']);
+          }
+        });
+      return;
+    }
     this.bitacoraService.create(result).subscribe((resp) => {
       console.log(resp);
       if (resp.message == 403) {
@@ -423,6 +441,26 @@ export class AddBitacorasComponent implements OnInit {
     const ref = this.dialog.open(AddCuadrillaComponent);
     ref.afterClosed().subscribe(() => {
       this.getTableData();
+    });
+  }
+
+  onDelete() {
+    this.alertService.alert({
+      title: 'Borrar Bitacora',
+      message: '¿Estás seguro de borrar la bitacora?',
+      buttons: [
+        { text: 'Cancelar' },
+        {
+          text: 'Borrar',
+          color: 'warn',
+          action: () => {
+            this.bitacoraService.delete(this.bitacora.id).subscribe(() => {
+              this.snackBar('Bitacora Borrada');
+              this.router.navigate(['bitacoras/list-bitacora']);
+            });
+          },
+        },
+      ],
     });
   }
 

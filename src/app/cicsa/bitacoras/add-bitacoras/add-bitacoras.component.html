@@ -62,7 +62,7 @@
                         </mat-label>
                         <input
                           formControlName="fecha_inicial"
-                          class="form-control datetimepicker"
+                          class="form-control"
                           name="fecha_inicial"
                           type="text"
                           matInput
@@ -71,6 +71,7 @@
                         <mat-datepicker #picker></mat-datepicker>
                         <mat-datepicker-toggle
                           matIconSuffix
+                          class="mt-4"
                           [for]="picker"
                         ></mat-datepicker-toggle>
                       </div>
@@ -247,7 +248,7 @@
                           <mat-option
                             *ngFor="let option of filteredSites | async"
                             [value]="option"
-                            (click)="detalleSite(option)"
+                            (click)="onSetSite(option)"
                           >
                             {{ option.codigo }} - {{ option.nombre }}
                           </mat-option>
@@ -706,9 +707,8 @@
                                         class="example-radio-button"
                                         *ngFor="let data of responsables_cicsa"
                                         [value]="data.id"
-                                        >{{ data.name }}
-                                        {{ data.surname }}</mat-radio-button
-                                      >
+                                        >{{ data.name }} {{ data.surname }}
+                                      </mat-radio-button>
                                     </mat-radio-group>
                                   </td>
                                   <td style="text-align: center !important">
@@ -721,9 +721,8 @@
                                         class="example-radio-button"
                                         *ngFor="let data of responsables_claro"
                                         [value]="data.id"
-                                        >{{ data.name }}
-                                        {{ data.surname }}</mat-radio-button
-                                      >
+                                        >{{ data.name }} {{ data.surname }}
+                                      </mat-radio-button>
                                     </mat-radio-group>
                                   </td>
                                 </tr>
@@ -756,17 +755,15 @@
                 </mat-expansion-panel>
               </mat-accordion>
             </form>
-            <div class="row">
-              <div class="col-6">
-                <pre>{{ datosForm.value | json }}</pre>
-                <pre>{{ siteForm.value | json }}</pre>
-                <pre>{{ brigadasForm.value | json }}</pre>
-                <pre>{{ responsablesForm.value | json }}</pre>
-              </div>
-              <div class="col-6">
-                <pre>{{ bitacora | json }}</pre>
-                <pre>{{ site | json }}</pre>
-              </div>
+            <div *ngIf="bitacora.id" class="col-12 d-flex">
+              <button
+                class="ms-auto mt-2"
+                mat-button
+                color="warn"
+                (click)="onDelete()"
+              >
+                Eliminar
+              </button>
             </div>
           </div>
         </div>

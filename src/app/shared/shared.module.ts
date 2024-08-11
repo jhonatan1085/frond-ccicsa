@@ -16,9 +16,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from '../common-component/header/header.component';
 import { SidebarComponent } from '../common-component/sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
-  declarations: [HeaderComponent, SidebarComponent],
+  declarations: [HeaderComponent, SidebarComponent, AlertComponent],
   imports: [
     CommonModule,
     NgxBootstrapModule,
@@ -67,6 +68,7 @@ import { RouterModule } from '@angular/router';
     //NgxMaterialTimepickerModule,
     HeaderComponent,
     SidebarComponent,
+    AlertComponent,
   ],
   providers: [DataService],
 })
