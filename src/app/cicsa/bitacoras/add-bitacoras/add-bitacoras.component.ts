@@ -156,7 +156,15 @@ export class AddBitacorasComponent implements OnInit {
           site_id: resp.site.id,
           // cliente: resp.site.cliente,// de donde obtengo el cliente
         });
-        this.brigadasForm.patchValue(this.bitacora);
+        // this.brigadasForm.patchValue(this.bitacora);
+        // brigadas form
+        this.brigadasForm.reset();
+        this.bitacora.brigadas.forEach((brigada) => {
+          console.log(brigada);
+          this.addBrigada(brigada);
+        });
+
+        ////////////////////////////////
         this.responsablesForm.patchValue(this.bitacora);
         //
         this.getSites();
@@ -279,7 +287,7 @@ export class AddBitacorasComponent implements OnInit {
   }
 
   addBrigada(brigada: Cuadrilla) {
-    const brigadas = this.brigadasForm.get('cuadrillas') as FormArray;
+    const brigadas = this.brigadasForm.get('brigadas') as FormArray;
     const brigadasValue = brigadas.value;
     const INDEX = brigadasValue.findIndex(
       (item: Cuadrilla) => item.id == brigada.id
