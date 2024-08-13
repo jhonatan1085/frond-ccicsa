@@ -6,6 +6,8 @@ import { EndBitacorasComponent } from '../end-bitacoras/end-bitacoras.component'
 import { LocationBitacorasComponent } from '../location-bitacoras/location-bitacoras.component';
 import { ViewBitacorasComponent } from '../view-bitacoras/view-bitacoras.component';
 import { BitacorasService } from '../../services/bitacoras.service';
+import { AuthService } from 'src/app/shared/auth/auth.service';
+import { UserAuth } from 'src/app/shared/models/models';
 
 @Component({
   selector: 'app-list-bitacoras',
@@ -13,6 +15,8 @@ import { BitacorasService } from '../../services/bitacoras.service';
   styleUrls: ['./list-bitacoras.component.scss'],
 })
 export class ListBitacorasComponent implements OnInit{
+  public user?: UserAuth;
+  
   public bitacoras: Bitacora[] = [];
   dataSource!: MatTableDataSource<Bitacora>;
 
@@ -36,10 +40,15 @@ export class ListBitacorasComponent implements OnInit{
 
   constructor(
     public bitacoraService: BitacorasService,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    public auth: AuthService
+  ) { 
+    
+  }
 
   ngOnInit() {
+    this.user = this.auth.user
+    console.log(this.user)
     this.getTableData();
   }
 
