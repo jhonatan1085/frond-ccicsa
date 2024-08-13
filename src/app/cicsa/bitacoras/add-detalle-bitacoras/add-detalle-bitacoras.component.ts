@@ -26,7 +26,7 @@ export class AddDetalleBitacorasComponent implements OnInit {
     public activeRoute: ActivatedRoute, // para las variables enviadas al formulario
     private _snackBar: MatSnackBar,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.activeRoute.params.subscribe((resp) => {
@@ -96,7 +96,6 @@ export class AddDetalleBitacorasComponent implements OnInit {
 
   guardar() {
     console.log(this.atenciones);
-
     const formData = new FormData();
     formData.append('id', '' + this.bitacora_id);
     formData.append('atenciones', JSON.stringify(this.atenciones));
@@ -112,6 +111,10 @@ export class AddDetalleBitacorasComponent implements OnInit {
           this.router.navigate(['/bitacoras/list-bitacora']);
         }
       });
+  }
+
+  cancel() {
+    this.router.navigate(['/bitacoras/list-bitacora']);
   }
 
   snackBar(comentario: string) {
