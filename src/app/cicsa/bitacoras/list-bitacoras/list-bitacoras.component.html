@@ -15,7 +15,6 @@
       </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
       <div class="col-sm-12">
         <div class="card card-table show-entire">
@@ -85,9 +84,7 @@
                           'status-green': data.estado === '0'
                         }" class="custom-badge">{{ data.estadotext }}</a>
                     </td>
-                      
                     <td class="text-end">
-                     
                         <button  [disabled]="data.estado === '0'" class="btn btn-primary ms-1" [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]">
                           <i class="fa fa-clock"></i>
                         </button>

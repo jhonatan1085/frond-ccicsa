@@ -28,21 +28,20 @@ export class ListUsuarioComponent implements OnInit {
   public pageSelection: any[] = [];
   public totalPages = 0;
 
-  public role_generals: any[] = [];
-  public staff_selected: any;
+  public users_generals: any[] = [];
+  public user_selected: any;
 
   constructor(public UsuarioService: UsuariosService) {}
   ngOnInit() {
     this.getTableData();
   }
-
   private getTableData(): void {
     this.usersList = [];
     this.serialNumberArray = [];
 
     this.UsuarioService.readAll().subscribe((resp) => {
       this.totalData = resp.data.length;
-      this.role_generals = resp.data;
+      this.users_generals = resp.data;
       this.getTableDataGeneral();
     });
   }
@@ -50,7 +49,7 @@ export class ListUsuarioComponent implements OnInit {
   getTableDataGeneral() {
     this.usersList = [];
     this.serialNumberArray = [];
-    this.role_generals.map((res: any, index: number) => {
+    this.users_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
         this.usersList.push(res);
@@ -61,16 +60,16 @@ export class ListUsuarioComponent implements OnInit {
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
-  selectUser(rol: any) {
-    this.staff_selected = rol;
+  selectUser(user: any) {
+    this.user_selected = user;
   }
 
   deleteUser() {
-    this.UsuarioService.delete(this.staff_selected.id).subscribe(
+    this.UsuarioService.delete(this.user_selected.id).subscribe(
       (resp: any) => {
         console.log(resp);
         const INDEX = this.usersList.findIndex(
-          (item: any) => item.id == this.staff_selected.id
+          (item: any) => item.id == this.user_selected.id
         );
         if (INDEX != -1) {
           this.usersList.splice(INDEX, 1);
@@ -81,7 +80,7 @@ export class ListUsuarioComponent implements OnInit {
           $('body').removeClass();
           $('body').removeAttr('style');
 
-          this.staff_selected = null;
+          this.user_selected = null;
           // this.closebutton.nativeElement.click();
         }
       }
@@ -90,6 +89,7 @@ export class ListUsuarioComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public searchData(value: any): void {
+    console.log(this.dataSource)
     this.dataSource.filter = value.trim().toLowerCase();
     this.usersList = this.dataSource.filteredData;
   }

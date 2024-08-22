@@ -450,7 +450,23 @@ export class DataService {
             }, */
           ],
         },
-
+        {
+          menuValue: 'Und. Moviles',
+          hasSubRoute: true,
+          showSubRoute: false,
+          base: 'unidades-moviles',
+          img: 'assets/img/icons/menu-icon-08.svg',
+          subMenus: [
+            {
+              menuValue: 'Listar Und. Moviles',
+              route: routes.unidadesMovilesList,
+              base: routes.unidadesMovilesList,
+              permision: 'list_und',
+              show_nav: true,
+            },
+            
+          ],
+        },
         {
           menuValue: 'Settings',
           route: routes.settings,

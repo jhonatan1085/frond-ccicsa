@@ -43,27 +43,25 @@ export class ListCuadrillaComponent implements OnInit {
   ngOnInit() {
     this.getTableData();
   }
-
-  openDialog() {
-    const ref = this.dialog.open(AddCuadrillaComponent);
-    ref.afterClosed().subscribe(() => this.getTableData());
-  }
-
   public getTableData(page = 1): void {
     this.cuadrillasList = [];
     this.serialNumberArray = [];
 
     this.cuadrillaService
-      .readAll({ page, search: this.searchDataValue })
+      .readAll()
       .subscribe((resp) => {
         console.log(resp);
-        this.totalData = resp.total;
-        this.cuadrillasList = resp.data;
-        this.dataSource = new MatTableDataSource<any>(this.cuadrillasList);
-        this.calculateTotalPages(this.totalData, this.pageSize);
-        //this.getTableDataGeneral();
+        this.totalData = resp.data.length;
+        this.cuadrilla_generals = resp.data;
+        this.getTableDataGeneral();
       });
   }
+  openDialog() {
+    const ref = this.dialog.open(AddCuadrillaComponent);
+    ref.afterClosed().subscribe(() => this.getTableData());
+  }
+  
+
 
   getTableDataGeneral() {
     this.cuadrillasList = [];
@@ -79,12 +77,10 @@ export class ListCuadrillaComponent implements OnInit {
     this.calculateTotalPages(this.totalData, this.pageSize);
   }
 
-  public searchData(): void {
-    this.pageSelection = [];
-    this.limit = this.pageSize;
-    this.skip = 0;
-    this.currentPage = 1;
-    this.getTableData();
+  public searchData(value: any): void {
+    console.log(this.dataSource)
+    this.dataSource.filter = value.trim().toLowerCase();
+    this.cuadrillasList = this.dataSource.filteredData;
   }
 
   public sortData(sort: any) {
@@ -109,13 +105,13 @@ export class ListCuadrillaComponent implements OnInit {
       this.pageIndex = this.currentPage - 1;
       this.limit += this.pageSize;
       this.skip = this.pageSize * this.pageIndex;
-      this.getTableData(this.currentPage);
+      this.getTableData();
     } else if (event == 'previous') {
       this.currentPage--;
       this.pageIndex = this.currentPage - 1;
       this.limit -= this.pageSize;
       this.skip = this.pageSize * this.pageIndex;
-      this.getTableData(this.currentPage);
+      this.getTableData();
     }
   }
 
@@ -128,7 +124,7 @@ export class ListCuadrillaComponent implements OnInit {
     } else if (pageNumber < this.currentPage) {
       this.pageIndex = pageNumber + 1;
     }
-    this.getTableData(this.currentPage);
+    this.getTableData();
   }
 
   public PageSize(): void {

@@ -185,5 +185,8 @@ export class routes {
     return this.baseUrl + '/cuadrilla/list-cuadrilla';
   }
 
+  public static get unidadesMovilesList(): string {
+    return this.baseUrl + '/unidades-moviles/list-unidades-moviles';
+  }
 
 }

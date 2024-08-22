@@ -2,19 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Bitacora } from '../../modelos';
-import { EndBitacorasComponent } from '../end-bitacoras/end-bitacoras.component';
-import { LocationBitacorasComponent } from '../location-bitacoras/location-bitacoras.component';
-import { ViewBitacorasComponent } from '../view-bitacoras/view-bitacoras.component';
 import { BitacorasService } from '../../services/bitacoras.service';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { UserAuth } from 'src/app/shared/models/models';
+import { ViewBitacorasComponent } from '../../bitacoras/view-bitacoras/view-bitacoras.component';
+import { EndBitacorasComponent } from '../../bitacoras/end-bitacoras/end-bitacoras.component';
+import { LocationBitacorasComponent } from '../../bitacoras/location-bitacoras/location-bitacoras.component';
+import { AddUnidadesMovilesComponent } from '../add-unidades-moviles/add-unidades-moviles.component';
 
 @Component({
-  selector: 'app-list-bitacoras',
-  templateUrl: './list-bitacoras.component.html',
-  styleUrls: ['./list-bitacoras.component.scss'],
+  selector: 'app-list-unidades-moviles',
+  templateUrl: './list-unidades-moviles.component.html',
+  styleUrls: ['./list-unidades-moviles.component.scss']
 })
-export class ListBitacorasComponent implements OnInit{
+export class ListUnidadesMovilesComponent implements OnInit{
   public user?: UserAuth;
   
   public bitacoras: Bitacora[] = [];
@@ -158,12 +159,11 @@ export class ListBitacorasComponent implements OnInit{
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
-
-  openDialog(id: number) {
-    this.dialog.open(ViewBitacorasComponent, {
-      data: { id },
-    });
+  openDialog() {
+    const ref = this.dialog.open(AddUnidadesMovilesComponent);
+    ref.afterClosed().subscribe(() => this.getTableData());
   }
+
 
   openDialogEnd(bitacora: Bitacora) {
     this.dialog.open(EndBitacorasComponent, {

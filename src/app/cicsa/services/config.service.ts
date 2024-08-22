@@ -52,6 +52,12 @@ export interface CuadrillasConfig {
   tipobrigadas: Tipo[];
 }
 
+export interface UnidadesMovilesConfig {
+  colores: Tipo[];
+  marcas: Tipo[];
+  modelos: Tipo[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -102,4 +108,12 @@ export class ConfigService extends AbstractCrudService<Config> {
       headers,
     });
   }
+  unidadesMoviles() {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/unidades-moviles`;
+    return this.http.get<UnidadesMovilesConfig>(URL, {
+      headers,
+    });
+  }
+
 }

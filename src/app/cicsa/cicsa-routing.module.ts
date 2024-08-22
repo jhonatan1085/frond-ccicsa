@@ -28,6 +28,11 @@ const routes: Routes = [
         path:'cuadrilla',
         loadChildren: () => 
           import('./cuadrilla/cuadrilla.module').then((m) => m.CuadrillaModule),
+      },
+      {
+        path:'unidades-moviles',
+        loadChildren: () => 
+          import('./unidades-moviles/unidades-moviles.module').then((m) => m.UnidadesMovilesModule),
       }
     ]
   }
