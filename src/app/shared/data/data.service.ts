@@ -239,20 +239,6 @@ export class DataService {
               permision: '',
               show_nav: true,
             },
-            {
-              menuValue: 'Doctor Dashboard',
-              route: routes.doctorDashboard,
-              base: routes.doctorDashboard,
-              permision: '',
-              show_nav: true,
-            },
-            {
-              menuValue: 'Patient Dashboard',
-              route: routes.patientDashboard,
-              base: routes.patientDashboard,
-              permision: '',
-              show_nav: true,
-            },
           ],
         },
         {

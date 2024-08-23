@@ -54,12 +54,6 @@ export class routes {
   public static get adminDashboard(): string {
     return this.baseUrl + '/dashboard/admin-dashboard';
   }
-  public static get doctorDashboard(): string {
-    return this.baseUrl + '/dashboard/doctor-dashboard';
-  }
-  public static get patientDashboard(): string {
-    return this.baseUrl + '/dashboard/patient-dashboard';
-  }
   public static get allInvoice(): string {
     return this.baseUrl + '/invoice/all-invoice';
   }
