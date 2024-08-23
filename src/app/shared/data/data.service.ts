@@ -238,7 +238,7 @@ export class DataService {
               base: routes.adminDashboard,
               permision: '',
               show_nav: true,
-            },
+            }/* ,
             {
               menuValue: 'Doctor Dashboard',
               route: routes.doctorDashboard,
@@ -252,7 +252,7 @@ export class DataService {
               base: routes.patientDashboard,
               permision: '',
               show_nav: true,
-            },
+            }, */
           ],
         },
         {
