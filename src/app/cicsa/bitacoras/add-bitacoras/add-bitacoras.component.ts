@@ -64,24 +64,8 @@ export class AddBitacorasComponent implements OnInit {
     resp_cicsa: {} as any,
     resp_claro: {} as any,
   } as any;
-  // fecha_inicial = '';
-  // nro_sot = '';
-  // nro_incidencia = '';
-  site?: Site;
-  // codigo = '';
-  // site = '';
-  // cliente = '';
-  // region = '';
-  // departamento = '';
-  // provincia = '';
-  // distrito = '';
-  // latitud = '';
-  // longitud = '';
-  // distancia = '';
-  // zona = '';
 
-  // latitudsite = '';
-  // longitudsite = '';
+  site?: Site;
 
   tipo_Averia: Tipo[] = [];
   red: Tipo[] = [];
@@ -109,6 +93,7 @@ export class AddBitacorasComponent implements OnInit {
     private dialog: MatDialog,
     private alertService: AlertService
   ) {
+    
     this.datosForm = this.fb.group({
       nombre: [null, Validators.required],
       fecha_inicial: [null, Validators.required],
@@ -382,36 +367,7 @@ export class AddBitacorasComponent implements OnInit {
       ...this.responsablesForm.value,
     };
     console.log(result);
-    /*
-    const formData = new FormData();
-    formData.append('nombre', this.bitacora.nombre ?? '');
-    formData.append('fecha_inicial', this.bitacora.fecha_inicial ?? '');
-    formData.append('sot', this.bitacora.sot ?? '');
-    formData.append('insidencia', this.bitacora.incidencia ?? '');
-    formData.append(
-      'tipo_averia_id',
-      this.bitacora.tipo_averia?.id.toString() ?? ''
-    );
-    formData.append('latitud', this.bitacora.latitud?.toString() ?? '');
-    formData.append('longitud', this.bitacora.longitud?.toString() ?? '');
-    formData.append('distancia', this.bitacora.distancia?.toString() ?? '');
-    formData.append('red_id', this.bitacora.red?.id.toString() ?? '');
-    formData.append('serv_id', this.bitacora.serv?.id.toString() ?? '');
-    formData.append('site_id', this.bitacora.site?.id.toString() ?? '');
-    formData.append(
-      'resp_cicsa_id',
-      this.bitacora.resp_cicsa?.id.toString() ?? ''
-    );
 
-    formData.append(
-      'resp_claro_id',
-      this.bitacora.resp_claro?.id.toString() ?? ''
-    );
-    formData.append(
-      'cuadrilla',
-      JSON.stringify(this.cuadrillaForm.value.cuadrillas)
-    );
-    */
     if (this.bitacora.id) {
       this.bitacoraService
         .update(this.bitacora.id, result)

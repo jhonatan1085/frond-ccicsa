@@ -142,6 +142,12 @@ export interface Usuario {
 export interface UnidadMovil {
   id: number;
   placa: string;
+  kilometraje: number;
+  marca: Tipo;
+  modelo: Tipo;
+  color: Tipo;
+  estado: string;
+  estadotext: string;
 }
 
 export interface Atencion {

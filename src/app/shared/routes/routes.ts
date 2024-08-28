@@ -157,6 +157,14 @@ export class routes {
   }
 
 //jhonatan
+public static get liderList(): string {
+  return this.baseUrl + '/lideres/list-lideres';
+}
+
+public static get addLider(): string {
+  return this.baseUrl + '/lideres/add-lider';
+}
+
   public static get usuarioList(): string {
     return this.baseUrl + '/usuarios/list-usuario';
   }

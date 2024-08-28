@@ -33,6 +33,11 @@ const routes: Routes = [
         path:'unidades-moviles',
         loadChildren: () => 
           import('./unidades-moviles/unidades-moviles.module').then((m) => m.UnidadesMovilesModule),
+      },
+      {
+        path:'lideres',
+        loadChildren:() =>
+          import('./lideres/lideres.module').then((m) => m.LideresModule), 
       }
     ]
   }

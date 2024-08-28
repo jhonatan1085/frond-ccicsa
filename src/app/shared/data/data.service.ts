@@ -295,11 +295,37 @@ export class DataService {
           ],
         },
         {
+          menuValue: 'Lideres',
+          hasSubRoute: true,
+          showSubRoute: false,
+          base: 'lideres',
+          icon: 'fa-users',
+          faIcon: true,
+          subMenus: [
+            {
+              menuValue: 'Agregar Lider',
+              route: routes.addLider,
+              base: routes.addLider,
+              permision: 'register_lider',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Lista Lideres',
+              route: routes.liderList,
+              base: routes.liderList,
+              permision: 'list_lider',
+              show_nav: true,
+            }
+          ],
+        },
+        {
           menuValue: 'Usuarios',
           hasSubRoute: true,
           showSubRoute: false,
           base: 'staff',
-          img: 'assets/img/icons/menu-icon-08.svg',
+          //img: 'assets/img/icons/menu-icon-08.svg',
+          icon: 'fa-users',
+          faIcon: true,
           subMenus: [
             {
               menuValue: 'Agregar Usuario',
@@ -329,19 +355,16 @@ export class DataService {
               permision: 'delete_user',
               show_nav: false,
             },
-            // {
-            //   menuValue: 'Attendance',
-            //   route: routes.staffAttendance,
-            //   base: routes.staffAttendance,
-            // },
           ],
         },
+
         {
           menuValue: 'Sites',
           hasSubRoute: true,
           showSubRoute: false,
           base: 'site',
-          img: 'assets/img/icons/menu-icon-08.svg',
+          icon: 'fa-rss',
+          faIcon: true,
           subMenus: [
             {
               menuValue: 'Agregar Site',
@@ -379,7 +402,9 @@ export class DataService {
           hasSubRoute: true,
           showSubRoute: false,
           base: 'bitacoras',
-          img: 'assets/img/icons/menu-icon-08.svg',
+          //img: 'assets/img/icons/menu-icon-08.svg',
+          icon: 'fa-pencil-square',
+          faIcon: true,
           subMenus: [
             {
               menuValue: 'Lista Bitacoras',
@@ -395,21 +420,7 @@ export class DataService {
               permision: 'register_bitacora',
               show_nav: true,
             },
-            /*   */
-            /* {
-              menuValue: 'Editar Site',
-              route: '',
-              base: '',
-              permision: 'edit_site',
-              show_nav: false,
-            },
-            {
-              menuValue: 'Eliminar Site',
-              route: '',
-              base: '',
-              permision: 'delete_site',
-              show_nav: false,
-            }, */
+           
           ],
         },
         {
@@ -417,7 +428,8 @@ export class DataService {
           hasSubRoute: true,
           showSubRoute: false,
           base: 'cuadrillas',
-          img: 'assets/img/icons/menu-icon-08.svg',
+          icon: 'fa-users',
+          faIcon: true,
           subMenus: [
             {
               menuValue: 'Listar Cuadrillas',
@@ -426,28 +438,7 @@ export class DataService {
               permision: 'list_cuadrilla',
               show_nav: true,
             },
-            /*  {
-              menuValue: 'Lista Sites',
-              route: routes.siteList,
-              base: routes.siteList,
-              permision: 'list_site',
-              show_nav: true,
-            }, */
-
-            /* {
-              menuValue: 'Editar Site',
-              route: '',
-              base: '',
-              permision: 'edit_site',
-              show_nav: false,
-            },
-            {
-              menuValue: 'Eliminar Site',
-              route: '',
-              base: '',
-              permision: 'delete_site',
-              show_nav: false,
-            }, */
+            
           ],
         },
         {
@@ -455,7 +446,8 @@ export class DataService {
           hasSubRoute: true,
           showSubRoute: false,
           base: 'unidades-moviles',
-          img: 'assets/img/icons/menu-icon-08.svg',
+          icon: 'fa-car',
+          faIcon: true,
           subMenus: [
             {
               menuValue: 'Listar Und. Moviles',

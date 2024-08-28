@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Bitacora } from '../../modelos';
-import { BitacorasService } from '../../services/bitacoras.service';
+import { Bitacora, UnidadMovil } from '../../modelos';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { UserAuth } from 'src/app/shared/models/models';
-import { ViewBitacorasComponent } from '../../bitacoras/view-bitacoras/view-bitacoras.component';
 import { EndBitacorasComponent } from '../../bitacoras/end-bitacoras/end-bitacoras.component';
 import { LocationBitacorasComponent } from '../../bitacoras/location-bitacoras/location-bitacoras.component';
 import { AddUnidadesMovilesComponent } from '../add-unidades-moviles/add-unidades-moviles.component';
+import { UnidadesMovilesService } from '../../services/unidades-moviles.service';
 
 @Component({
   selector: 'app-list-unidades-moviles',
@@ -18,8 +17,8 @@ import { AddUnidadesMovilesComponent } from '../add-unidades-moviles/add-unidade
 export class ListUnidadesMovilesComponent implements OnInit{
   public user?: UserAuth;
   
-  public bitacoras: Bitacora[] = [];
-  dataSource!: MatTableDataSource<Bitacora>;
+  public unidadesMovilesList: UnidadMovil[] = [];
+  dataSource!: MatTableDataSource<UnidadMovil>;
 
   public showFilter = false;
   public searchDataValue = '';
@@ -36,15 +35,14 @@ export class ListUnidadesMovilesComponent implements OnInit{
   public pageSelection: any[] = [];
   public totalPages = 0;
 
-  bitacora_generals: Bitacora[] = [];
-  bitacora_selected?: Bitacora;
+  unidadeMovil_generals: UnidadMovil[] = [];
+  unidadeMovil_selected?: UnidadMovil;
 
   constructor(
-    public bitacoraService: BitacorasService,
+    public unidadesMovilesService: UnidadesMovilesService,
     public dialog: MatDialog,
     public auth: AuthService
   ) { 
-    
   }
 
   ngOnInit() {
@@ -54,50 +52,46 @@ export class ListUnidadesMovilesComponent implements OnInit{
   }
 
   private getTableData(page = 1): void {
-    //this.bitacoraList = [];
+    this.unidadesMovilesList = [];
     this.serialNumberArray = [];
-    this.bitacoraService
-      .readAll({ page, search: this.searchDataValue })
+
+    this.unidadesMovilesService
+      .readAll()
       .subscribe((resp) => {
-        console.log(resp);
         this.totalData = resp.total;
-        this.bitacoras = resp.data;
-        
-        this.dataSource = new MatTableDataSource<Bitacora>(this.bitacoras);
-        this.calculateTotalPages(this.totalData, this.pageSize);
+        this.unidadeMovil_generals = resp.data;
+
+        this.getTableDataGeneral();
       });
   }
 
-/*   getTableDataGeneral() {
-    this.bitacoras = [];
+   getTableDataGeneral() {
+    this.unidadesMovilesList = [];
     this.serialNumberArray = [];
-    this.bitacoras.map((res: any, index: number) => {
+    this.unidadeMovil_generals.map((res: any, index: number) => {
       const serialNumber = index + 1;
       if (index >= this.skip && serialNumber <= this.limit) {
-        this.bitacoras.push(res);
+        this.unidadesMovilesList.push(res);
         this.serialNumberArray.push(serialNumber);
       }
     });
-    this.dataSource = new MatTableDataSource<any>(this.bitacoras);
+    this.dataSource = new MatTableDataSource<UnidadMovil>(this.unidadesMovilesList);
     this.calculateTotalPages(this.totalData, this.pageSize);
-  } */
+  } 
 
-  public searchData(): void {
-    this.pageSelection = [];
-    this.limit = this.pageSize;
-    this.skip = 0;
-    this.currentPage = 1;
-
-    this.getTableData();
+  public searchData(value: any): void {
+    console.log(this.dataSource)
+    this.dataSource.filter = value.trim().toLowerCase();
+    this.unidadesMovilesList = this.dataSource.filteredData;
   }
 
   public sortData(sort: any) {
-    const data = this.bitacoras.slice();
+    const data = this.unidadesMovilesList.slice();
 
     if (!sort.active || sort.direction === '') {
-      this.bitacoras = data;
+      this.unidadesMovilesList = data;
     } else {
-      this.bitacoras = data.sort((a: any, b: any) => {
+      this.unidadesMovilesList = data.sort((a: any, b: any) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const aValue = (a as any)[sort.active];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -113,13 +107,13 @@ export class ListUnidadesMovilesComponent implements OnInit{
       this.pageIndex = this.currentPage - 1;
       this.limit += this.pageSize;
       this.skip = this.pageSize * this.pageIndex;
-      this.getTableData(this.currentPage);
+      this.getTableData();
     } else if (event == 'previous') {
       this.currentPage--;
       this.pageIndex = this.currentPage - 1;
       this.limit -= this.pageSize;
       this.skip = this.pageSize * this.pageIndex;
-      this.getTableData(this.currentPage);
+      this.getTableData();
     }
   }
 
@@ -133,7 +127,7 @@ export class ListUnidadesMovilesComponent implements OnInit{
     } else if (pageNumber < this.currentPage) {
       this.pageIndex = pageNumber + 1;
     }
-    this.getTableData(this.currentPage);
+    this.getTableData();
   }
 
   public PageSize(): void {
@@ -160,8 +154,8 @@ export class ListUnidadesMovilesComponent implements OnInit{
     }
   }
   openDialog() {
-    const ref = this.dialog.open(AddUnidadesMovilesComponent);
-    ref.afterClosed().subscribe(() => this.getTableData());
+    const ref = this.dialog.open(AddUnidadesMovilesComponent, { disableClose: true });
+    // ref.afterClosed().subscribe(() => this.getTableData()); 
   }
 
 

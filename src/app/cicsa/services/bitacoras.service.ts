@@ -14,6 +14,7 @@ import { AbstractCrudService } from './abstract-crud.service';
   providedIn: 'root',
 })
 export class BitacorasService extends AbstractCrudService<Bitacora> {
+  
   constructor(
     public override http: HttpClient,
     public override authService: AuthService

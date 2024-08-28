@@ -77,6 +77,15 @@ export class ConfigService extends AbstractCrudService<Config> {
     });
   }
 
+  
+  lideres() {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/lideres`;
+    return this.http.get<UsuariosConfig>(URL, {
+      headers,
+    });
+  }
+
   sites() {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/sites`;

@@ -15,7 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 @NgModule({
   declarations: [],
   imports: [
@@ -35,6 +35,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule,
     MatRadioModule,
     MatListModule,
+    MatCheckboxModule,
   ],
   exports: [
     CommonModule,
@@ -53,6 +54,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule,
     MatRadioModule,
     MatListModule,
+    MatCheckboxModule,
   ],
 })
 export class MaterialModule {}

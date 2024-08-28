@@ -17,8 +17,9 @@
                                     </mat-label>
                                     <mat-select formControlName="marca" class="form-control select"
                                         placeholder="Selec. Marca">
-                                        <mat-option>Toyota</mat-option>
-                                        <mat-option>Nissan</mat-option>
+                                        <mat-option *ngFor="let data of marcas" [value]="data.id">
+                                            {{ data.nombre }}
+                                          </mat-option>
                                     </mat-select>
                                 </div>
                             </div>
@@ -26,10 +27,11 @@
                                 <div class="form-group local-forms">
                                     <mat-label for="selectedRed">Modelo <span class="login-danger">*</span>
                                     </mat-label>
-                                    <mat-select formControlName="modelo" class="form-control select"
+                                    <mat-select formControlName="modelo_id" class="form-control select"
                                         placeholder="Selec. Modelo">
-                                        <mat-option>Hilux</mat-option>
-                                        <mat-option>NP-300</mat-option>
+                                        <mat-option *ngFor="let data of modelos" [value]="data.id">
+                                            {{ data.nombre }}
+                                          </mat-option>
                                     </mat-select>
                                 </div>
                             </div>
@@ -37,11 +39,11 @@
                                 <div class="form-group local-forms">
                                     <mat-label for="selectedRed">Color <span class="login-danger">*</span>
                                     </mat-label>
-                                    <mat-select formControlName="color" class="form-control select"
+                                    <mat-select formControlName="color_id" class="form-control select"
                                         placeholder="Selec. Color">
-                                        <mat-option>Blanco</mat-option>
-                                        <mat-option>Rojo</mat-option>
-                                        <mat-option>Azul</mat-option>
+                                        <mat-option *ngFor="let data of colores" [value]="data.id">
+                                            {{ data.nombre }}
+                                          </mat-option>
                                     </mat-select>
                                 </div>
                             </div>
@@ -69,5 +71,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cerrar</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Guardar</button>
+    <button mat-button [mat-dialog-close]="true" [disabled]="datosForm.invalid" cdkFocusInitial (click)="saveUnidadMovil()">Guardar</button>
 </mat-dialog-actions>

@@ -1,0 +1,245 @@
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Usuarios </a></li>
+            <li class="breadcrumb-item">
+              <i class="feather icon-chevron-right"></i>
+            </li>
+            <li class="breadcrumb-item active">Agregar Usuarios</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+              <div class="row" [formGroup]="datosForm">
+                <div class="col-12">
+                  <div class="form-heading">
+                    <h4>Agregar Usuario</h4>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="name">
+                      Nombre
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input class="form-control" formControlName="name" name="name" type="text" />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="surname">
+                      Apellidos
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input class="form-control" formControlName="surname" name="surname" type="text" />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="cel_corp">
+                      Cel. Corporativo
+                    </mat-label>
+                    <input class="form-control" formControlName="cel_corp" name="cel_corp" type="text" />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="cel_per">
+                      Celular Personal
+                    </mat-label>
+                    <input class="form-control" formControlName="cel_per" name="cel_per" type="text" />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label for="email">
+                      Email
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input class="form-control" formControlName="email" name="email" type="email" />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label for="password">
+                      Password
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input class="form-control" formControlName="password" name="password" type="password" />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label for="password">
+                      Confirm Password
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input class="form-control" formControlName="password_confirmation" name="password_confirmation"
+                      type="password" />
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-3">
+                  <div class="form-group local-forms">
+                    <mat-label for="dni">
+                      DNI
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input class="form-control" formControlName="dni" name="dni" type="text" />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label for="birth_date">Fecha de Cumpleaños
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input formControlName="birth_date" class="form-control" name="birth_date" type="text" matInput
+                      [matDatepicker]="picker" />
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-datepicker-toggle matIconSuffix class="mt-4" [for]="picker"></mat-datepicker-toggle>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group select-gender">
+                    <label for="gender" class="gen-label">Genero<span class="login-danger">*</span></label>
+                    <div class="form-check-inline">
+                      <label class="form-check-label">
+                        <input type="radio" name="gender" value="1" formControlName="gender"
+                          class="form-check-input" />Masculino
+                      </label>
+                    </div>
+                    <div class="form-check-inline">
+                      <label class="form-check-label">
+                        <input type="radio" name="gender" value="2" formControlName="gender"
+                          class="form-check-input" />Femenino
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label>Educación
+                      <span class="login-danger">*</span></mat-label>
+                    <mat-select formControlName="educacion_id" class="form-control select"
+                      placeholder="Selec. Educación">
+                      <mat-option *ngFor="let data of educacions" [value]="data.id">
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label>Roles
+                      <span class="login-danger">*</span></mat-label>
+                    <mat-select formControlName="role_id" class="form-control select" placeholder="Selec. Rol">
+                      <mat-option *ngFor="let data of roles" [value]="data.id">
+                        {{ data.name }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label>Zonas <span class="login-danger">*</span></mat-label>
+                    <mat-select formControlName="zona_id" 
+                      class="form-control select" placeholder="Seleccione Zona">
+                      <mat-option *ngFor="let data of zonas" [value]="data.id">
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12">
+                  <div class="form-group local-forms">
+                    <mat-label for="address">Dirección </mat-label>
+                    <textarea class="form-control" formControlName="address" name="address" rows="3"
+                      cols="30"></textarea>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="card-box">
+                    <div class="card-block">
+                      <h4 class="card-title">Asignar Zonas</h4>
+                      <div class="table-responsive">
+                        <table class="table mb-0">
+                          <thead>
+                            <tr>
+                              <th>Nombre Zona</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td >
+                                <div class="form-check check-tables">
+                                  <mat-checkbox >TODOS</mat-checkbox>
+                                </div>
+                              </td>
+                            </tr>
+                            <ng-container *ngFor="let zona of zonas">
+                              <tr>
+                                <td>
+                                  <div class="form-check check-tables">
+                                    <mat-checkbox (click)="addZona(zona)">{{ zona.nombre }} </mat-checkbox>
+                                  </div>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group row my-4" *ngIf="text_success">
+                    <div class="col-md-8">
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>!</strong> {{ text_success }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true"> </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row my-4" *ngIf="text_validation">
+                    <div class="col-md-8">
+                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>!</strong> {{ text_validation }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true"> </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="col-12">
+                <div class="doctor-submit text-end">
+                  <button type="button" 
+                  [disabled]="datosForm.invalid" 
+                  (click)="save()" class="btn btn-primary submit-form me-2">
+                    Guardar
+                  </button>
+                  <!-- <button type="submit" class="btn btn-primary cancel-form">Cancel</button>-->
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
