@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { LiderService } from '../../services/lider.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { filter, switchMap } from 'rxjs';
 @Component({
   selector: 'app-add-lider',
   templateUrl: './add-lider.component.html',
@@ -101,7 +102,7 @@ export class AddLiderComponent  implements OnInit {
     });
   }
   private getLiderFromParams() {
-    /*  this.activateRoute.params
+      this.activateRoute.params
       .pipe(
         filter((params) => params['id']),
         switchMap((params) => this.liderService.read(params['id']))
@@ -110,11 +111,11 @@ export class AddLiderComponent  implements OnInit {
         this.lider = resp;
         this.datosForm.patchValue({
           ...this.lider, //los campos que tiene bitacora
-          role_id: resp.role.id, //campos especiales
-          zona_id: resp.zona.id,
-          educacion_id: resp.educacion.id,
+          role_id: resp.role_id, //campos especiales
+          zona_id: resp.zona_id,
+          educacion_id: resp.educacion_id,
         });
-      });  */
+      });  
   }
 
   addZona(zona: Tipo) {
