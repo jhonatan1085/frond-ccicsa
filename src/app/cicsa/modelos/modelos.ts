@@ -137,6 +137,7 @@ export interface Usuario {
   role_id?: number | string;
   zona_id?: number | string;
   educacion_id?: number | string;
+  zonas?: Tipo[];
 }
 
 export interface UnidadMovil {

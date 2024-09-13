@@ -56,7 +56,7 @@ export class AddLiderComponent  implements OnInit {
 
 
   datosForm: FormGroup;
-  zonasForm: FormGroup;
+  //zonasForm: FormGroup;
 
   constructor(
     public usuariosService: UsuariosService,
@@ -82,10 +82,11 @@ export class AddLiderComponent  implements OnInit {
       role_id: [null, Validators.required],
       educacion_id: [null, Validators.required],
       zona_id: [null, Validators.required],
-    });
-   this.zonasForm = this.fb.group({
       zonas: this.fb.array([], Validators.required),
     });
+   /* this.zonasForm = this.fb.group({
+      zonas: this.fb.array([], Validators.required),
+    }); */
   }
 
   ngOnInit(): void {
@@ -108,21 +109,25 @@ export class AddLiderComponent  implements OnInit {
         switchMap((params) => this.liderService.read(params['id']))
       )
       .subscribe((resp) => {
+        console.log(resp)
         this.lider = resp;
         this.datosForm.patchValue({
           ...this.lider, //los campos que tiene bitacora
-          role_id: resp.role_id, //campos especiales
-          zona_id: resp.zona_id,
-          educacion_id: resp.educacion_id,
+          role_id: resp.role?.id, //campos especiales
+          zona_id: resp.zona?.id,
+          educacion_id: resp.educacion?.id,
         });
+         this.lider.zonas?.forEach((zonas) => {
+          this.addZona(zonas);
+        }); 
       });  
   }
 
   addZona(zona: Tipo) {
     
-    const zonas = this.zonasForm.get('zonas') as FormArray;
-    const brigadasValue = zonas.value;
-    const INDEX = brigadasValue.findIndex(
+    const zonas = this.datosForm.get('zonas') as FormArray;
+    const zonasValue = zonas.value;
+    const INDEX = zonasValue.findIndex(
       (item: Tipo) => item.id == zona.id
     );
     if (INDEX != -1) {
@@ -135,14 +140,47 @@ export class AddLiderComponent  implements OnInit {
         })
       );
     }
+
+    console.log(zonas.value)
   }
+
+  isCheck(lider: Tipo) {
+    const INDEX = this.lider.zonas?.findIndex(
+      (li) => li.id == lider.id
+    );
+    if (INDEX != -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
   save() {
     const result = {
       ...this.lider,
       ...this.datosForm.value,
-      ...this.zonasForm.value,
+      //...this.zonasForm.value,
     };
+
+    if (this.lider.id) {
+      this.liderService
+        .update(this.lider.id, result)
+        .subscribe((resp) => {
+          console.log(resp);
+
+          
+          if (resp.message == 403) {
+            this.snackBar('Falta ingresar datos');
+          } else {
+            this.snackBar('Registro Exitoso');
+            this.router.navigate(['/lideres/list-lideres']);
+          }
+        });
+      return;
+    }
+
+
 
     this.liderService.create(result).subscribe((resp) => {
       console.log(resp);

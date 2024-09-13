@@ -16,6 +16,10 @@ const routes: Routes = [
       {
         path:'list-lideres',
         component:ListLideresComponent
+      },
+      {
+        path:'edit-lider/:id',
+        component:AddLiderComponent
       }
     ]
   }

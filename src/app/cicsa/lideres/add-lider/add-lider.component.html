@@ -109,7 +109,9 @@
                     <mat-datepicker #picker></mat-datepicker>
                     <mat-datepicker-toggle matIconSuffix class="mt-4" [for]="picker"></mat-datepicker-toggle>
                   </div>
+
                 </div>
+
                 <div class="col-12 col-md-6 col-xl-4">
                   <div class="form-group select-gender">
                     <label for="gender" class="gen-label">Genero<span class="login-danger">*</span></label>
@@ -191,7 +193,7 @@
                               <tr>
                                 <td>
                                   <div class="form-check check-tables">
-                                    <mat-checkbox (click)="addZona(zona)">{{ zona.nombre }} </mat-checkbox>
+                                    <mat-checkbox (click)="addZona(zona)" [checked]="isCheck(zona)">{{ zona.nombre }} </mat-checkbox>
                                   </div>
                                 </td>
                               </tr>
@@ -231,6 +233,7 @@
                 <div class="doctor-submit text-end">
                   <button type="button" 
                   [disabled]="datosForm.invalid" 
+                  
                   (click)="save()" class="btn btn-primary submit-form me-2">
                     Guardar
                   </button>
