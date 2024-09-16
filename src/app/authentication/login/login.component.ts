@@ -15,11 +15,11 @@ export class LoginComponent {
   public ERROR = false;
 
   form = new FormGroup({
-    email: new FormControl('jhonatan1085@gmail.com', [
+    email: new FormControl('', [
       Validators.required,
       Validators.email,
     ]),
-    password: new FormControl('12345678', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
   });
 
   get f() {
