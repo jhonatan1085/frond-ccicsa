@@ -5,8 +5,8 @@ import { MenuItem, SideBarData, UserAuth } from 'src/app/shared/models/models';
 import { routes } from 'src/app/shared/routes/routes';
 import { SideBarService } from 'src/app/shared/side-bar/side-bar.service';
 
-const userStorageTag = 'user';
-const adminRole = 'Admin';
+let userStorageTag = 'user';
+let adminRole = 'Admin';
 
 @Component({
   selector: 'app-sidebar',
@@ -33,13 +33,13 @@ export class SidebarComponent {
     const USER = localStorage.getItem(userStorageTag);
     this.user = JSON.parse(USER ?? '');
     //inicio
-    if (this.user.roles.includes(adminRole)) {
+    if (this.user && this.user.roles.includes(adminRole)) {
       this.sidebarData = this.data.sideBar;
     } else {
       //vamos a filtrar y validar que opciones puede ver ese rol
-      const permissions = this.user.permissions;
+      let permissions = this.user.permissions;
 
-      const SIDE_BAR_G: SideBarData[] = [];
+      let SIDE_BAR_G: SideBarData[] = [];
 
       this.data.sideBar.forEach((side) => {
         const SIDE_B: unknown[] = [];

@@ -238,7 +238,7 @@ export class DataService {
               base: routes.adminDashboard,
               permision: '',
               show_nav: true,
-            }/* ,
+            } ,
             {
               menuValue: 'Doctor Dashboard',
               route: routes.doctorDashboard,
@@ -252,7 +252,7 @@ export class DataService {
               base: routes.patientDashboard,
               permision: '',
               show_nav: true,
-            }, */
+            }, 
           ],
         },
         {
@@ -315,6 +315,20 @@ export class DataService {
               base: routes.liderList,
               permision: 'list_lider',
               show_nav: true,
+            },
+            {
+              menuValue: 'Editar Lideres',
+              route: '',
+              base: '',
+              permision: 'edit_lider',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Eliminar Lideres',
+              route: '',
+              base: '',
+              permision: 'delete_lider',
+              show_nav: false,
             }
           ],
         },
@@ -420,6 +434,41 @@ export class DataService {
               permision: 'register_bitacora',
               show_nav: true,
             },
+            {
+              menuValue: 'Agregar Detalle Bitacora',
+              route: '',
+              base: '',
+              permision: 'detalle_bitacora',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Localizacion Bitacora',
+              route: '',
+              base: '',
+              permision: 'location_bitacora',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Ver Bitacora',
+              route: '',
+              base: '',
+              permision: 'view_bitacora',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Finalizar Bitacora',
+              route: '',
+              base: '',
+              permision: 'end_bitacora',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Eliminar Bitacora',
+              route: '',
+              base: '',
+              permision: 'delete_bitacora',
+              show_nav: false,
+            }
            
           ],
         },
@@ -438,6 +487,27 @@ export class DataService {
               permision: 'list_cuadrilla',
               show_nav: true,
             },
+            {
+              menuValue: 'Registrar Cuadrillas',
+              route: '',
+              base: '',
+              permision: 'register_cuadrilla',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Editar Cuadrillas',
+              route: '',
+              base: '',
+              permision: 'edit_cuadrilla',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Eliminar Cuadrillas',
+              route: '',
+              base: '',
+              permision: 'delete_cuadrilla',
+              show_nav: false,
+            }
             
           ],
         },
