@@ -523,9 +523,30 @@ export class DataService {
               menuValue: 'Listar Und. Moviles',
               route: routes.unidadesMovilesList,
               base: routes.unidadesMovilesList,
-              permision: 'list_und',
+              permision: 'list_und_movil',
               show_nav: true,
             },
+            {
+              menuValue: 'Registrar Cuadrillas',
+              route: '',
+              base: '',
+              permision: 'register_und_movil',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Editar Cuadrillas',
+              route: '',
+              base: '',
+              permision: 'edit_und_movil',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Eliminar Cuadrillas',
+              route: '',
+              base: '',
+              permision: 'delete_und_movil',
+              show_nav: false,
+            }
             
           ],
         },

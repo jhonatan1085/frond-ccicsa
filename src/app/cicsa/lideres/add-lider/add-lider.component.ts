@@ -18,7 +18,7 @@ import { filter, switchMap } from 'rxjs';
   templateUrl: './add-lider.component.html',
   styleUrls: ['./add-lider.component.scss']
 })
-export class AddLiderComponent  implements OnInit {
+export class AddLiderComponent implements OnInit {
   public selectedValue!: string;
   public selectedEducacion!: string;
   public selectedZona!: string;
@@ -56,6 +56,7 @@ export class AddLiderComponent  implements OnInit {
 
 
   datosForm: FormGroup;
+  allComplete: boolean = false;
   //zonasForm: FormGroup;
 
   constructor(
@@ -73,7 +74,7 @@ export class AddLiderComponent  implements OnInit {
       email: [null, Validators.required],
       cel_corp: [],
       cel_per: [],
-      dni:  [null, Validators.required],
+      dni: [null, Validators.required],
       birth_date: [null, Validators.required],
       gender: [],
       address: [],
@@ -84,16 +85,16 @@ export class AddLiderComponent  implements OnInit {
       zona_id: [null, Validators.required],
       zonas: this.fb.array([], Validators.required),
     });
-   /* this.zonasForm = this.fb.group({
-      zonas: this.fb.array([], Validators.required),
-    }); */
+    /* this.zonasForm = this.fb.group({
+       zonas: this.fb.array([], Validators.required),
+     }); */
   }
 
   ngOnInit(): void {
     this.getLiderFromParams();
     this.getConfig();
   }
-  
+
   private getConfig() {
     this.configService.lideres().subscribe((resp) => {
       console.log(resp);
@@ -103,7 +104,7 @@ export class AddLiderComponent  implements OnInit {
     });
   }
   private getLiderFromParams() {
-      this.activateRoute.params
+    this.activateRoute.params
       .pipe(
         filter((params) => params['id']),
         switchMap((params) => this.liderService.read(params['id']))
@@ -117,14 +118,14 @@ export class AddLiderComponent  implements OnInit {
           zona_id: resp.zona?.id,
           educacion_id: resp.educacion?.id,
         });
-         this.lider.zonas?.forEach((zonas) => {
+        this.lider.zonas?.forEach((zonas) => {
           this.addZona(zonas);
-        }); 
-      });  
+        });
+      });
   }
 
   addZona(zona: Tipo) {
-    
+
     const zonas = this.datosForm.get('zonas') as FormArray;
     const zonasValue = zonas.value;
     const INDEX = zonasValue.findIndex(
@@ -140,6 +141,12 @@ export class AddLiderComponent  implements OnInit {
         })
       );
     }
+ /*    const _zona = this.zonas.find(z => z.id = zona.id)
+    if (_zona) {
+      _zona.checked = true
+      this.zonas = [...this.zonas]
+      this.
+    } */
 
     console.log(zonas.value)
   }
@@ -155,6 +162,26 @@ export class AddLiderComponent  implements OnInit {
     }
   }
 
+  updateAllComplete() {
+    this.allComplete = this.zonas != null && this.zonas.every(t => t.checked)
+    console.log(this.allComplete)
+  }
+
+  someComplete(): boolean {
+    if (this.zonas == null) {
+      return false;
+    }
+    return this.zonas.filter(t => t.checked).length > 0 && !this.allComplete;
+  }
+
+  setAll(completed: boolean) {
+    this.allComplete = completed;
+    if (this.zonas == null) {
+      return;
+    }
+    this.zonas.forEach(t => (t.checked = completed));
+    this.zonas = [...this.zonas]
+  }
 
   save() {
     const result = {
@@ -169,7 +196,7 @@ export class AddLiderComponent  implements OnInit {
         .subscribe((resp) => {
           console.log(resp);
 
-          
+
           if (resp.message == 403) {
             this.snackBar('Falta ingresar datos');
           } else {

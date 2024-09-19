@@ -33,6 +33,7 @@ export interface Config {
 export interface Tipo {
   id: number;
   nombre: string;
+  checked?:boolean;
 }
 
 export interface Responsable {
