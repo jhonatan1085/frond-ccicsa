@@ -334,11 +334,11 @@ export class AddBitacorasComponent implements OnInit {
     this.siteForm.patchValue({ site_id: value.id });
     this.bitacora.site = value;
     this.site = value;
-    this.dataResponsables(value.zona.id);
+    this.dataResponsables();
   }
 
-  dataResponsables(idzona: number) {
-    this.usuarioService.showResponsables(idzona).subscribe((resp) => {
+  dataResponsables() {
+    this.usuarioService.showResponsables().subscribe((resp) => {
       console.log(resp);
       this.responsables_cicsa = resp.cicsa;
       this.responsables_claro = resp.claro;

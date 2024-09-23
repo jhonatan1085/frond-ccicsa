@@ -13,14 +13,14 @@ _FechaInicial:_ {{ bitacora.fecha_inicial }}
 _NroSot:_ {{ bitacora.sot }};
 _NroIncidencia:_ {{ bitacora.incidencia }};
 _TipoAveria:_ {{ bitacora.tipo_averia.nombre }} ;
-_TipoSitePop:_ {{ bitacora.site.tipo_site.nombre }};
+_TipoSitePop:_ {{ bitacora.site.tipo_site?.nombre }};
 _NombreSite:_ *{{ bitacora.site.nombre }}*;
 _NombreCliente:_ *{{ bitacora.cliente }}*;
 _Lat:_ {{bitacora.latitud}} , _Lon:_ {{bitacora.longitud}};
 _Distancia:_ {{bitacora.distancia}}Kms;
 _Region:_ {{bitacora.site.region}}; 
-_Departamento:_ {{bitacora.site.departamento.nombre}};
-_Distrito:_ {{bitacora.site.distrito.nombre}}; 
+_Departamento:_ {{bitacora.site.departamento?.nombre}};
+_Distrito:_ {{bitacora.site.distrito?.nombre}}; 
 _red1:_ {{bitacora.red.nombre}};
 _serv1:_ {{bitacora.serv.nombre}},{{brigadas}}
 _Responsable Cicsa:_ {{bitacora.resp_cicsa.nombres}} -T: {{bitacora.resp_cicsa.telefono}}; 

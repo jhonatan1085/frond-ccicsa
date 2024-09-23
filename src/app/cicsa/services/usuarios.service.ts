@@ -23,9 +23,9 @@ export class UsuariosService extends AbstractCrudService<Usuario> {
     return this.http.get<Page<Usuario>>(URL, { headers: headers });
   }
 
-  showResponsables(zona_id: number) {
+  showResponsables() {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/responsables/zona/${zona_id}`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/responsables/zona`;
     return this.http.get<{ cicsa: Usuario[]; claro: Usuario[] }>(URL, {
       headers: headers,
     });

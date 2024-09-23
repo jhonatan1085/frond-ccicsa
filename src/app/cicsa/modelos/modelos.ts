@@ -43,33 +43,45 @@ export interface Responsable {
 }
 
 export interface Site {
-  id: number;
+  id?: number;
   nombre: string;
-  region: Tipo;
-  distrito: Distrito;
-  departamento: Tipo;
-  tipo_site: Tipo;
+  region?: Tipo;
+  region_id?: number | string;
+  distrito_id?: number | string;
+  distrito?: Distrito;
+  departamento?: Tipo;
+  tipo_site?: Tipo;
+  tipo_site_id? : number | string;
   codigo: string;
-  latitud: number;
-  longitud: number;
+  latitud: string;
+  longitud: string;
   direccion: string;
-  municipalidade: Tipo;
-  zona: Tipo;
-  region_geografica: Tipo;
-  tiempo_sla: number;
-  autonomia_bts: number;
-  autonomia_tx: number;
-  tiempo_auto: number;
-  tiempo_caminata: number;
-  tiempo_acceso: number;
+  municipalidade_id? : number | string;
+  municipalidade? :Tipo;
+  zona?: Tipo;
+  zona_id?: number  | string;
+  region_geografica?: Tipo;
+  region_geografica_id? : number | string;
+  tiempo_sla: number  | string;
+  autonomia_bts: number  | string;
+  autonomia_tx: number  | string;
+  tiempo_auto: number  | string;
+  tiempo_caminata: number  | string;
+  tiempo_acceso: number  | string;
   suministro: string;
-  consesionaria: Tipo;
-  room_type: Tipo;
-  contratista: Tipo;
-  tipo_acceso: Tipo;
-  prioridad_site: Tipo;
-  tipo_energia: Tipo;
-  provincia: Tipo;
+  consesionaria?: Tipo;
+  consesionaria_id?: number  | string;
+  room_type?: Tipo;
+  room_type_id?: number  | string;
+  contratista?: Tipo;
+  contratista_id?: number  | string;
+  tipo_acceso?: Tipo;
+  tipo_acceso_id?: number  | string;
+  prioridad_site?: Tipo;
+  prioridad_site_id?: number  | string;
+  tipo_energia?: Tipo;
+  tipo_energia_id?: number  | string;
+  provincia?: Tipo;
   observacion: string;
 }
 

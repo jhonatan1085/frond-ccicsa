@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SiteService } from '../../services/site.service';
 import { ConfigService } from '../../services/config.service';
-import { Distrito, Provincia } from '../../modelos';
+import { Distrito, Provincia, Site } from '../../modelos';
 
 @Component({
   selector: 'app-edit-site',
@@ -67,7 +67,7 @@ export class EditSiteComponent implements OnInit {
     public siteService: SiteService,
     public configService: ConfigService,
     public activeRoute: ActivatedRoute // para las variables enviadas al formulario
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.configService.sites().subscribe((resp) => {
@@ -198,7 +198,6 @@ export class EditSiteComponent implements OnInit {
     formData.append('tiempo_caminata', this.tiempoCaminando);
     formData.append('tiempo_acceso', this.tiempoAcceso);
     formData.append('suministro', this.suministro);
-
     formData.append('consesionaria_id', this.selectedConsesionaria);
     formData.append('room_type_id', this.selectedRoomType);
     formData.append('contratista_id', this.selectedContratista);
@@ -207,7 +206,39 @@ export class EditSiteComponent implements OnInit {
     formData.append('tipo_energia_id', this.selectedTipoEnergia);
     formData.append('observacion', this.observacion);
 
-    this.siteService.update(this.site_id, formData).subscribe((resp) => {
+    const data: Site = {
+      codigo: this.codigo,
+      nombre: this.nombre,
+      latitud: this.latitud,
+      longitud: this.longitud,
+      direccion: this.direccion,
+      municipalidade_id: this.selectedMunicipalidad,
+      distrito_id: this.selectedDistrito,
+      tipo_site_id: this.selectedTipoSite,
+      zona_id: this.selectedZona,
+      region_id: this.selectedRegion,
+      region_geografica_id: this.selectedRegionGeo,
+      tiempo_sla: this.tiempoSla,
+      autonomia_bts: this.autonomiaBts,
+      autonomia_tx: this.autonomiaTx,
+      tiempo_auto: this.tiempoAuto,
+      tiempo_caminata: this.tiempoCaminando,
+      tiempo_acceso: this.tiempoAcceso,
+      suministro: this.suministro,
+      consesionaria_id: this.selectedConsesionaria,
+      room_type_id: this.selectedRoomType,
+      contratista_id: this.selectedContratista,
+      tipo_acceso_id: this.selectedTipoAcceso,
+      prioridad_site_id: this.selectedPrioridad,
+      tipo_energia_id: this.selectedTipoEnergia,
+      observacion: this.observacion
+    };
+
+
+    console.log(data);
+
+    console.log(this.site_id);
+    this.siteService.update(this.site_id, data).subscribe((resp) => {
       console.log(resp);
       if (resp.message == 403) {
         this.text_validation = resp.message_text;
