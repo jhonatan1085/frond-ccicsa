@@ -133,6 +133,7 @@ export class AddBitacorasComponent implements OnInit {
         switchMap((params) => this.bitacoraService.read(params['id']))
       )
       .subscribe((resp) => {
+        console.log(resp);
         this.bitacora = resp;
         this.datosForm.patchValue({
           ...this.bitacora, //los campos que tiene bitacora
@@ -142,7 +143,7 @@ export class AddBitacorasComponent implements OnInit {
         });
         this.siteForm.patchValue({
           site_id: resp.site.id,
-          // cliente: resp.site.cliente,// de donde obtengo el cliente
+           cliente: resp.cliente,// de donde obtengo el cliente
         });
         // this.brigadasForm.patchValue(this.bitacora);
         // brigadas form
