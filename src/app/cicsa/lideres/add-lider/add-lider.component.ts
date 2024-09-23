@@ -151,15 +151,23 @@ export class AddLiderComponent implements OnInit {
     console.log(zonas.value)
   }
 
-  isCheck(lider: Tipo) {
-    const INDEX = this.lider.zonas?.findIndex(
-      (li) => li.id == lider.id
-    );
-    if (INDEX != -1) {
-      return true;
-    } else {
-      return false;
-    }
+  isCheck(zona: Tipo) {
+    
+    //if(this.lider.zonas){
+      const INDEX = this.lider.zonas?.findIndex(
+        (li) => li.id == zona.id);
+      
+        /* if(!INDEX){
+          return false
+        } */
+      if (INDEX != -1) {
+        return true;
+      } else {
+        return false;
+      }
+   // }else{
+    //  return false
+    //}
   }
 
   updateAllComplete() {

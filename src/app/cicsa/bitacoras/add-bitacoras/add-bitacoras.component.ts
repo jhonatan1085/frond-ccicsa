@@ -108,7 +108,7 @@ export class AddBitacorasComponent implements OnInit {
     });
     this.siteForm = this.fb.group({
       site_id: [null, Validators.required],
-      cliente: [null],
+      cliente: [],
     });
     this.brigadasForm = this.fb.group({
       brigadas: this.fb.array([], Validators.required),
