@@ -44,11 +44,14 @@ export class LocationBitacorasComponent {
   }
 
   guardar() {
+    console.log(this.bitacora);
+    const dist = this.bitacora.distancia ? this.bitacora.distancia : ''
     const formData = new FormData();
     formData.append('id', '' + this.bitacora.id);
     formData.append('latitud', '' + this.bitacora.latitud);
     formData.append('longitud', '' + this.bitacora.longitud);
-    formData.append('distancia', '' + this.bitacora.distancia);
+    formData.append('distancia', '' + dist);
+
 
     this.locationService.createLocationBitacora(formData).subscribe((resp) => {
      
