@@ -85,18 +85,21 @@
                         }" class="custom-badge">{{ data.estadotext }}</a>
                     </td>
                     <td class="text-end">
-                        <button  [disabled]="data.estado === '0'" class="btn btn-primary ms-1" [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]">
-                          <i class="fa fa-clock"></i>
-                        </button>
-                        <button  [disabled]="data.estado === '0'" class="btn btn-primary ms-1">
-                          <i class="fas fa-map-marker-alt" (click)="openDialogLocation(data)" aria-hidden="true"></i>
-                        </button>
-                        <button  [disabled]="data.estado === '0'" class="btn btn-primary ms-1">
-                          <i class="fa fa-check" (click)="openDialogEnd(data)" aria-hidden="true"></i>
-                        </button>
-                      <button *ngIf="user?.roles?.[0] !== 'Tecnico'" [disabled]="data.estado === '0'"  class="btn btn-primary ms-1" [routerLink]="['/bitacoras/edit-bitacora/', data.id]">
+                      <button [disabled]="data.estado === '0'" class="btn btn-primary ms-1"
+                        [routerLink]="['/bitacoras/list-bitacora/detalle-bitacora/', data.id]">
+                        <i class="fa fa-clock"></i>
+                      </button>
+                      <button [disabled]="data.estado === '0'" class="btn btn-primary ms-1">
+                        <i class="fas fa-map-marker-alt" (click)="openDialogLocation(data)" aria-hidden="true"></i>
+                      </button>
+                      <button [disabled]="data.estado === '0'" class="btn btn-primary ms-1">
+                        <i class="fa fa-check" (click)="openDialogEnd(data)" aria-hidden="true"></i>
+                      </button>
+                      <button [disabled]="data.estado === '0'" class="btn btn-primary ms-1"
+                        [routerLink]="['/bitacoras/edit-bitacora/', data.id]">
                         <i class="fa fa-pencil"></i>
                       </button>
+                      <!-- <button *ngIf="user?.roles?.[0] !== 'Tecnico'" class="btn btn-primary ms-1"> -->
                       <button *ngIf="user?.roles?.[0] !== 'Tecnico'" class="btn btn-primary ms-1">
                         <i class="fa fa-eye" (click)="openDialog(data.id)" aria-hidden="true"></i>
                       </button>
