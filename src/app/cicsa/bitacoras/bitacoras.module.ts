@@ -15,6 +15,7 @@ import { AddDetalleBitacorasComponent } from './add-detalle-bitacoras/add-detall
 import { EndBitacorasComponent } from './end-bitacoras/end-bitacoras.component';
 import { LocationBitacorasComponent } from './location-bitacoras/location-bitacoras.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AddDemorasComponent } from './add-demoras/add-demoras.component';
 @NgModule({
   declarations: [
     BitacorasComponent,
@@ -24,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AddDetalleBitacorasComponent,
     EndBitacorasComponent,
     LocationBitacorasComponent,
+    AddDemorasComponent,
   ],
   imports: [
     CommonModule,

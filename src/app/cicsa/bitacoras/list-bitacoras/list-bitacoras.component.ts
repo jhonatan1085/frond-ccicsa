@@ -8,6 +8,7 @@ import { ViewBitacorasComponent } from '../view-bitacoras/view-bitacoras.compone
 import { BitacorasService } from '../../services/bitacoras.service';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { UserAuth } from 'src/app/shared/models/models';
+import { AddDemorasComponent } from '../add-demoras/add-demoras.component';
 
 @Component({
   selector: 'app-list-bitacoras',
@@ -167,6 +168,12 @@ export class ListBitacorasComponent implements OnInit{
 
   openDialogEnd(bitacora: Bitacora) {
     this.dialog.open(EndBitacorasComponent, {
+      data: { bitacora: bitacora },
+    });
+  }
+
+  openDialogDemora(bitacora: Bitacora) {
+    this.dialog.open(AddDemorasComponent, {
       data: { bitacora: bitacora },
     });
   }

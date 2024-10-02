@@ -39,6 +39,7 @@ export class EndBitacorasComponent {
     this.bitacora.tipo_reparacion = this.bitacora.tipo_reparacion ?? {};
     this.bitacora.herramientas ??= '';
     this.bitacora.incidencia ??= '';
+    
     this.configService.bitacorasFinalizar().subscribe((resp) => {
       this.causa = resp.causa;
       this.consecuencia = resp.consecuencia;

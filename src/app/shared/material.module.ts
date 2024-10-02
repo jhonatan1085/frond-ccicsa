@@ -16,6 +16,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+//import { provideMomentDatetimeAdapter } from '@ng-matero/extensions-moment-adapter';
+import {
+  MtxCalendarView,
+  MtxDatetimepickerMode,
+  MtxDatetimepickerModule,
+  MtxDatetimepickerType,
+} from '@ng-matero/extensions/datetimepicker';
+
+
 @NgModule({
   declarations: [],
   imports: [
@@ -36,6 +45,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatRadioModule,
     MatListModule,
     MatCheckboxModule,
+    MtxDatetimepickerModule,
   ],
   exports: [
     CommonModule,
@@ -55,6 +65,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatRadioModule,
     MatListModule,
     MatCheckboxModule,
+    MtxDatetimepickerModule,
   ],
 })
 export class MaterialModule {}

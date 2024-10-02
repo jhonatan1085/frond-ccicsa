@@ -187,6 +187,15 @@ export interface AtencionDetalle {
   parent_id: number;
 }
 
+export interface DemoraBitacora {
+  id?: number;
+  bitacora_id: number;
+  tipo_demora_id: number;
+  fecha_inicio: string;
+  fecha_fin: string;
+  orden:number
+}
+
 export interface AtencionBitacora {
   id: number;
   descripcion: string;

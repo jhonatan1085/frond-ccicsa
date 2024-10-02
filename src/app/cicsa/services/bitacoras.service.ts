@@ -5,6 +5,7 @@ import {
   Bitacora,
   CrudResponse,
   Page,
+  DemoraBitacora,
 } from 'src/app/cicsa/modelos';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { AuthService } from 'src/app/shared/auth/auth.service';
@@ -38,6 +39,12 @@ export class BitacorasService extends AbstractCrudService<Bitacora> {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/atencion/${bitacora_id}`;
     return this.http.get<Page<AtencionBitacora>>(URL, { headers: headers });
+  }
+
+  listDemoras(bitacora_id: number) {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/demoras/${bitacora_id}`;
+    return this.http.get<Page<DemoraBitacora>>(URL, { headers: headers });
   }
 
   getPosition(): Promise<any> {

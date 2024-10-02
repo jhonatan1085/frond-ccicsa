@@ -45,7 +45,9 @@ export interface BitacorasFinalizarConfig {
   consecuencia: Tipo[];
   causa: Tipo[];
 }
-
+export interface BitacorasDemorasConfig {
+  demoras: Tipo[];
+}
 export interface CuadrillasConfig {
   contratistas: Tipo[];
   zonas: Tipo[];
@@ -109,6 +111,15 @@ export class ConfigService extends AbstractCrudService<Config> {
       headers,
     });
   }
+
+  bitacorasDemoras() {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/bitacoras/demoras`;
+    return this.http.get<BitacorasDemorasConfig>(URL, {
+      headers,
+    });
+  }
+
 
   cuadrillas() {
     const headers = this.getHeaders();
