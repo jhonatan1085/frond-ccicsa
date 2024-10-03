@@ -1,56 +1,78 @@
 <h2 mat-dialog-title>Agregar Demoras</h2>
 <mat-dialog-content class="mat-typography">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <form [formGroup]="demorasForm">
-                        <div class="row align-items-center"  formArrayName="demoras">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup]="demorasForm">
+            <div class="row align-items-center" formArrayName="demoras">
+              <mat-card-header>
+                <mat-card-title>
+                  Agregar Demora
+                  <a
+                    ><i
+                      class="fas fa-plus-circle"
+                      (click)="newDemora()"
+                      aria-hidden="true"
+                    ></i></a
+                ></mat-card-title>
+              </mat-card-header>
 
-                            <mat-card-header>
-                                <mat-card-title> Agregar Demora
-                                    <a><i class=" fas fa-plus-circle" (click)="newDemora()"
-                                            aria-hidden="true"></i></a></mat-card-title>
-                            </mat-card-header>
-                            
-                                <ng-container *ngFor="
-                            let cuadriadd of this.demorasForm.value
-                              .demoras ; let i=index
-                          ">
-                                    <div class="col-12 col-md-6 col-xl-4" [formControlName]="i + 1">
-                                        <div class="form-group local-forms">
-                                            <mat-label for="selectedRed">Tipo Demora <span class="login-danger">*</span>
-                                            </mat-label>
-                                            <mat-select formControlName="tipo_demora_id" class="form-control select"
-                                                placeholder="Selec. Red1">
-                                                <mat-option *ngFor="let data of tipoDemora" [value]="data.id">
-                                                    {{ data.nombre }}
-                                                </mat-option>
-                                            </mat-select>
-                                        </div>
-                                    </div>
+              <ng-container
+                *ngFor="
+                  let cuadriadd of this.demorasForm.value.demoras;
+                  let i = index
+                "
+              >
+                <div class="col-12 col-md-6 col-xl-4" [formGroupName]="i">
+                  <div class="form-group local-forms">
+                    <mat-label for="selectedRed"
+                      >Tipo Demora <span class="login-danger">*</span>
+                    </mat-label>
+                    <mat-select
+                      formControlName="tipo_demora_id"
+                      class="form-control select"
+                      placeholder="Selec. Red1"
+                    >
+                      <mat-option
+                        *ngFor="let data of tipoDemora"
+                        [value]="data.id"
+                      >
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
+                </div>
 
-                                    <div class="col-12 col-md-6 col-xl-4">
-                                        <div class="form-group local-forms">
-                                            <mat-label for="fecha_inicio">
-                                                Hora de inicio
-                                                <span class="login-danger">*</span>
-                                            </mat-label>
-                                            <input type="datetime-local" class="form-control"
-                                                formControlName="fecha_inicio" name="fecha_inicio">
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-xl-4">
-                                        <div class="form-group local-forms">
-                                            <mat-label for="fecha_fin">
-                                                Hora fin
-                                                <span class="login-danger">*</span>
-                                            </mat-label>
-                                            <input type="datetime-local" class="form-control"
-                                                formControlName="fecha_fin" name="fecha_fin">
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-12 col-md-3 col-xl-2  space-x-4 flex" style="height: 50px;">
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label for="fecha_inicio">
+                      Hora de inicio
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input
+                      type="datetime-local"
+                      class="form-control"
+                      formControlName="fecha_inicio"
+                      name="fecha_inicio"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="form-group local-forms">
+                    <mat-label for="fecha_fin">
+                      Hora fin
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input
+                      type="datetime-local"
+                      class="form-control"
+                      formControlName="fecha_fin"
+                      name="fecha_fin"
+                    />
+                  </div>
+                </div>
+                <!-- <div class="col-12 col-md-3 col-xl-2  space-x-4 flex" style="height: 50px;">
 
                                     <button class="btn btn-primary ms-1"
                                         [disabled]="!(bitacoraatencion.descripcion !== '' && bitacoraatencion.hora !== '')"><i
@@ -60,18 +82,16 @@
                                         class="btn btn-primary ms-1" (click)="addDemora(atencion, i)"
                                         aria-hidden="true"><i class="fas fa-trash-alt"></i></button>
                                 </div> -->
-
-                                </ng-container>
-                            
-                        </div>
-                    </form>
-                </div>
+              </ng-container>
             </div>
+          </form>
         </div>
+      </div>
     </div>
-    <pre>{{demoras | json}}</pre>
+  </div>
+  <pre>{{ demoras | json }}</pre>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cerrar</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Guardar</button>
+  <button mat-button mat-dialog-close>Cerrar</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Guardar</button>
 </mat-dialog-actions>
