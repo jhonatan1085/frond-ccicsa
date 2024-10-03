@@ -23,7 +23,7 @@ import {
 export class AddDemorasComponent {
 
   tipoDemora: Tipo[] = [];
-  demoras: DemoraBitacora[] = [];
+  demorasBitacora: DemoraBitacora[] = [];
   demorasForm: FormGroup;
 
   bitacora: Bitacora;
@@ -34,12 +34,29 @@ export class AddDemorasComponent {
     private bitacoraService: BitacorasService,
     private configService: ConfigService,
     private fb: FormBuilder,
+    private router: Router
   ) {
     this.bitacora = data.bitacora;
 
-    this.demorasForm = this.fb.group({
-      demoras: this.fb.array([], Validators.required),
-    });
+
+
+     this.demorasForm = this.fb.group({
+      demo: this.fb.array([], Validators.required),
+    });   
+/*       this.demorasForm = this.fb.group({
+      demo: this.fb.array([
+        this.fb.group({
+          id: ['', Validators.required],
+          bitacora_id: [],
+          tipo_demora_id: ['', Validators.required],
+          fecha_inicio: ['', Validators.required],
+          fecha_fin: ['', Validators.required],
+          orden: ['', Validators.required]
+        })
+      ]),
+    });   */
+
+
   }
 
   ngOnInit() {
@@ -50,9 +67,9 @@ export class AddDemorasComponent {
     this.bitacoraService
       .listDemoras(this.bitacora.id)
       .subscribe((resp) => {
-        this.demoras = resp.data;
+        this.demorasBitacora = resp.data;
         this.demorasForm.reset();
-        this.demoras.forEach((demora) => {
+        this.demorasBitacora.forEach((demora) => {
           this.addDemora(demora, false);
         });
       });
@@ -60,23 +77,22 @@ export class AddDemorasComponent {
 
 
   newDemora() {
-    const maxId = this.demoras.reduce((prev,item) => {
-      return Math.max(prev,item.id??0)
-    },0) //reduce una manera de sumar
+    const maxId = this.demorasBitacora.reduce((prev, item) => {
+      return Math.max(prev, item.id ?? 0)
+    }, 0) //reduce una manera de sumar
     const newDemora = {
-      id:maxId + 1 ,
+      id: maxId + 1,
       bitacora_id: this.bitacora.id,
-      tipo_demora_id:0,
+      tipo_demora_id: 0,
       fecha_inicio: '',
       fecha_fin: '',
-      orden: this.demoras.length + 1,
+      orden: this.demorasBitacora.length + 1,
     };
     this.addDemora(newDemora, true);
-
   }
 
   addDemora(demora: DemoraBitacora, update: boolean) {
-    const demoras = this.demorasForm.get('demoras') as FormArray;
+    const demoras = this.demorasForm.get('demo') as FormArray;
     const demorasValue = demoras.value;
     const INDEX = demorasValue.findIndex(
       (item: DemoraBitacora) => item.id == demora.id
@@ -86,34 +102,36 @@ export class AddDemorasComponent {
     } else {
       demoras.push(
         this.fb.group({
-          id: [demora.id],
-          bitacora_id: [demora.bitacora_id],
-          tipo_demora_id: [demora.tipo_demora_id],
-          fecha_inicio: [demora.fecha_inicio],
-          fecha_fin: [demora.fecha_fin],
-          orden: [demora.orden],
+          id: [demora.id, Validators.required],
+          bitacora_id: [demora.bitacora_id, Validators.required],
+          tipo_demora_id: [demora.tipo_demora_id, Validators.required],
+          fecha_inicio: [demora.fecha_inicio, Validators.required],
+          fecha_fin: [demora.fecha_fin, Validators.required],
+          orden: [demora.orden , Validators.required],
         })
       );
     }
 
-    this.demorasForm.setControl('demoras', demoras)
+     this.demorasForm.setControl('demo', demoras)
     if (update)
-      this.demoras = demoras.value
+      this.demorasBitacora = demoras.value 
   }
 
 
 
-  /*   guardar() {
-      const formData = new FormData();
-      formData.append('id', '' + this.bitacora.id);
-      formData.append('causa', '' + this.bitacora.causa_averia.id);
-      formData.append('consecuencia', '' + this.bitacora.consecuencia_averia.id);
-      formData.append('tipoReparacion', '' + this.bitacora.tipo_reparacion.id);
-      formData.append('herramientas', this.bitacora.herramientas);
-      formData.append('tiempo', this.bitacora.tiempo_solucion);
-  
+     save() {
+
+      console.log(this.bitacora);
+      console.log(this.demorasForm.value);
+      const result = {
+        ...this.bitacora,
+        ...this.demorasForm.value
+      };
+
+      console.log(result)
+ 
       this.bitacoraService
-        .finalizar( formData)
+        .demoras( result)
         .subscribe((resp) => {
           console.log(resp);
           if (resp.message == 403) {
@@ -123,8 +141,8 @@ export class AddDemorasComponent {
             this.snackBar('Registro Exitoso');
             this.router.navigate(['/bitacoras/list-bitacora']);
           }
-        });
-    } */
+        }); 
+    } 
 
   snackBar(comentario: string) {
     this._snackBar.open(comentario, 'Cerrar', {

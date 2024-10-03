@@ -35,6 +35,12 @@ export class BitacorasService extends AbstractCrudService<Bitacora> {
     return this.http.post<CrudResponse>(URL, data, { headers: headers });
   }
 
+  demoras(data: AtencionBitacora | FormData) {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/demoras`;
+    return this.http.post<CrudResponse>(URL, data, { headers: headers });
+  }
+
   listAtencion(bitacora_id: number) {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/atencion/${bitacora_id}`;
