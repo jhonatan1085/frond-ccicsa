@@ -167,9 +167,13 @@ export class ListBitacorasComponent implements OnInit{
   }
 
   openDialogEnd(bitacora: Bitacora) {
-    this.dialog.open(EndBitacorasComponent, {
+    const ref = this.dialog.open(EndBitacorasComponent, {
       data: { bitacora: bitacora },
     });
+
+    ref.afterClosed().subscribe( () => {
+      this.getTableData(this.currentPage);
+    })
   }
 
   openDialogDemora(bitacora: Bitacora) {

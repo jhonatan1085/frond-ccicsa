@@ -13,8 +13,14 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  NumberValueAccessor,
   Validators,
 } from '@angular/forms';
+
+interface DemoraBitacoraExtended extends DemoraBitacora {
+  tiempoDemora: string //tiempo de horas
+}
+
 @Component({
   selector: 'app-add-demoras',
   templateUrl: './add-demoras.component.html',
@@ -23,10 +29,17 @@ import {
 export class AddDemorasComponent {
 
   tipoDemora: Tipo[] = [];
-  demorasBitacora: DemoraBitacora[] = [];
+  demorasBitacora: DemoraBitacoraExtended[] = [];
   demorasForm: FormGroup;
 
   bitacora: Bitacora;
+
+  get demorasArray(): FormArray {
+    return this.demorasForm.controls['demo'] as FormArray;
+  }
+
+  totalDemoras: string = "";
+
   constructor(
     public dialogRef: MatDialogRef<AddDemorasComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { bitacora: Bitacora },
@@ -37,26 +50,9 @@ export class AddDemorasComponent {
     private router: Router
   ) {
     this.bitacora = data.bitacora;
-
-
-
-     this.demorasForm = this.fb.group({
+    this.demorasForm = this.fb.group({
       demo: this.fb.array([], Validators.required),
-    });   
-/*       this.demorasForm = this.fb.group({
-      demo: this.fb.array([
-        this.fb.group({
-          id: ['', Validators.required],
-          bitacora_id: [],
-          tipo_demora_id: ['', Validators.required],
-          fecha_inicio: ['', Validators.required],
-          fecha_fin: ['', Validators.required],
-          orden: ['', Validators.required]
-        })
-      ]),
-    });   */
-
-
+    });
   }
 
   ngOnInit() {
@@ -67,7 +63,15 @@ export class AddDemorasComponent {
     this.bitacoraService
       .listDemoras(this.bitacora.id)
       .subscribe((resp) => {
-        this.demorasBitacora = resp.data;
+        this.demorasBitacora = resp.data.map((item) => {
+          return {
+            ...item, tiempoDemora: ""
+          }
+
+        });
+        this.updateTiempoDemoras(null);
+        this.updateTotalDemoras(this.demorasBitacora);
+
         this.demorasForm.reset();
         this.demorasBitacora.forEach((demora) => {
           this.addDemora(demora, false);
@@ -91,6 +95,10 @@ export class AddDemorasComponent {
     this.addDemora(newDemora, true);
   }
 
+  removeDemora(i: number) {
+    this.addDemora({ id: i } as any, true);
+  }
+
   addDemora(demora: DemoraBitacora, update: boolean) {
     const demoras = this.demorasForm.get('demo') as FormArray;
     const demorasValue = demoras.value;
@@ -107,42 +115,44 @@ export class AddDemorasComponent {
           tipo_demora_id: [demora.tipo_demora_id, Validators.required],
           fecha_inicio: [demora.fecha_inicio, Validators.required],
           fecha_fin: [demora.fecha_fin, Validators.required],
-          orden: [demora.orden , Validators.required],
-        })
+          orden: [demora.orden, Validators.required],
+        }, { validators: this.fechaValidator })
       );
     }
 
-     this.demorasForm.setControl('demo', demoras)
-    if (update)
-      this.demorasBitacora = demoras.value 
+    this.demorasForm.setControl('demo', demoras)
+    if (update) {
+      this.demorasBitacora = demoras.value;
+      this.updateTiempoDemoras(null);
+    }
   }
 
 
 
-     save() {
+  save() {
 
-      console.log(this.bitacora);
-      console.log(this.demorasForm.value);
-      const result = {
-        ...this.bitacora,
-        ...this.demorasForm.value
-      };
+    console.log(this.bitacora);
+    console.log(this.demorasForm.value);
+    const result = {
+      ...this.bitacora,
+      ...this.demorasForm.value
+    };
 
-      console.log(result)
- 
-      this.bitacoraService
-        .demoras( result)
-        .subscribe((resp) => {
-          console.log(resp);
-          if (resp.message == 403) {
-            //this.snackBar(resp.message_text);
-            this.snackBar('Falta ingresar datos');
-          } else {
-            this.snackBar('Registro Exitoso');
-            this.router.navigate(['/bitacoras/list-bitacora']);
-          }
-        }); 
-    } 
+    console.log(result)
+
+    this.bitacoraService
+      .demoras(result)
+      .subscribe((resp) => {
+        console.log(resp);
+        if (resp.message == 403) {
+          //this.snackBar(resp.message_text);
+          this.snackBar('Falta ingresar datos');
+        } else {
+          this.snackBar('Registro Exitoso');
+          this.router.navigate(['/bitacoras/list-bitacora']);
+        }
+      });
+  }
 
   snackBar(comentario: string) {
     this._snackBar.open(comentario, 'Cerrar', {
@@ -151,4 +161,58 @@ export class AddDemorasComponent {
       duration: 3000,
     });
   }
+
+  calcularTiempoDemora(item: DemoraBitacora) {
+    const fechaFin = new Date(item.fecha_fin).valueOf();
+    const fechaInicio = new Date(item.fecha_inicio).valueOf();
+    const diferencia = fechaFin - fechaInicio;
+    const horas = Math.floor(diferencia / 1000 / 60 / 60); //saca las horas sin decimales
+
+    const minutos = diferencia / 1000 / 60 - horas * 60;
+
+    return horas.toString().padStart(2, "0") + ":" + minutos.toString().padStart(2, "0");
+
+
+  }
+
+  updateTotalDemoras(demorasBitacora: DemoraBitacoraExtended[]) {
+    let totalDemoras = 0;
+    for (let index = 0; index < demorasBitacora.length; index++) {
+      const item = demorasBitacora[index];
+      const fechaFin = new Date(item.fecha_fin).valueOf();
+      const fechaInicio = new Date(item.fecha_inicio).valueOf();
+      const diferencia = fechaFin - fechaInicio;
+      totalDemoras += diferencia;
+    }
+    const horas = Math.floor(totalDemoras / 1000 / 60 / 60); //saca las horas sin decimales
+    const minutos = totalDemoras / 1000 / 60 - horas * 60;
+    this.totalDemoras = horas.toString().padStart(2, "0") + ":" + minutos.toString().padStart(2, "0");
+  }
+
+  updateTiempoDemoras(target: any, tipo?: 'inicio' | 'fin', demora?: DemoraBitacora) {
+    this.demorasBitacora = this.demorasBitacora.map((item) => {
+      if (item.id === demora?.id) {
+        if (tipo === 'inicio') {
+          item.fecha_inicio = target.value
+        } else if (tipo === 'fin') {
+          item.fecha_fin = target.value
+        }
+      }
+      return { ...item, tiempoDemora: this.calcularTiempoDemora(item) }
+    })
+
+    this.updateTotalDemoras(this.demorasBitacora);
+  }
+
+  // Validador personalizado
+  fechaValidator(formGroup: FormGroup) {
+    const fecha_inicio = formGroup.get('fecha_inicio')?.value;
+    const fecha_fin = formGroup.get('fecha_fin')?.value;
+
+    if (fecha_inicio && fecha_fin && new Date(fecha_inicio) > new Date(fecha_fin)) {
+      return { fechasInvalidas: true };
+    }
+    return null;
+  }
+
 }

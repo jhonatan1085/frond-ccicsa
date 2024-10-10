@@ -63,8 +63,10 @@ export class EndBitacorasComponent {
         if (resp.message == 403) {
           //this.snackBar(resp.message_text);
           this.snackBar('Falta ingresar datos');
+
         } else {
           this.snackBar('Registro Exitoso');
+          this.dialogRef.close();
           this.router.navigate(['/bitacoras/list-bitacora']);
         }
       });

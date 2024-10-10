@@ -1,4 +1,5 @@
-<h2 mat-dialog-title>Agregar Demoras <a><i class="fas fa-plus-circle" (click)="newDemora()" aria-hidden="true"></i></a></h2>
+<h2 mat-dialog-title>Agregar Demoras <a><i class="fas fa-plus-circle" (click)="newDemora()" aria-hidden="true"></i></a>
+</h2>
 <mat-dialog-content class="mat-typography">
   <div class="row">
     <div class="col-sm-12">
@@ -6,7 +7,7 @@
         <div class="card-body">
           <form [formGroup]="demorasForm">
             <div class="row align-items-center">
-              <ng-container formArrayName="demo" *ngFor=" let cuadriadd of demorasBitacora; let i = index ">
+              <ng-container formArrayName="demo" *ngFor=" let demora of demorasArray.controls; let i = index ">
                 <ng-container [formGroupName]="i">
                   <div class="col-12 col-md-4 col-xl-4">
                     <div class="form-group local-forms">
@@ -26,10 +27,8 @@
                         Hora de inicio
                         <span class="login-danger">*</span>
                       </mat-label>
-                      <!--  <input type="text" class="form-control" formControlName="fecha_inicio"
-                        name="fecha_inicio" /> -->
                       <input type="datetime-local" class="form-control" formControlName="fecha_inicio"
-                        name="fecha_inicio" />
+                        (change)="updateTiempoDemoras($event.target , 'inicio', demora.value)" name="fecha_inicio" />
                     </div>
                   </div>
                   <div class="col-12 col-md-3 col-xl-3">
@@ -38,17 +37,34 @@
                         Hora fin
                         <span class="login-danger">*</span>
                       </mat-label>
-                      <input type="datetime-local" class="form-control" formControlName="fecha_fin" name="fecha_fin" />
+                      <input type="datetime-local" class="form-control" formControlName="fecha_fin"
+                        (change)="updateTiempoDemoras($event.target,'fin', demora.value)" name="fecha_fin" />
                     </div>
                   </div>
-                  <div class="col-12 col-md-2 col-xl-2  space-x-4 flex" style="height: 50px;">
-                    <button class="btn btn-primary ms-1" (click)="addDemora(cuadriadd, false)" aria-hidden="true"><i
+
+                  <div class="col-12 col-md-3 col-xl-1">
+                    <div class="form-group local-forms">
+                      <mat-label for="fecha_fin">
+                        SLA
+                      </mat-label>
+                      {{ demorasBitacora[i].tiempoDemora }}
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-2 col-xl-1  space-x-4 flex" style="height: 50px;">
+                    <button class="btn btn-primary ms-1" (click)="removeDemora(demora.value.id)" aria-hidden="true"><i
                         class="fas fa-trash-alt"></i></button>
                   </div>
                 </ng-container>
               </ng-container>
             </div>
+            <div class="d-flex justify-content-end">
+              <div>Total SLA: </div>
+              <div>{{ totalDemoras }} hrs.</div>
+              
+            </div>
           </form>
+          
         </div>
       </div>
     </div>
@@ -57,5 +73,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cerrar</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="demorasForm.invalid" (click)="save()">Guardar</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="demorasForm.invalid"
+    (click)="save()">Guardar</button>
 </mat-dialog-actions>
