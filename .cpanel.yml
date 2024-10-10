@@ -1,0 +1,14 @@
+---
+deployment:
+  tasks:
+    - npm ci
+    - npm build
+    #- export DEPLOYPATH=/home/juanbosc/cicsa.pe/public/ # Reemplaza con tu ruta de despliegue
+    #- echo Starting>> $DEPLOYPATH/deploy.log 2>&1
+    #- /bin/cp -R * $DEPLOYPATH >> $DEPLOYPATH/deploy.log 2>&1
+    #- rm -rf $DEPLOYPATH/.git >> $DEPLOYPATH/deploy.log 2>&1 # Eliminar la carpeta .git
+    #- /bin/cp -R .cpanel.yml $DEPLOYPATH >> $DEPLOYPATH/deploy.log 2>&1
+    #- /bin/cp -R .env $DEPLOYPATH >> $DEPLOYPATH/deploy.log 2>&1
+    #- /bin/cp -R .htaccess $DEPLOYPATH >> $DEPLOYPATH/deploy.log 2>&1
+    #- cd $DEPLOYPATH >> $DEPLOYPATH/deploy.log 2>&1
+    #- ea-php81 /opt/cpanel/composer/bin/composer update >> $DEPLOYPATH/deploy.log 2>&1
