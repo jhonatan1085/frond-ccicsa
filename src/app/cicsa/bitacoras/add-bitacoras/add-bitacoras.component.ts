@@ -124,6 +124,7 @@ export class AddBitacorasComponent implements OnInit {
     this.getConfigBitacora();
     this.getSites();
     this.getTableData();
+    this.dataResponsables();
   }
 
   private getBitacoraFromParams() {
@@ -334,7 +335,7 @@ export class AddBitacorasComponent implements OnInit {
     this.siteForm.patchValue({ site_id: value.id });
     this.bitacora.site = value;
     this.site = value;
-    this.dataResponsables();
+   // this.dataResponsables();
   }
 
   dataResponsables() {

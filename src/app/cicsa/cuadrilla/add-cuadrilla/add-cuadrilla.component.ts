@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigService } from '../../services/config.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
@@ -28,6 +29,7 @@ export class AddCuadrillaComponent {
   user_selecteds: any[] = [];
 
   constructor(
+    public dialogRef: MatDialogRef<AddCuadrillaComponent>,
     private cuadrillaService: CuadrillaService,
     private configService: ConfigService,
     private usuarioService: UsuariosService,
@@ -173,12 +175,7 @@ export class AddCuadrillaComponent {
       } else {
         this.snackBar('Registro Exitoso');
 
-        // this.listaCuadrilla.getTableData();
-        // $('#add_cuadrilla').hide();
-        // $('#add_cuadrilla').removeClass('show');
-        // $('.modal-backdrop').remove();
-        // $('body').removeClass();
-        // $('body').removeAttr('style');
+        this.dialogRef.close();
 
         this.selectedZona = '';
         this.selectedTipobrigadas = '';

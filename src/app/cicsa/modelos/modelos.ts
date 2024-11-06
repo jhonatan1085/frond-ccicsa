@@ -205,7 +205,7 @@ export interface AtencionBitacora {
 
 export interface BitacoraAtencion {
   id: number;
-  hora: string;
+  hora: string ;
   orden: number;
   is_coment: string;
   atencion_id?: number;

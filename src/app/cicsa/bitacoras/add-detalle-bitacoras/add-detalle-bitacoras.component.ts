@@ -36,6 +36,7 @@ export class AddDetalleBitacorasComponent implements OnInit {
     this.bitacorasServices
       .listAtencion(this.bitacora_id)
       .subscribe((resp) => {
+        console.log(resp.data);
         this.atenciones = resp.data;
       });
   }
@@ -99,6 +100,8 @@ export class AddDetalleBitacorasComponent implements OnInit {
     const formData = new FormData();
     formData.append('id', '' + this.bitacora_id);
     formData.append('atenciones', JSON.stringify(this.atenciones));
+
+    
 
     this.bitacorasServices
       .createAtencionBitacora(formData)

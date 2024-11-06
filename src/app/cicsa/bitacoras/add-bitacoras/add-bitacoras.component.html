@@ -36,10 +36,19 @@
                         <h4>Agregar Bitacora</h4>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 col-xl-4">
+                    <div class="col-12 col-md-6 col-xl-3">
                       <div class="form-group local-forms">
                         <mat-label for="nombre">
-                          Nombre
+                          Descripción de averia
+                          <span class="login-danger">*</span>
+                        </mat-label>
+                        <input class="form-control" formControlName="nombre" name="nombre" type="text" />
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-3">
+                      <div class="form-group local-forms">
+                        <mat-label for="nombre">
+                          Enlace/Anillo/Plano/Site
                           <span class="login-danger">*</span>
                         </mat-label>
                         <input class="form-control" formControlName="nombre" name="nombre" type="text" />
@@ -50,10 +59,14 @@
                         <mat-label for="fecha_inicial">Fecha Inicial
                           <span class="login-danger">*</span>
                         </mat-label>
-                        <input formControlName="fecha_inicial" class="form-control" name="fecha_inicial" type="text"
+                       <!--  <input formControlName="fecha_inicial" class="form-control" name="fecha_inicial" type="text"
                           matInput [matDatepicker]="picker" />
                         <mat-datepicker #picker></mat-datepicker>
-                        <mat-datepicker-toggle matIconSuffix class="mt-4" [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker-toggle matIconSuffix class="mt-4" [for]="picker"></mat-datepicker-toggle> -->
+
+                        <input type="datetime-local" class="form-control" formControlName="fecha_inicial"
+                        name="fecha_inicial" />
+
                       </div>
                     </div>
 
@@ -260,7 +273,7 @@
                                 <tr>
                                   <th>Contrata</th>
                                   <th>Cuadrilla</th>
-                                  <th>Zona</th>
+                                  <th>Base</th>
                                   <th>Tecnicos</th>
                                   <th>
                                     Acción
@@ -433,9 +446,9 @@
                             <table class="table mb-0">
                               <thead>
                                 <tr>
-                                  <th>ZONA</th>
+                                  <th>Base</th>
                                   <th>Cuadrilla</th>
-                                  <th>ACCION</th>
+                                  <th>Acción</th>
                                 </tr>
                               </thead>
                               <tbody>

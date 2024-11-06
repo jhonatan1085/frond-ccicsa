@@ -46,7 +46,7 @@
                                                     <div class="form-group local-forms">
                                                         <label [for]="bitacoraatencion.hora"></label>
                                                         <input class="form-control" [name]="bitacoraatencion.hora"
-                                                            type="time" [(ngModel)]="bitacoraatencion.hora"
+                                                            type="datetime-local" [(ngModel)]="bitacoraatencion.hora"
                                                             [ngModelOptions]="{standalone: true}">
                                                     </div>
                                                 </div>
@@ -80,7 +80,7 @@
                                                         *ngIf="hijo.is_coment === '0'" style="height: 50px;">
                                                         <div class="form-group local-forms">
                                                             <label [for]="hijo.hora"></label>
-                                                            <input class="form-control" [name]="hijo.hora" type="time"
+                                                            <input class="form-control" [name]="hijo.hora" type="datetime-local"
                                                                 [(ngModel)]="hijo.hora"
                                                                 [ngModelOptions]="{standalone: true}">
                                                         </div>
