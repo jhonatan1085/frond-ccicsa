@@ -21,9 +21,15 @@ export class SiteService extends AbstractCrudService<Site> {
     return this.http.get<Page<Provincia>>(URL, { headers: headers });
   }
 
-  showDistritoProv(dist_id: string) {
+  showDistritoProv(prov_id: string) {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/distritos/provincia/${dist_id}`;
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/distritos/provincia/${prov_id}`;
+    return this.http.get<Page<Distrito>>(URL, { headers: headers });
+  }
+
+  showMunicipalidadDistrito(dist_id: string) {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/municipalidad/distrito/${dist_id}`;
     return this.http.get<Page<Distrito>>(URL, { headers: headers });
   }
 

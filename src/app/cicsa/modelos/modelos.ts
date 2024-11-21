@@ -1,10 +1,19 @@
 export interface Bitacora {
+
+  anio?: number;
+  mes?: number;
+  semana?: number;
+  hora_asignacion?: string;
+  cuadrantes?: string;
+
   id: number;
   nombre: string;
+  enlace_plano_site?: string;
   fecha_inicial: string;
+  fecha_ejecucion?: string;
   sot: string; // Puede ser de cualquier tipo, ajusta según corresponda
   incidencia: string; // Puede ser de cualquier tipo, ajusta según corresponda
-  tipo_averia: Tipo;
+  tipo_averia: TipoAveria;
   red: Tipo;
   serv: Tipo;
   resp_cicsa: Responsable;
@@ -18,22 +27,37 @@ export interface Bitacora {
   cliente?: string;
   brigadas: Cuadrilla[];
   atenciones: Atencion[];
-  causa_averia: Tipo;
+  causa_averia: CausaAveria;
   consecuencia_averia: Tipo;
   tipo_reparacion: Tipo;
   herramientas: string;
   tiempo_solucion: string;
+  demoras?: DemoraBitacora[];
+  afect_servicio?: Boolean;
+  afect_masiva?: Boolean;
 }
 export interface Config {
-  tipoaveria: Tipo[];
+  tipoaveria: TipoAveria[];
   red: string[];
   serv: string[];
+}
+
+export interface CausaAveria {
+  id: number;
+  nombre: string;
+  tipo_causa_averia:Tipo;
 }
 
 export interface Tipo {
   id: number;
   nombre: string;
   checked?:boolean;
+}
+
+export interface TipoAveria {
+  id: number;
+  nombre: string;
+  incidencia?:string;
 }
 
 export interface Responsable {
@@ -62,25 +86,6 @@ export interface Site {
   zona_id?: number  | string;
   region_geografica?: Tipo;
   region_geografica_id? : number | string;
-  tiempo_sla: number  | string;
-  autonomia_bts: number  | string;
-  autonomia_tx: number  | string;
-  tiempo_auto: number  | string;
-  tiempo_caminata: number  | string;
-  tiempo_acceso: number  | string;
-  suministro: string;
-  consesionaria?: Tipo;
-  consesionaria_id?: number  | string;
-  room_type?: Tipo;
-  room_type_id?: number  | string;
-  contratista?: Tipo;
-  contratista_id?: number  | string;
-  tipo_acceso?: Tipo;
-  tipo_acceso_id?: number  | string;
-  prioridad_site?: Tipo;
-  prioridad_site_id?: number  | string;
-  tipo_energia?: Tipo;
-  tipo_energia_id?: number  | string;
   provincia?: Tipo;
   observacion: string;
 }
@@ -187,13 +192,24 @@ export interface AtencionDetalle {
   parent_id: number;
 }
 
+
+export interface CalcularTiempo {
+  fecha_inicio: string | Date;
+  fecha_fin: string | Date;
+}
+
 export interface DemoraBitacora {
   id?: number;
   bitacora_id: number;
   tipo_demora_id: number;
+  demora_nombre?:string;
   fecha_inicio: string;
   fecha_fin: string;
   orden:number
+}
+
+export interface DemoraBitacoraExtended extends DemoraBitacora {
+  tiempoDemora: string //tiempo de horas
 }
 
 export interface AtencionBitacora {

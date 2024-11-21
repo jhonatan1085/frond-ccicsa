@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Bitacora, Tipo } from '../../modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
 import { ConfigService } from '../../services/config.service';
-import { AtencionBitacora, DemoraBitacora } from '../../modelos';
+import { AtencionBitacora, DemoraBitacora,DemoraBitacoraExtended } from '../../modelos';
 import {
   FormArray,
   FormBuilder,
@@ -16,10 +16,9 @@ import {
   NumberValueAccessor,
   Validators,
 } from '@angular/forms';
+import { TimeUtilsService } from '../../services/time-utils.service';
 
-interface DemoraBitacoraExtended extends DemoraBitacora {
-  tiempoDemora: string //tiempo de horas
-}
+
 
 @Component({
   selector: 'app-add-demoras',
@@ -47,7 +46,8 @@ export class AddDemorasComponent {
     private bitacoraService: BitacorasService,
     private configService: ConfigService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private time_utils: TimeUtilsService,
   ) {
     this.bitacora = data.bitacora;
     this.demorasForm = this.fb.group({
@@ -81,6 +81,9 @@ export class AddDemorasComponent {
 
 
   newDemora() {
+
+    const now = this.time_utils.getLocalDateTime();
+
     const maxId = this.demorasBitacora.reduce((prev, item) => {
       return Math.max(prev, item.id ?? 0)
     }, 0) //reduce una manera de sumar
@@ -88,8 +91,8 @@ export class AddDemorasComponent {
       id: maxId + 1,
       bitacora_id: this.bitacora.id,
       tipo_demora_id: 0,
-      fecha_inicio: '',
-      fecha_fin: '',
+      fecha_inicio: now,
+      fecha_fin: now,
       orden: this.demorasBitacora.length + 1,
     };
     this.addDemora(newDemora, true);
@@ -112,11 +115,14 @@ export class AddDemorasComponent {
         this.fb.group({
           id: [demora.id, Validators.required],
           bitacora_id: [demora.bitacora_id, Validators.required],
-          tipo_demora_id: [demora.tipo_demora_id, Validators.required],
+          tipo_demora_id: [demora.tipo_demora_id, [Validators.required, Validators.min(1)]],
           fecha_inicio: [demora.fecha_inicio, Validators.required],
           fecha_fin: [demora.fecha_fin, Validators.required],
           orden: [demora.orden, Validators.required],
-        }, { validators: this.fechaValidator })
+        }, { validators: this.time_utils.fechaEjecucionMayorValidator(
+          'fecha_inicio',
+          'fecha_fin'
+        ) })
       );
     }
 
@@ -126,11 +132,8 @@ export class AddDemorasComponent {
       this.updateTiempoDemoras(null);
     }
   }
-
-
-
-  save() {
-
+  
+ save() {
     console.log(this.bitacora);
     console.log(this.demorasForm.value);
     const result = {
@@ -166,13 +169,10 @@ export class AddDemorasComponent {
     const fechaFin = new Date(item.fecha_fin).valueOf();
     const fechaInicio = new Date(item.fecha_inicio).valueOf();
     const diferencia = fechaFin - fechaInicio;
+    
     const horas = Math.floor(diferencia / 1000 / 60 / 60); //saca las horas sin decimales
-
     const minutos = diferencia / 1000 / 60 - horas * 60;
-
     return horas.toString().padStart(2, "0") + ":" + minutos.toString().padStart(2, "0");
-
-
   }
 
   updateTotalDemoras(demorasBitacora: DemoraBitacoraExtended[]) {

@@ -6,11 +6,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AtencionBitacora, BitacoraAtencion, Page } from '../../modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
+import { TimeUtilsService } from '../../services/time-utils.service';
 
 @Component({
   selector: 'app-add-detalle-bitacoras',
   templateUrl: './add-detalle-bitacoras.component.html',
   styleUrls: ['./add-detalle-bitacoras.component.scss'],
+
 })
 export class AddDetalleBitacorasComponent implements OnInit {
   //bitacora: Bitacora;
@@ -25,7 +27,8 @@ export class AddDetalleBitacorasComponent implements OnInit {
     public bitacorasServices: BitacorasService,
     public activeRoute: ActivatedRoute, // para las variables enviadas al formulario
     private _snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private time_utils: TimeUtilsService,
   ) { }
 
   ngOnInit(): void {
@@ -42,10 +45,13 @@ export class AddDetalleBitacorasComponent implements OnInit {
   }
 
   addItemAtencion(atencion: AtencionBitacora) {
+
+    const now = this.time_utils.getLocalDateTime();
+
     if (atencion.bitacora_atencion.length == 0) {
       atencion.bitacora_atencion?.push({
         id: 0,
-        hora: '',
+        hora: now,
         descripcion: '',
         orden: atencion.orden,
         is_coment: '0',
@@ -67,11 +73,13 @@ export class AddDetalleBitacorasComponent implements OnInit {
       return bitacoraAtencion.bitacora_atencion.at(-1)?.descripcion != '';
     }
   }
+
   addItem(bitacoraAtencion: BitacoraAtencion, is_comentario: string) {
+    const now = this.time_utils.getLocalDateTime();
     if (this.valida(bitacoraAtencion)) {
       bitacoraAtencion.bitacora_atencion?.push({
         id: 0,
-        hora: '',
+        hora: now,
         descripcion: '',
         is_coment: is_comentario,
         orden: bitacoraAtencion.bitacora_atencion.length + 1,

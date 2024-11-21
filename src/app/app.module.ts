@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
-
+import { DatePipe } from '@angular/common';
 //import { HeaderComponent } from './common-component/header/header.component';
 //import { SidebarComponent } from './common-component/sidebar/sidebar.component';
 
@@ -21,7 +21,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     SharedModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
   exports:[
     //HeaderComponent,

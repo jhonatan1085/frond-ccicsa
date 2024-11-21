@@ -4,6 +4,7 @@ import { DataService } from '../shared/data/data.service';
 import { SideBarData, MenuItem } from '../shared/models/models';
 import { SideBarService } from '../shared/side-bar/side-bar.service';
 
+
 interface Route {
   url: string;
   // Add other properties if necessary

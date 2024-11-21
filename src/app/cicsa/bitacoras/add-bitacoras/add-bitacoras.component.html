@@ -51,7 +51,7 @@
                           Enlace/Anillo/Plano/Site
                           <span class="login-danger">*</span>
                         </mat-label>
-                        <input class="form-control" formControlName="nombre" name="nombre" type="text" />
+                        <input class="form-control" formControlName="enlace_plano_site" name="enlace_plano_site" type="text" />
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-xl-2">
@@ -66,6 +66,16 @@
 
                         <input type="datetime-local" class="form-control" formControlName="fecha_inicial"
                         name="fecha_inicial" />
+
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label for="fecha_ejecucion">Fecha Ejecución
+                        </mat-label>
+                        <input type="datetime-local" class="form-control" formControlName="fecha_ejecucion"
+                        name="fecha_ejecucion" />
 
                       </div>
                     </div>
@@ -140,6 +150,19 @@
                         </mat-select>
                       </div>
                     </div>
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="">
+                        <mat-slide-toggle formControlName="afect_servicio" >Afectacion de Servicio </mat-slide-toggle>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="">
+                        <mat-slide-toggle formControlName="afect_masiva" >Afectacion de Masiva </mat-slide-toggle>
+                      </div>
+                    </div>
+
                   </div>
 
                   <mat-action-row>
@@ -211,7 +234,7 @@
                       <div class="form-group local-forms">
                         <mat-label>Departamento</mat-label>
                         <input class="form-control" [value]="
-                            site?.distrito?.provincia?.departamento?.nombre
+                            site?.departamento?.nombre
                           " [disabled]="true" />
                       </div>
                     </div>
@@ -219,7 +242,7 @@
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <mat-label>Provincia</mat-label>
-                        <input class="form-control" [value]="site?.distrito?.provincia?.nombre" [disabled]="true" />
+                        <input class="form-control" [value]="site?.provincia?.nombre" [disabled]="true" />
                       </div>
                     </div>
 

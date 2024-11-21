@@ -36,10 +36,19 @@
                             src="assets/img/icons/plus.svg" alt="" /></a>
                         <a href="javascript:;" (click)="PageSize()" class="btn btn-primary doctor-refresh ms-2"><img
                             src="assets/img/icons/re-fresh.svg" alt="" /></a>
-                      </div>
+
+     
+
                     </div>
                   </div>
                 </div>
+                <div class="col-auto text-end float-end ms-auto download-grp">
+
+                  <a href="javascript:;" class=" me-2" (click)="exportExcel()" ><img src="assets/img/icons/pdf-icon-03.svg" alt=""></a>
+
+
+                </div>
+
               </div>
             </div>
             <!-- /Table Header -->
@@ -103,7 +112,7 @@
                         <i class="fa fa-hourglass" (click)="openDialogDemora(data)" aria-hidden="true"></i>
                       </button>
                       <!-- <button *ngIf="user?.roles?.[0] !== 'Tecnico'" class="btn btn-primary ms-1"> -->
-                      <button  class="btn btn-primary ms-1">
+                      <button class="btn btn-primary ms-1">
                         <i class="fa fa-eye" (click)="openDialog(data.id)" aria-hidden="true"></i>
                       </button>
                     </td>

@@ -65,4 +65,11 @@ export class BitacorasService extends AbstractCrudService<Bitacora> {
       );
     });
   }
+
+  exportExcel() {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/exportaBitacoras`;
+    return this.http.get<Page<Bitacora>>(URL, { headers: headers });
+  }
+
 }

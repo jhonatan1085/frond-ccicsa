@@ -22,3 +22,8 @@
 .example-radio-button {
   margin: 5px;
 }
+
+mat-slide-toggle {
+  display: inline-flex; /* Asegura que el label esté al lado del toggle */
+  align-items: center;
+}

@@ -4,11 +4,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Atencion, Bitacora, Cuadrilla, UsuarioMovil } from '../../modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
+import { DatePipe } from '@angular/common';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-view-bitacoras',
   templateUrl: './view-bitacoras.component.html',
   styleUrls: ['./view-bitacoras.component.scss'],
+  providers: [DatePipe]  // Agregar DatePipe aquí
 })
 export class ViewBitacorasComponent {
   bitacora?: Bitacora;
@@ -16,6 +19,9 @@ export class ViewBitacorasComponent {
   atenciones = '';
   causas = '';
   count = 1;
+
+bitacoraPrint = '';
+
 
   @ViewChild('invoiceTotalInner', { static: true })
   invoiceTotalInner!: ElementRef;
@@ -25,12 +31,16 @@ export class ViewBitacorasComponent {
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
     private clipboard: Clipboard,
     private _snackBar: MatSnackBar,
-    private bitacoraService: BitacorasService
+    private bitacoraService: BitacorasService,
+    private datePipe: DatePipe,
+    private utilities: UtilitiesService
   ) {
     this.bitacoraService.read(data.id).subscribe((resp: Bitacora) => {
       //this.bitacora_selected = resp.bitacora.data;
 
-      console.log('la bitacora: ', resp);
+this.bitacoraPrint = this.utilities.armaBitacora(resp);
+
+/*       console.log('la bitacora: ', resp);
       this.bitacora = resp;
       this.count = 1;
 
@@ -87,11 +97,13 @@ export class ViewBitacorasComponent {
 
       this.bitacora?.atenciones.forEach((element: Atencion) => {
         element.bitacora_atencion.forEach((item: Atencion) => {
+
+          
           if (item.is_coment == '0') {
             this.atenciones =
               this.atenciones +
               ' *' +
-              item.hora +
+              this.datePipe.transform(item.hora , 'HH:mm')  +
               '* ' +
               item.descripcion +
               ' \n';
@@ -103,7 +115,7 @@ export class ViewBitacorasComponent {
         this.atenciones =
           this.atenciones +
           ' *' +
-          element.hora +
+          this.datePipe.transform(element.hora , 'HH:mm')   +
           ' (' +
           element.atencion.orden +
           ') ' +
@@ -111,7 +123,7 @@ export class ViewBitacorasComponent {
           '* ' +
           element.descripcion +
           ' \n';
-      });
+      }); */
     });
   }
 

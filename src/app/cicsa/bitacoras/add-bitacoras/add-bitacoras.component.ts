@@ -21,6 +21,9 @@ import { AddCuadrillaComponent } from '../../cuadrilla/add-cuadrilla/add-cuadril
 import { MatDialog } from '@angular/material/dialog';
 import { AlertComponent } from 'src/app/shared/alert/alert.component';
 import { AlertService } from 'src/app/shared/alert/alert.service';
+import { TimeUtilsService } from '../../services/time-utils.service';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-add-bitacoras',
@@ -91,21 +94,39 @@ export class AddBitacorasComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private time_utils: TimeUtilsService,
+    private utilities: UtilitiesService,
   ) {
-    
+
+    const now = this.time_utils.getLocalDateTime();
+
     this.datosForm = this.fb.group({
       nombre: [null, Validators.required],
-      fecha_inicial: [null, Validators.required],
+      enlace_plano_site: [],
+      fecha_inicial: [now, Validators.required],
+      fecha_ejecucion: [now],
       sot: [],
       incidencia: [],
-      latitud: [],
-      longitud: [],
+      latitud: [null],
+      longitud: [null],
       distancia: [],
       tipo_averia_id: [null, Validators.required],
       red_id: [null, Validators.required],
       serv_id: [null, Validators.required],
-    });
+      afect_servicio:[],
+      afect_masiva:[]
+    },
+      {
+        validators: [
+          this.time_utils.fechaEjecucionMayorValidator('fecha_inicial', 'fecha_ejecucion'),
+          this.utilities.validateCoordinates.bind(this.utilities)
+        ]
+      }
+    );
+
+
+
     this.siteForm = this.fb.group({
       site_id: [null, Validators.required],
       cliente: [],
@@ -119,6 +140,8 @@ export class AddBitacorasComponent implements OnInit {
     });
   }
 
+
+
   ngOnInit(): void {
     this.getBitacoraFromParams();
     this.getConfigBitacora();
@@ -126,6 +149,9 @@ export class AddBitacorasComponent implements OnInit {
     this.getTableData();
     this.dataResponsables();
   }
+
+
+
 
   private getBitacoraFromParams() {
     this.activateRoute.params
@@ -144,7 +170,7 @@ export class AddBitacorasComponent implements OnInit {
         });
         this.siteForm.patchValue({
           site_id: resp.site.id,
-           cliente: resp.cliente,// de donde obtengo el cliente
+          cliente: resp.cliente,// de donde obtengo el cliente
         });
         // this.brigadasForm.patchValue(this.bitacora);
         // brigadas form
@@ -173,6 +199,7 @@ export class AddBitacorasComponent implements OnInit {
 
   private getSites() {
     this.siteService.autocomplete().subscribe((resp) => {
+      console.log(resp.data)
       this.setSites(resp.data);
     });
   }
@@ -335,7 +362,7 @@ export class AddBitacorasComponent implements OnInit {
     this.siteForm.patchValue({ site_id: value.id });
     this.bitacora.site = value;
     this.site = value;
-   // this.dataResponsables();
+    // this.dataResponsables();
   }
 
   dataResponsables() {
@@ -429,10 +456,14 @@ export class AddBitacorasComponent implements OnInit {
   }
 
   nextStep() {
+
     this.step++;
   }
 
   prevStep() {
+
     this.step--;
   }
+
+
 }

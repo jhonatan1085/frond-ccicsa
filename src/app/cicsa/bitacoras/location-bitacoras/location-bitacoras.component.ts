@@ -7,6 +7,8 @@ import { Bitacora, Tipo } from '../../modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
 import { ConfigService } from '../../services/config.service';
 import { LocationService } from '../../services/location.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-location-bitacoras',
@@ -14,16 +16,9 @@ import { LocationService } from '../../services/location.service';
   styleUrls: ['./location-bitacoras.component.scss'],
 })
 export class LocationBitacorasComponent {
-  public selectedCausa!: string;
-  public selectedConsecuencia!: string;
-  public selectedTipoReparacion!: string;
-  public herramientas = '';
-  public tiempo = '';
-  public causa: Tipo[] = [];
-  public consecuencia: Tipo[] = [];
-  public tipoReparacion: Tipo[] = [];
 
   bitacora: Bitacora;
+  datosForm: FormGroup;
 
   constructor(
     public dialogRef: MatDialogRef<LocationBitacorasComponent>,
@@ -33,32 +28,38 @@ export class LocationBitacorasComponent {
     private bitacoraService: BitacorasService,
     private configService: ConfigService,
     private locationService: LocationService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder,
+    private utilities: UtilitiesService
   ) {
     this.bitacora = data.bitacora;
-    this.configService.bitacorasFinalizar().subscribe((resp) => {
-      this.causa = resp.causa;
-      this.consecuencia = resp.consecuencia;
-      this.tipoReparacion = resp.tipoReparacion;
-    });
+
+    this.datosForm = this.fb.group({
+      latitud: [this.bitacora.latitud],
+      longitud: [this.bitacora.longitud],
+      distancia: [this.bitacora.distancia]
+    },
+    {
+      validators: [
+        this.utilities.validateCoordinates.bind(this.utilities)
+      ]
+    })
   }
 
   guardar() {
-    console.log(this.bitacora);
- /*const dist = this.bitacora.distancia ? this.bitacora.distancia : ''
-    const formData = new FormData();
-    formData.append('id', '' + this.bitacora.id);
-    formData.append('latitud', '' + this.bitacora.latitud);
-    formData.append('longitud', '' + this.bitacora.longitud);
-    formData.append('distancia', '' + dist); */
 
-
-    this.locationService.createLocationBitacora(this.bitacora).subscribe((resp) => {
+    const result = {
+      ...this.bitacora,
+      ...this.datosForm.value,
+    };
+    console.log(result);
+    this.locationService.createLocationBitacora(result).subscribe((resp) => {
      
       if (resp.message == 403) {
         this.snackBar('Falta ingresar datos');
       } else {
         this.snackBar('Registro Exitoso');
+        this.dialogRef.close();
         this.router.navigate(['/bitacoras/list-bitacora']);
       }
     });
@@ -76,6 +77,12 @@ export class LocationBitacorasComponent {
     this.bitacoraService.getPosition().then((pos) => {
       this.bitacora.latitud = pos.lat;
       this.bitacora.longitud = pos.lng;
+
+       // Actualiza los valores del formulario con los nuevos datos de latitud y longitud
+    this.datosForm.patchValue({
+      latitud: this.bitacora.latitud,
+      longitud: this.bitacora.longitud
+    });
     });
   }
 }

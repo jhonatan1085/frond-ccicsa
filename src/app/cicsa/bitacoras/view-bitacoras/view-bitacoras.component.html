@@ -7,8 +7,8 @@
     </a>
     <div class="invoice-total-box">
       <div class="invoice-total-inner" #invoiceTotalInner>
-        <pre *ngIf="bitacora">
-    #*{{ bitacora.nombre }}*
+        <pre *ngIf="bitacoraPrint">{{bitacoraPrint}}
+<!--     #*{{ bitacora.nombre }}*
 _FechaInicial:_ {{ bitacora.fecha_inicial }}
 _NroSot:_ {{ bitacora.sot }};
 _NroIncidencia:_ {{ bitacora.incidencia }};
@@ -27,7 +27,7 @@ _Responsable Cicsa:_ {{bitacora.resp_cicsa.nombres}} -T: {{bitacora.resp_cicsa.t
 _Responsable Claro:_ {{bitacora.resp_claro.nombres}} -T: {{bitacora.resp_claro.telefono}};
 
 {{ causas }}
-{{ atenciones }}
+{{ atenciones }} -->
                 </pre
         >
       </div>

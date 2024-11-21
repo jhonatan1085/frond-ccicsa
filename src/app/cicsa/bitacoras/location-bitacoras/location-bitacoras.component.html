@@ -6,26 +6,33 @@
             <div class="card">
                 <div class="card-body">
                     <form>
-                        <div class="row">
+                        <div class="row" [formGroup]="datosForm">
                             
-                            <div class="col-12 col-md-6 col-xl-3">
-                                <div class="form-group local-forms">
-                                  <label for="latitud">Latitud </label>
-                                  <input class="form-control" [(ngModel)]="bitacora.latitud" name="latitud" type="text" />
-                                </div>
-                              </div>
+                          
                               <div class="col-12 col-md-6 col-xl-3">
                                 <div class="form-group local-forms">
-                                  <label for="longitud">Longitud </label>
-                                  <input class="form-control" [(ngModel)]="bitacora.longitud" name="longitud" type="text" />
+                                  <mat-label for="latitud">
+                                    Latitud
+                                  </mat-label>
+                                  <input class="form-control" formControlName="latitud" name="latitud" type="text" />
                                 </div>
                               </div>
+
                               <div class="col-12 col-md-6 col-xl-3">
                                 <div class="form-group local-forms">
-                                  <label for="distancia">Distancia</label>
-                                  <input class="form-control" [(ngModel)]="bitacora.distancia" name="distancia" type="number" />
+                                  <mat-label for="longitud">
+                                    Longitud
+                                  </mat-label>
+                                  <input class="form-control" formControlName="longitud" name="longitud" type="text" />
                                 </div>
                               </div>
+                              <div class="col-12 col-md-6 col-xl-2">
+                                <div class="form-group local-forms">
+                                  <mat-label for="distancia">Distancia </mat-label>
+                                  <input formControlName="distancia" class="form-control" name="distancia" type="number" />
+                                </div>
+                              </div>
+          
 
                               <div class="col-12 col-md-6 col-xl-3">
                                 <button class="btn btn-primary ms-1"><i class="fas fa-map-marker-alt" (click)="getLocation()"  aria-hidden="true" ></i></button>
@@ -41,5 +48,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cerrar</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="guardar()">Guardar</button>
+    <button mat-button cdkFocusInitial [disabled]="datosForm.invalid"  (click)="guardar()">Guardar</button>
 </mat-dialog-actions>
