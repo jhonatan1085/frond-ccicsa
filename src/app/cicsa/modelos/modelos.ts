@@ -5,13 +5,16 @@ export interface Bitacora {
   semana?: number;
   hora_asignacion?: string;
   cuadrantes?: string;
-
+  nombre_brigada?:string;
   id: number;
   nombre: string;
   enlace_plano_site?: string;
   fecha_inicial: string;
   fecha_ejecucion?: string;
   sot: string; // Puede ser de cualquier tipo, ajusta según corresponda
+  fecha_sot?: string;
+  estado_sot?: boolean;
+  estado_sot_text?: string;
   incidencia: string; // Puede ser de cualquier tipo, ajusta según corresponda
   tipo_averia: TipoAveria;
   red: Tipo;
@@ -111,6 +114,7 @@ export interface Cuadrilla {
   estado: string;
   estadotext: string;
   contratista: Contratista;
+  nombre?:string;
   tipo_brigada: Tipo;
   zona: Zona;
   user_movil: UsuarioMovil[];

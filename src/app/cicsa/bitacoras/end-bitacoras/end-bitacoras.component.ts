@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Bitacora, Tipo } from '../../modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
 import { ConfigService } from '../../services/config.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-end-bitacoras',
@@ -24,6 +26,8 @@ export class EndBitacorasComponent {
 
   bitacora: Bitacora;
 
+  datosForm: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<EndBitacorasComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { bitacora: Bitacora },
@@ -31,14 +35,25 @@ export class EndBitacorasComponent {
     private _snackBar: MatSnackBar,
     private bitacoraService: BitacorasService,
     private configService: ConfigService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder,
+    private utilities: UtilitiesService,
   ) {
     this.bitacora = data.bitacora;
-    this.bitacora.causa_averia = this.bitacora.causa_averia ?? {};
+
+      this.datosForm = this.fb.group({
+      causa_averia_id: [this.bitacora.causa_averia?.id ?? null],
+      consecuencia_averia_id: [this.bitacora.consecuencia_averia?.id ?? null],
+      tipo_reparacion_id: [this.bitacora.tipo_reparacion?.id ?? null],
+      herramientas:[this.bitacora.herramientas ?? null],
+      tiempo_solucion:[this.bitacora.tiempo_solucion ?? null]
+    })
+
+/*     this.bitacora.causa_averia = this.bitacora.causa_averia ?? {};
     this.bitacora.consecuencia_averia = this.bitacora.consecuencia_averia ?? {};
     this.bitacora.tipo_reparacion = this.bitacora.tipo_reparacion ?? {};
     this.bitacora.herramientas ??= '';
-    this.bitacora.incidencia ??= '';
+    this.bitacora.incidencia ??= ''; */
     
     this.configService.bitacorasFinalizar().subscribe((resp) => {
       this.causa = resp.causa;
@@ -48,22 +63,23 @@ export class EndBitacorasComponent {
   }
 
   guardar() {
-    const formData = new FormData();
-    formData.append('id', '' + this.bitacora.id);
-    formData.append('causa', '' + this.bitacora.causa_averia.id);
-    formData.append('consecuencia', '' + this.bitacora.consecuencia_averia.id);
-    formData.append('tipoReparacion', '' + this.bitacora.tipo_reparacion.id);
-    formData.append('herramientas', this.bitacora.herramientas);
-    formData.append('tiempo', this.bitacora.tiempo_solucion);
+
+    if (!this.bitacora.latitud || !this.bitacora.longitud) {
+      this.utilities.snackBar('La bitacora no puede ser cerrada, no cuenta con latitud y longitud');
+      return; // Detén el flujo si no son válidos
+    }
+
+    const result = {
+      ...this.bitacora,
+      ...this.datosForm.value,
+    };
 
     this.bitacoraService
-      .finalizar( formData)
+      .finalizar(result)
       .subscribe((resp) => {
         console.log(resp);
         if (resp.message == 403) {
-          //this.snackBar(resp.message_text);
           this.snackBar('Falta ingresar datos');
-
         } else {
           this.snackBar('Registro Exitoso');
           this.dialogRef.close();

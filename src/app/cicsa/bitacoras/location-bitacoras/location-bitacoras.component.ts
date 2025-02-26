@@ -39,11 +39,11 @@ export class LocationBitacorasComponent {
       longitud: [this.bitacora.longitud],
       distancia: [this.bitacora.distancia]
     },
-    {
-      validators: [
-        this.utilities.validateCoordinates.bind(this.utilities)
-      ]
-    })
+      {
+        validators: [
+          this.utilities.validateCoordinates.bind(this.utilities)
+        ]
+      })
   }
 
   guardar() {
@@ -54,35 +54,29 @@ export class LocationBitacorasComponent {
     };
     console.log(result);
     this.locationService.createLocationBitacora(result).subscribe((resp) => {
-     
+
       if (resp.message == 403) {
-        this.snackBar('Falta ingresar datos');
+        this.utilities.snackBar('Falta ingresar datos');
       } else {
-        this.snackBar('Registro Exitoso');
+        this.utilities.snackBar('Registro Exitoso');
         this.dialogRef.close();
         this.router.navigate(['/bitacoras/list-bitacora']);
       }
     });
   }
 
-  snackBar(comentario: string) {
-    this._snackBar.open(comentario, 'Cerrar', {
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 3000,
-    });
-  }
+
 
   getLocation() {
     this.bitacoraService.getPosition().then((pos) => {
       this.bitacora.latitud = pos.lat;
       this.bitacora.longitud = pos.lng;
 
-       // Actualiza los valores del formulario con los nuevos datos de latitud y longitud
-    this.datosForm.patchValue({
-      latitud: this.bitacora.latitud,
-      longitud: this.bitacora.longitud
-    });
+      // Actualiza los valores del formulario con los nuevos datos de latitud y longitud
+      this.datosForm.patchValue({
+        latitud: this.bitacora.latitud,
+        longitud: this.bitacora.longitud
+      });
     });
   }
 }

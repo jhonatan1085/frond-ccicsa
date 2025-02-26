@@ -54,7 +54,7 @@
               <div class="col-12 col-md-6 col-xl-6">
                 <div class="form-group local-forms">
                   <mat-label
-                    >Zona <span class="login-danger">*</span></mat-label
+                    >Base <span class="login-danger">*</span></mat-label
                   >
                   <mat-select
                     [(ngModel)]="selectedZona"
@@ -67,6 +67,13 @@
                       {{ data.nombre }}
                     </mat-option>
                   </mat-select>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6 col-xl-6">
+                <div class="form-group local-forms">
+                  <mat-label for="nombre">Nombre </mat-label>
+                  <input [(ngModel)]="nombre" class="form-control" name="nombre" type="text" />
                 </div>
               </div>
               <div class="col-12">

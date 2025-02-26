@@ -14,6 +14,8 @@ import { FileSaverService } from 'ngx-filesaver';
 import { DateTime } from 'luxon';
 import { TimeUtilsService } from '../../services/time-utils.service';
 import { UtilitiesService } from '../../services/utilities.service';
+import { EndSotComponent } from '../end-sot/end-sot.component';
+
 
 @Component({
   selector: 'app-list-bitacoras',
@@ -25,7 +27,7 @@ export class ListBitacorasComponent implements OnInit {
   public fecha_llegada?: string;
 
   public user?: UserAuth;
-
+  esMovil: boolean = false;
 
   public detalleBitacora: Bitacora[] = [];
   public bitacoras: Bitacora[] = [];
@@ -61,6 +63,8 @@ export class ListBitacorasComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.esMovil = this.utilities.isMobile();
+    console.log(this.esMovil)
     this.user = this.auth.user
     this.getTableData();
   }
@@ -71,8 +75,14 @@ export class ListBitacorasComponent implements OnInit {
     this.bitacoraService
       .readAll({ page, search: this.searchDataValue })
       .subscribe((resp) => {
+
         this.totalData = resp.total;
-        this.bitacoras = resp.data;
+        //this.bitacoras = resp.data;
+
+        this.bitacoras = resp.data.map(item => ({
+          ...item,
+          estado_sot: !!item.estado_sot // Convierte 0 o 1 a true o false
+        }));
 
         this.dataSource = new MatTableDataSource<Bitacora>(this.bitacoras);
         this.calculateTotalPages(this.totalData, this.pageSize);
@@ -178,6 +188,12 @@ export class ListBitacorasComponent implements OnInit {
   }
 
   openDialogEnd(bitacora: Bitacora) {
+
+    if (!bitacora.latitud || !bitacora.longitud) {
+      this.utilities.snackBar('La bitacora no puede ser cerrada, no cuenta con latitud y longitud');
+      return; // Detén el flujo si no son válidos
+    }
+
     const ref = this.dialog.open(EndBitacorasComponent, {
       data: { bitacora: bitacora },
     });
@@ -193,6 +209,8 @@ export class ListBitacorasComponent implements OnInit {
     });
   }
 
+
+
   openDialogLocation(bitacora: Bitacora) {
     const ref = this.dialog.open(LocationBitacorasComponent, {
       data: { bitacora: bitacora },
@@ -203,6 +221,20 @@ export class ListBitacorasComponent implements OnInit {
     })
 
   }
+
+  inactiva(bitacora: Bitacora) {
+
+    if (bitacora.estado_sot == true) {
+      const ref = this.dialog.open(EndSotComponent, {
+        data: { bitacora: bitacora },
+      });
+      ref.afterClosed().subscribe(() => {
+        this.getTableData(this.currentPage);
+      })
+    }
+  }
+
+
 
   exportExcel() {
     const page = 1
@@ -221,9 +253,9 @@ export class ListBitacorasComponent implements OnInit {
 
         // Cambiar los nombres de las cabeceras manualmente (primer fila)
         const headers = [
-          'Año', 'Mes', 'Semana', 'Fecha y Hora Asignación Cliente', 'Fecha y Hora Ejecucion', 'SOT', 'Fecha y Hora se creacion de SOT', 'Estatus SGA',
+          'Año', 'Mes', 'Semana', 'Fecha y Hora Asignación Cliente', 'Fecha y Hora Ejecucion', 'Incidencia', 'SOT', 'Fecha y Hora se creacion de SOT', 'Estatus SGA',
           'Tipo de Incidencia', 'Red Afectada', 'Causa de Avería', 'Agrupamiento de Causa de Avería', 'Afectación de Servicio', 'Afectación Masiva',
-          'Base', 'Zona',  'SUP. Claro', 'SUP. Cicsa', 'Brigada #1 Asignada', 'Hora Asignación', 'Horarios por cuadrantes', 'POP/Site/Nodo', 'Departamento', 'Provincia', 'Distrito del punto de avería', 'Region Geografica',
+          'Base', 'Zona', 'SUP. Claro', 'SUP. Cicsa', 'Brigada #1 Asignada', 'Hora Asignación', 'Horarios por cuadrantes', 'POP/Site/Nodo', 'Departamento', 'Provincia', 'Distrito del punto de avería', 'Region Geografica',
           'Fecha y Hora Llegada al Sitio', 'SLA Traslado Pop / Cliente2', 'Fecha y Hora de UBICACION punto de Avería / Trabajo2', 'SLA ubicación punto Avería2', 'Fecha y Hora UP Avería / Reparación TUPs', 'SLA Trabajos preliminares + Prepara. y Fusión',
           'SLA TOTAL Avería / Atención', 'Cumplió SLA', 'Fecha y Hora de Retiro de la brigada', 'Tiempo total de atencion de incidencias',
           'DEMORA #1 (cuando no se cumpla con el SLA)', 'F. y Hora INICIO Demora #1', 'F. y Hora FIN Demora #1', 'Tiempo de Demora #1',
@@ -333,14 +365,14 @@ export class ListBitacorasComponent implements OnInit {
       let demoras: DemoraBitacoraExtended[] = [];
       demoras = item.demoras?.map((item) => ({
         ...item,
-        tiempoDemora: this.time_utils.convierteHoras( this.time_utils.calcularDiferenciaTiempo(item.fecha_inicio || '', item.fecha_fin))
+        tiempoDemora: this.time_utils.convierteHoras(this.time_utils.calcularDiferenciaTiempo(item.fecha_inicio || '', item.fecha_fin))
       })) ?? [];
 
       let totalDemoras = this.time_utils.updateTotalDemoras(demoras);
 
-      let total_sla = fusion ?  this.time_utils.calcularDiferenciaTiempo(item.fecha_inicial || '', fusion) - totalDemoras : ''
+      let total_sla = fusion ? this.time_utils.calcularDiferenciaTiempo(item.fecha_inicial || '', fusion) - totalDemoras : ''
 
-    let tiempo_total = retiro ? this.time_utils.calcularDiferenciaTiempo(item.fecha_inicial || '', retiro) - totalDemoras : ''
+      let tiempo_total = retiro ? this.time_utils.calcularDiferenciaTiempo(item.fecha_inicial || '', retiro) - totalDemoras : ''
 
 
       return {
@@ -349,9 +381,10 @@ export class ListBitacorasComponent implements OnInit {
         semana: item.semana,
         fecha_inicial: item.fecha_inicial,
         fecha_ejecucion: item.fecha_ejecucion,
-        sot: item.sot,
-        fecha_sot: "",
-        status_sot: "",
+        nro_incidencia: item.incidencia,
+        nro_sot: item.sot,
+        fecha_sot: item.fecha_sot,
+        status_sot: item.estado_sot,
         incidencia: item.tipo_averia.incidencia,
         red_afectada: item.red.nombre,
         causa_averia: item.causa_averia?.nombre,
@@ -362,21 +395,21 @@ export class ListBitacorasComponent implements OnInit {
         zona: item.site.region,
         sup_claro: item.resp_claro.nombres,
         sup_cicsa: item.resp_cicsa.nombres,
-        brigada: "",
+        brigada: item.nombre_brigada,
         hora_asignacion: item.hora_asignacion,
         horarios_cuadrantes: this.utilities.obtenerCuadrante(item.hora_asignacion || ''),
         site: item.site.nombre,
         departamento: item.site.departamento?.nombre,
         provincia: item.site.provincia?.nombre,
         distrito: item.site.distrito?.nombre,
-        region_geografica : item.site.region_geografica?.nombre,
+        region_geografica: item.site.region_geografica?.nombre,
         fecha_llegada: llegada,
         sla_llegada: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(llegada_sla) : texto_averia,//llegada  ? this.time_utils.calcularTiempoDemora(item.fecha_ejecucion || '' , llegada) :  "",
         fecha_ubica_punto: ubicacion,
         sla_ubica_punto: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(ubica_punto_sla) : texto_averia, //llegada && ubicacion ? this.time_utils.calcularTiempoDemora(llegada || '' , ubicacion) :  "",
         fecha_fusion: fusion,
         sla_fusion: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(fusion_sla) : texto_averia,// ubicacion && fusion ? this.time_utils.calcularTiempoDemora(ubicacion || '' , fusion) :  "",
-        sla_total:  item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(total_sla) : texto_averia,
+        sla_total: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(total_sla) : texto_averia,
         sla_cumplio: "",
         retiro: retiro,
         sla_tiempo_total: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(tiempo_total) : texto_averia,
@@ -431,4 +464,6 @@ export class ListBitacorasComponent implements OnInit {
     const data: Blob = new Blob([csv], { type: 'text/csv;charset=UTF-8' });
     this.fileSaver.save(data, fileName);
   }
+
+
 }

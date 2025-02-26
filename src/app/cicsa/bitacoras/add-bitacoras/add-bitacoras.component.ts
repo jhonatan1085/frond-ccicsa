@@ -107,6 +107,7 @@ export class AddBitacorasComponent implements OnInit {
       fecha_inicial: [now, Validators.required],
       fecha_ejecucion: [now],
       sot: [],
+      fecha_sot:[now],
       incidencia: [],
       latitud: [null],
       longitud: [null],
@@ -317,7 +318,7 @@ export class AddBitacorasComponent implements OnInit {
       brigadas.push(
         this.fb.group({
           id: [brigada.id],
-          tipo: [brigada.tipo_brigada.nombre],
+          nombre: [brigada.nombre],
           zona: [brigada.zona.nombre],
         })
       );

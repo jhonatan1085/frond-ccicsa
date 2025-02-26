@@ -58,8 +58,10 @@
               >
                     <thead>
                       <tr>
+                        
+                        <th >Brigada</th>
+                        <th >T. Brigada</th>
                         <th mat-sort-header="nombre">Contrata</th>
-                        <th >Cuadrilla</th>
                         <th mat-sort-header="zona.nombre">Zona</th>
                         <th >Tecnicos</th>
                         <th >Estado</th>
@@ -69,9 +71,10 @@
                     </thead>
                     <tbody>
                       <ng-container *ngFor="let cuadrilla of cuadrillasList">
-                        <tr>
-                          <td>{{ cuadrilla.contratista.nombre }}</td>
+                        <tr>   
+                          <td>{{ cuadrilla.nombre }}</td>
                           <td>{{ cuadrilla.tipo_brigada.nombre }}</td>
+                          <td>{{ cuadrilla.contratista.nombre }}</td>
                           <td>{{ cuadrilla.zona.nombre }}</td>
                           <td>{{ countTecnicos(cuadrilla) }}</td>
                           <td>

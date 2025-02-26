@@ -79,7 +79,13 @@
 
                       </div>
                     </div>
-
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label for="nro_incidencia">Nro Incidencia
+                        </mat-label>
+                        <input formControlName="incidencia" class="form-control" name="nro_incidencia" type="text" />
+                      </div>
+                    </div>
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <mat-label for="nro_sot">Nro Sot </mat-label>
@@ -88,9 +94,11 @@
                     </div>
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <mat-label for="nro_incidencia">Nro Incidencia
+                        <mat-label for="fecha_sot">Fecha SOT
                         </mat-label>
-                        <input formControlName="incidencia" class="form-control" name="nro_incidencia" type="text" />
+                        <input type="datetime-local" class="form-control" formControlName="fecha_sot"
+                        name="fecha_sot" />
+
                       </div>
                     </div>
 
@@ -280,9 +288,9 @@
 
                 <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
                   <mat-expansion-panel-header>
-                    <mat-panel-title> Cuadrillas </mat-panel-title>
+                    <mat-panel-title> Brigadas </mat-panel-title>
                     <mat-panel-description>
-                      Seleccionar cuadrillas
+                      Seleccionar Brigadas
                       <!-- <mat-icon>date_range</mat-icon> -->
                     </mat-panel-description>
                   </mat-expansion-panel-header>
@@ -294,8 +302,10 @@
                             <table class="table mb-0">
                               <thead>
                                 <tr>
+                                 
+                                  <th>Brigada</th>
+                                  <th>T. Brigada</th>
                                   <th>Contrata</th>
-                                  <th>Cuadrilla</th>
                                   <th>Base</th>
                                   <th>Tecnicos</th>
                                   <th>
@@ -309,8 +319,9 @@
                               <tbody>
                                 <ng-container *ngFor="let brigada of brigadas">
                                   <tr>
-                                    <td>{{ brigada.contratista.nombre }}</td>
+                                    <td>{{ brigada.nombre }}</td>
                                     <td>{{ brigada.tipo_brigada.nombre }}</td>
+                                    <td>{{ brigada.contratista.nombre }}</td>
                                     <td>{{ brigada.zona.nombre }}</td>
                                     <td>{{ countTecnicos(brigada) }}</td>
                                     <td>
@@ -464,13 +475,13 @@
                     <div class="col-12">
                       <div class="card-box">
                         <div class="card-block">
-                          <h4 class="card-title">Cuadrilla Seleccionada</h4>
+                          <h4 class="card-title">Brigada Seleccionada</h4>
                           <div class="table-responsive">
                             <table class="table mb-0">
                               <thead>
                                 <tr>
                                   <th>Base</th>
-                                  <th>Cuadrilla</th>
+                                  <th>Brigada</th>
                                   <th>Acción</th>
                                 </tr>
                               </thead>
@@ -481,7 +492,7 @@
                                   ">
                                   <tr>
                                     <td>{{ cuadriadd.zona }}</td>
-                                    <td>{{ cuadriadd.tipo }}</td>
+                                    <td>{{ cuadriadd.nombre }}</td>
                                     <td>
                                       <div class="add-group">
                                         <button class="check-point status-red" (click)="addBrigada(cuadriadd)">

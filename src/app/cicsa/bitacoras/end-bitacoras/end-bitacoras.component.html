@@ -5,55 +5,68 @@
             <div class="card">
                 <div class="card-body">
                     <form>
-                        <div class="row">
+                        <div class="row"  [formGroup]="datosForm">
+
+
+
                             <div class="col-12 col-md-6 col-xl-4">
                                 <div class="form-group local-forms">
-                                    <label>Causa de Averia <span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="bitacora.causa_averia.id"
-                                        [ngModelOptions]="{standalone: true}" class="form-control select"
-                                        placeholder="Seleccione Causa">
-                                        <mat-option *ngFor="let data of causa" [value]="data.id">
-                                            {{data.nombre}}
-                                        </mat-option>
-                                    </mat-select>
+                                  <mat-label>Causa Averia
+                                    <span class="login-danger">*</span></mat-label>
+                                  <mat-select formControlName="causa_averia_id" class="form-control select"
+                                    placeholder="Seleccione Causa">
+                                    <mat-option *ngFor="let data of causa" [value]="data.id">
+                                      {{ data.nombre }}
+                                    </mat-option>
+                                  </mat-select>
                                 </div>
-                            </div>
+                              </div>
+
                             <div class="col-12 col-md-6 col-xl-4">
                                 <div class="form-group local-forms">
-                                    <label>Consecuencia Averia <span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="bitacora.consecuencia_averia.id"
-                                        [ngModelOptions]="{standalone: true}" class="form-control select"
-                                        placeholder="Seleccione Consecuencia">
-                                        <mat-option *ngFor="let data of consecuencia" [value]="data.id">
-                                            {{data.nombre}}
-                                        </mat-option>
-                                    </mat-select>
+                                  <mat-label>Consecuencia
+                                    <span class="login-danger">*</span></mat-label>
+                                  <mat-select formControlName="consecuencia_averia_id" class="form-control select"
+                                    placeholder="Seleccione Consecuencia">
+                                    <mat-option *ngFor="let data of consecuencia" [value]="data.id">
+                                      {{ data.nombre }}
+                                    </mat-option>
+                                  </mat-select>
                                 </div>
-                            </div>
+                              </div>
+
+
+
+                            
                             <div class="col-12 col-md-6 col-xl-4">
                                 <div class="form-group local-forms">
-                                    <label>Tipo de Reparación<span class="login-danger">*</span></label>
-                                    <mat-select [(ngModel)]="bitacora.tipo_reparacion.id"
-                                        [ngModelOptions]="{standalone: true}" class="form-control select"
-                                        placeholder="Seleccione Tipo Rep.">
-                                        <mat-option *ngFor="let data of tipoReparacion" [value]="data.id">
-                                            {{data.nombre}}
-                                        </mat-option>
-                                    </mat-select>
+                                  <mat-label>Tipo de Reparación
+                                    <span class="login-danger">*</span></mat-label>
+                                  <mat-select formControlName="tipo_reparacion_id" class="form-control select"
+                                    placeholder="Seleccione Tipo Rep.">
+                                    <mat-option *ngFor="let data of tipoReparacion" [value]="data.id">
+                                      {{ data.nombre }}
+                                    </mat-option>
+                                  </mat-select>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-xl-3">
+                              </div>
+
+
+
+                            <div class="col-12 col-md-6 col-xl-4">
                                 <div class="form-group local-forms">
-                                    <label for="tiempo">Tiempo atención </label>
-                                    <input class="form-control" [(ngModel)]="bitacora.tiempo_solucion" name="tiempo"
+                                    <mat-label for="tiempo_solucion">Tiempo atención </mat-label>
+                                    <input class="form-control" formControlName="tiempo_solucion" name="tiempo_solucion"
                                         type="text">
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 col-xl-6">
+                            
+        
+                            <div class="col-12 col-md-6 col-xl-4">
                                 <div class="form-group local-forms">
-                                    <label for="herramientas">Material Utilizado </label>
+                                    <mat-label for="herramientas">Material Utilizado </mat-label>
                                     <textarea class="form-control" name="herramientas" rows="5" cols="10"
-                                        [(ngModel)]="bitacora.herramientas"></textarea>
+                                    formControlName="herramientas" ></textarea>
                                 </div>
                             </div>
                         </div>

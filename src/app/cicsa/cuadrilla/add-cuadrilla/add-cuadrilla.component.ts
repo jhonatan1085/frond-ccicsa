@@ -5,6 +5,7 @@ import { ConfigService } from '../../services/config.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { Tipo } from '../../modelos';
+import { UtilitiesService } from '../../services/utilities.service';
 
 // declare const $: any;
 
@@ -17,7 +18,7 @@ export class AddCuadrillaComponent {
   selectedTipobrigadas!: string;
   selectedContratistas!: string;
   selectedZona!: string;
-
+  nombre!:string;
   tipobrigadas: any[] = [];
   contratistas: any[] = [];
   zonas: Tipo[] = [];
@@ -33,7 +34,8 @@ export class AddCuadrillaComponent {
     private cuadrillaService: CuadrillaService,
     private configService: ConfigService,
     private usuarioService: UsuariosService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private utilities:UtilitiesService
   ) {
     this.configService.cuadrillas().subscribe((resp) => {
       this.tipobrigadas = resp.tipobrigadas;
@@ -140,17 +142,11 @@ export class AddCuadrillaComponent {
     }
   }
 
-  snackBar(comentario: any) {
-    this._snackBar.open(comentario, 'Cerrar', {
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 3000,
-    });
-  }
+
   saveCuadrilla() {
     if (this.user_selecteds.length == 0) {
       console.log(this.user_selecteds.length);
-      this.snackBar('No selecciono tecnico');
+      this.utilities.snackBar('No selecciono tecnico');
       return;
     }
 
@@ -158,7 +154,7 @@ export class AddCuadrillaComponent {
     console.log(INDEX);
     if (INDEX == -1) {
       console.log(this.user_selecteds.length);
-      this.snackBar('No selecciono Lider');
+      this.utilities.snackBar('No selecciono Lider');
       return;
     }
 
@@ -166,20 +162,22 @@ export class AddCuadrillaComponent {
     formData.append('zona_id', this.selectedZona);
     formData.append('tipo_brigada_id', this.selectedTipobrigadas);
     formData.append('contratista_id', this.selectedContratistas);
+    formData.append('nombre', this.nombre);
     formData.append('tecnicos', JSON.stringify(this.user_selecteds));
 
     this.cuadrillaService.create(formData).subscribe((resp) => {
       console.log(resp);
       if (resp.message == 403) {
-        this.snackBar('Falta ingresar datos');
+        this.utilities.snackBar('Falta ingresar datos');
       } else {
-        this.snackBar('Registro Exitoso');
+        this.utilities.snackBar('Registro Exitoso');
 
         this.dialogRef.close();
 
         this.selectedZona = '';
         this.selectedTipobrigadas = '';
         this.selectedContratistas = '';
+        this.nombre = '';
         this.user_selecteds = [];
         this.users = [];
         //

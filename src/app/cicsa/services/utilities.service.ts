@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common'; // Importa DatePipe
 import { Atencion, Bitacora, CalcularTiempo, Cuadrilla, UsuarioMovil } from '../modelos';
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable({
   providedIn: 'root',
 
 })
 export class UtilitiesService {
 
-  constructor(private datePipe: DatePipe) {
+  constructor(
+    private datePipe: DatePipe,
+    private _snackBar: MatSnackBar,
+  ) {
 
   }
   // Rango de coordenadas para Perú (aproximado)
@@ -131,53 +134,71 @@ _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${item.unida
   }
 
 
-// Validar coordenada (latitud o longitud)
-isValidCoordinate(coordinate: number): boolean {
-  return !isNaN(coordinate) && coordinate !== null;
-}
-
-// Validar si las coordenadas están dentro del territorio de Perú
-validateLatLong(lat: number, lon: number): boolean {
-  const minLat = -18.0;
-  const maxLat = -0.1;
-  const minLon = -81.0;
-  const maxLon = -68.0;
-
-  return lat >= minLat && lat <= maxLat && lon >= minLon && lon <= maxLon;
-}
-
-// Función para validar latitud y longitud
-validateCoordinates(formGroup: FormGroup): { [key: string]: boolean } | null {
-  const lat = formGroup.get('latitud')?.value;
-  const lon = formGroup.get('longitud')?.value;
-
-  // Si ambos campos latitud y longitud están vacíos (null o vacío), no validamos
-  if ((lat === null || lat === '') && (lon === null || lon === '')) {
-    return null; // No validamos si ambos son nulos o vacíos
+  // Validar coordenada (latitud o longitud)
+  isValidCoordinate(coordinate: number): boolean {
+    return !isNaN(coordinate) && coordinate !== null;
   }
 
-  // Si uno de los campos tiene valor y el otro no, es inválido
-  if ((lat && (lon === null ||  lon === '')) || (lon && (lat === null || lat === ''))) {
-    return { missingCoordinate: true };  // Error si solo uno tiene valor
+  // Validar si las coordenadas están dentro del territorio de Perú
+  validateLatLong(lat: number, lon: number): boolean {
+    const minLat = -18.0;
+    const maxLat = -0.1;
+    const minLon = -81.0;
+    const maxLon = -68.0;
+
+    return lat >= minLat && lat <= maxLat && lon >= minLon && lon <= maxLon;
   }
 
-  // Validar latitud si tiene un valor
-  if (lat && !this.isValidCoordinate(lat)) {
-    return { invalidLatitude: true };  // Error si la latitud no es válida
+  // Función para validar latitud y longitud
+  validateCoordinates(formGroup: FormGroup): { [key: string]: boolean } | null {
+    const lat = formGroup.get('latitud')?.value;
+    const lon = formGroup.get('longitud')?.value;
+
+    // Si ambos campos latitud y longitud están vacíos (null o vacío), no validamos
+    if ((lat === null || lat === '') && (lon === null || lon === '')) {
+      return null; // No validamos si ambos son nulos o vacíos
+    }
+
+    // Si uno de los campos tiene valor y el otro no, es inválido
+    if ((lat && (lon === null || lon === '')) || (lon && (lat === null || lat === ''))) {
+      return { missingCoordinate: true };  // Error si solo uno tiene valor
+    }
+
+    // Validar latitud si tiene un valor
+    if (lat && !this.isValidCoordinate(lat)) {
+      return { invalidLatitude: true };  // Error si la latitud no es válida
+    }
+
+    // Validar longitud si tiene un valor
+    if (lon && !this.isValidCoordinate(lon)) {
+      return { invalidLongitude: true };  // Error si la longitud no es válida
+    }
+
+    // Validar si la latitud y longitud están dentro del territorio de Perú, si ambos tienen valores
+    if (lat && lon && !this.validateLatLong(lat, lon)) {
+      return { outOfPeru: true };  // Error si las coordenadas están fuera de Perú
+    }
+
+    return null;  // Si todo está bien, el formulario es válido
   }
 
-  // Validar longitud si tiene un valor
-  if (lon && !this.isValidCoordinate(lon)) {
-    return { invalidLongitude: true };  // Error si la longitud no es válida
+  snackBar(comentario: string) {
+    this._snackBar.open(comentario, 'Cerrar', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 3000,
+    });
   }
 
-  // Validar si la latitud y longitud están dentro del territorio de Perú, si ambos tienen valores
-  if (lat && lon && !this.validateLatLong(lat, lon)) {
-    return { outOfPeru: true };  // Error si las coordenadas están fuera de Perú
+  isMobile(): boolean {
+    const userAgent = navigator.userAgent.toLowerCase();
+    // Lista básica de dispositivos móviles
+    const mobileDevices = [
+      'android', 'iphone', 'ipad', 'ipod', 'blackberry', 
+      'windows phone', 'opera mini', 'mobile'
+    ];
+    return mobileDevices.some(device => userAgent.includes(device));
   }
 
-  return null;  // Si todo está bien, el formulario es válido
-}
 
-  
 }

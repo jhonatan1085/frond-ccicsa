@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   AtencionBitacora,
@@ -7,7 +7,7 @@ import {
   Page,
   DemoraBitacora,
 } from 'src/app/cicsa/modelos';
-import { URL_SERVICIOS } from 'src/app/config/config';
+import {  URL_SERVICIOS } from 'src/app/config/config';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { AbstractCrudService } from './abstract-crud.service';
 
@@ -15,7 +15,24 @@ import { AbstractCrudService } from './abstract-crud.service';
   providedIn: 'root',
 })
 export class BitacorasService extends AbstractCrudService<Bitacora> {
-  
+
+   username = 'NMgkQskZIO0cGAZFM5H4791Ggx4sNMCo';
+     password = 'u9yKXm0LE57UzztD';
+     basicAuth = btoa(`${this.username}:${this.password}`); // Codificar en Base64
+
+    // Encabezados
+     headersIder = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${this.basicAuth}`,
+    });
+
+    // Cuerpo de la solicitud
+     body = JSON.stringify({
+      grant_type: 'client_credentials',
+      scope: 'https://api.latam.equifax.com/datos-comerciales/transaction',
+    });
+
+
   constructor(
     public override http: HttpClient,
     public override authService: AuthService
@@ -71,5 +88,12 @@ export class BitacorasService extends AbstractCrudService<Bitacora> {
     const URL = `${URL_SERVICIOS}/${this.endpoint}/exportaBitacoras`;
     return this.http.get<Page<Bitacora>>(URL, { headers: headers });
   }
+
+  closedSot(bitacora_id: number) {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/closed-sot/${bitacora_id}`;
+    return this.http.patch<CrudResponse>(URL,{},{ headers: headers });
+  }
+
 
 }
