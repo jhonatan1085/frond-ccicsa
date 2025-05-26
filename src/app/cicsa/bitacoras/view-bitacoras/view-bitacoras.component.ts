@@ -11,7 +11,7 @@ import { UtilitiesService } from '../../services/utilities.service';
   selector: 'app-view-bitacoras',
   templateUrl: './view-bitacoras.component.html',
   styleUrls: ['./view-bitacoras.component.scss'],
-  providers: [DatePipe]  // Agregar DatePipe aquí
+  providers: [DatePipe], // Agregar DatePipe aquí
 })
 export class ViewBitacorasComponent {
   bitacora?: Bitacora;
@@ -20,8 +20,7 @@ export class ViewBitacorasComponent {
   causas = '';
   count = 1;
 
-bitacoraPrint = '';
-
+  bitacoraPrint = '';
 
   @ViewChild('invoiceTotalInner', { static: true })
   invoiceTotalInner!: ElementRef;
@@ -36,104 +35,23 @@ bitacoraPrint = '';
     private utilities: UtilitiesService
   ) {
     this.bitacoraService.read(data.id).subscribe((resp: Bitacora) => {
-      //this.bitacora_selected = resp.bitacora.data;
-
-this.bitacoraPrint = this.utilities.armaBitacora(resp);
-
-/*       console.log('la bitacora: ', resp);
       this.bitacora = resp;
-      this.count = 1;
 
-      if (this.bitacora.estado == '0') {
-        this.causas = '*Causa: ' + this.bitacora.causa_averia.nombre + ';* \n';
-        this.causas =
-          this.causas +
-          '*Consecuencia: ' +
-          this.bitacora.consecuencia_averia.nombre +
-          ';* \n';
-        this.causas =
-          this.causas +
-          '*Tipo de Reparación:* ' +
-          this.bitacora.tipo_reparacion.nombre +
-          '; \n';
-        this.causas =
-          this.causas +
-          '*Tiempo de solución:* ' +
-          this.bitacora.tiempo_solucion +
-          '; \n';
-        if (this.bitacora.herramientas) {
-          this.causas =
-            this.causas +
-            '\n*Material Utilizado:*\n' +
-            this.bitacora.herramientas +
-            '\n';
-        } else {
-          this.causas =
-            this.causas + '\n*Material Utilizado:*\n - Sin materiales \n';
-        }
-      }
-
-      this.bitacora?.brigadas.forEach((element: Cuadrilla) => {
-        // let zona = element.zona.nombre;
-        element.user_movil.forEach((item: UsuarioMovil) => {
-          if (item.is_lider == '1') {
-            this.brigadas =
-              this.brigadas +
-              '\n' +
-              '_Bri' +
-              this.count +
-              ':_ ' +
-              element.zona.nombre +
-              ': ' +
-              item.user.nombre +
-              ' - Placa: ' +
-              item.unidad_movil?.placa +
-              ' Cel: ' +
-              item.user.celular;
-            this.count = this.count + 1;
-          }
-        });
-      });
-
-      this.bitacora?.atenciones.forEach((element: Atencion) => {
-        element.bitacora_atencion.forEach((item: Atencion) => {
-
-          
-          if (item.is_coment == '0') {
-            this.atenciones =
-              this.atenciones +
-              ' *' +
-              this.datePipe.transform(item.hora , 'HH:mm')  +
-              '* ' +
-              item.descripcion +
-              ' \n';
-          } else {
-            this.atenciones =
-              this.atenciones + '   *-* ' + item.descripcion + ' \n';
-          }
-        });
-        this.atenciones =
-          this.atenciones +
-          ' *' +
-          this.datePipe.transform(element.hora , 'HH:mm')   +
-          ' (' +
-          element.atencion.orden +
-          ') ' +
-          element.atencion.descripcion +
-          '* ' +
-          element.descripcion +
-          ' \n';
-      }); */
+      this.bitacoraPrint = this.utilities.armaBitacora(resp);
     });
   }
 
   copiarTexto() {
     const texto = this.invoiceTotalInner.nativeElement.innerText;
     this.clipboard.copy(texto);
-    this._snackBar.open('Bicatora copiada', 'Cerrar', {
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 3000,
-    });
+    this.utilities.snackBar('Bicatora copiada');
+  }
+
+  enviaWhatsAap() {
+    if (this.bitacora && this.bitacora.id) {
+      this.utilities.envioWhatsApp(this.bitacora.id, 'prueba envio');
+    } else {
+      this.utilities.snackBar('Bitacora no existe');
+    }
   }
 }

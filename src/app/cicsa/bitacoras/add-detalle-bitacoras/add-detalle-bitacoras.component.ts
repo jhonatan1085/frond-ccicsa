@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AtencionBitacora, BitacoraAtencion, Page } from '../../modelos';
 import { BitacorasService } from '../../services/bitacoras.service';
 import { TimeUtilsService } from '../../services/time-utils.service';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-add-detalle-bitacoras',
@@ -29,6 +30,7 @@ export class AddDetalleBitacorasComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private router: Router,
     private time_utils: TimeUtilsService,
+     private utilities: UtilitiesService,
   ) { }
 
   ngOnInit(): void {
@@ -118,6 +120,7 @@ export class AddDetalleBitacorasComponent implements OnInit {
         if (resp.message == 403) {
           this.snackBar('Falta ingresar datos');
         } else {
+          this.utilities.envioWhatsApp(this.bitacora_id,'prueba envio'); 
           this.snackBar('Registro Exitoso');
           this.router.navigate(['/bitacoras/list-bitacora']);
         }

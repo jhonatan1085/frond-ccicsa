@@ -8,26 +8,6 @@
     <div class="invoice-total-box">
       <div class="invoice-total-inner" #invoiceTotalInner>
         <pre *ngIf="bitacoraPrint">{{bitacoraPrint}}
-<!--     #*{{ bitacora.nombre }}*
-_FechaInicial:_ {{ bitacora.fecha_inicial }}
-_NroSot:_ {{ bitacora.sot }};
-_NroIncidencia:_ {{ bitacora.incidencia }};
-_TipoAveria:_ {{ bitacora.tipo_averia.nombre }} ;
-_TipoSitePop:_ {{ bitacora.site.tipo_site?.nombre }};
-_NombreSite:_ *{{ bitacora.site.nombre }}*;
-_NombreCliente:_ *{{ bitacora.cliente }}*;
-_Lat:_ {{bitacora.latitud}} , _Lon:_ {{bitacora.longitud}};
-_Distancia:_ {{bitacora.distancia}}Kms;
-_Region:_ {{bitacora.site.region}}; 
-_Departamento:_ {{bitacora.site.departamento?.nombre}};
-_Distrito:_ {{bitacora.site.distrito?.nombre}}; 
-_red1:_ {{bitacora.red.nombre}};
-_serv1:_ {{bitacora.serv.nombre}},{{brigadas}}
-_Responsable Cicsa:_ {{bitacora.resp_cicsa.nombres}} -T: {{bitacora.resp_cicsa.telefono}}; 
-_Responsable Claro:_ {{bitacora.resp_claro.nombres}} -T: {{bitacora.resp_claro.telefono}};
-
-{{ causas }}
-{{ atenciones }} -->
                 </pre
         >
       </div>
@@ -40,7 +20,10 @@ _Responsable Claro:_ {{bitacora.resp_claro.nombres}} -T: {{bitacora.resp_claro.t
   <button mat-button (click)="copiarTexto()">
     <i class="fas fa-clone"></i>
   </button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
-    <i class="fab fa-whatsapp"></i> WhatsApp
+  <button mat-button (click)="enviaWhatsAap()">
+    <i class="fab fa-whatsapp"></i>
   </button>
+ <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+    <i class="fab fa-whatsapp"></i> WhatsApp
+  </button>-->
 </mat-dialog-actions>

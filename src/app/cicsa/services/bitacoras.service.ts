@@ -10,28 +10,14 @@ import {
 import {  URL_SERVICIOS } from 'src/app/config/config';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { AbstractCrudService } from './abstract-crud.service';
-
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class BitacorasService extends AbstractCrudService<Bitacora> {
 
-   username = 'NMgkQskZIO0cGAZFM5H4791Ggx4sNMCo';
-     password = 'u9yKXm0LE57UzztD';
-     basicAuth = btoa(`${this.username}:${this.password}`); // Codificar en Base64
-
-    // Encabezados
-     headersIder = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${this.basicAuth}`,
-    });
-
-    // Cuerpo de la solicitud
-     body = JSON.stringify({
-      grant_type: 'client_credentials',
-      scope: 'https://api.latam.equifax.com/datos-comerciales/transaction',
-    });
-
+private apiUrlEnviaWhasap = 'http://localhost:3000/api/enviar-whatsapp';
+private apiUrlNode = 'http://localhost:3000/api/qr';
 
   constructor(
     public override http: HttpClient,
@@ -94,6 +80,7 @@ export class BitacorasService extends AbstractCrudService<Bitacora> {
     const URL = `${URL_SERVICIOS}/${this.endpoint}/closed-sot/${bitacora_id}`;
     return this.http.patch<CrudResponse>(URL,{},{ headers: headers });
   }
+
 
 
 }

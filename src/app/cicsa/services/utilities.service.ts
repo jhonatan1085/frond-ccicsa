@@ -1,35 +1,48 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common'; // Importa DatePipe
-import { Atencion, Bitacora, CalcularTiempo, Cuadrilla, UsuarioMovil } from '../modelos';
-import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  Atencion,
+  Bitacora,
+  CalcularTiempo,
+  Cuadrilla,
+  UsuarioMovil,
+} from '../modelos';
+import {
+  AbstractControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BitacorasService } from './bitacoras.service';
+import { WhatsappService } from './whatsapp.service';
+
+import { BehaviorSubject } from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
-
 })
 export class UtilitiesService {
-
   constructor(
     private datePipe: DatePipe,
     private _snackBar: MatSnackBar,
-  ) {
-
-  }
+    private bitacoraService: BitacorasService,
+    private whatsapp: WhatsappService
+  ) {}
   // Rango de coordenadas para Perú (aproximado)
   private PERU_BOUNDS = {
     minLat: -18.0, // Latitud mínima de Perú
-    maxLat: -0.1,  // Latitud máxima de Perú
+    maxLat: -0.1, // Latitud máxima de Perú
     minLong: -81.4, // Longitud mínima de Perú
     maxLong: -68.5, // Longitud máxima de Perú
-  }
+  };
   armaBitacora(bitacora: Bitacora) {
-
     let brigadas: string = this.brigadas(bitacora.brigadas);
     let atencion: string = this.atenciones(bitacora.atenciones);
 
     let detallebitacora: string;
 
-    let causas: string = "";
+    let causas: string = '';
 
     if (bitacora.estado === '0') {
       causas = `
@@ -46,6 +59,8 @@ ${bitacora.herramientas || '- Sin materiales'}
 _FechaInicial:_ ${bitacora.fecha_inicial || ''} 
 _NroSot:_ ${bitacora.sot || ''} 
 _NroIncidencia:_ ${bitacora.incidencia || ''} 
+_NroTAS:_ ${bitacora.nro_tas || ''} 
+_NroCRQ:_ ${bitacora.nro_crq || ''} 
 _TipoAveria:_ ${bitacora.tipo_averia.nombre || ''} 
 _TipoSitePop:_ ${bitacora.site.tipo_site?.nombre || ''} 
 _NombreSite:_ *${bitacora.site.nombre || ''}* 
@@ -56,20 +71,23 @@ _Region:_ ${bitacora.site.region || ''}
 _Departamento:_ ${bitacora.site.departamento?.nombre || ''} 
 _Distrito:_ ${bitacora.site.distrito?.nombre || ''} 
 _red1:_ ${bitacora.red.nombre || ''} , ${brigadas}
-_Responsable Cicsa:_ ${bitacora.resp_cicsa.nombres || ''} -T: ${bitacora.resp_cicsa.telefono || ''} 
-_Responsable Claro:_ ${bitacora.resp_claro.nombres || ''} -T: ${bitacora.resp_claro.telefono || ''} 
+_Responsable Cicsa:_ ${bitacora.resp_cicsa.nombres || ''} -T: ${
+      bitacora.resp_cicsa.telefono || ''
+    } 
+_Responsable Claro:_ ${bitacora.resp_claro.nombres || ''} -T: ${
+      bitacora.resp_claro.telefono || ''
+    } 
 ${causas}
 ${atencion} `;
-    return detallebitacora
+    return detallebitacora;
   }
-  //*_serv1:_ ${bitacora.serv.nombre || ''} 
+  //*_serv1:_ ${bitacora.serv.nombre || ''}
 
   atenciones(atencion: Atencion[]) {
-    var atenciones: string = "";
+    var atenciones: string = '';
 
     atencion.forEach((element: Atencion) => {
       element.bitacora_atencion.forEach((item: Atencion) => {
-
         // Formatear item.hora utilizando DatePipe
         const formattedHora = this.datePipe.transform(item.hora, 'HH:mm');
 
@@ -79,23 +97,26 @@ ${atencion} `;
           atenciones += `   *-* ${item.descripcion} \n`;
         }
       });
-      const formattedElementHora = this.datePipe.transform(element.hora, 'HH:mm');
+      const formattedElementHora = this.datePipe.transform(
+        element.hora,
+        'HH:mm'
+      );
       atenciones += ` *${formattedElementHora} (${element.atencion.orden}) ${element.atencion.descripcion}*, ${element.descripcion} \n`;
     });
-    return atenciones
+    return atenciones;
   }
 
-
   brigadas(brigada: Cuadrilla[]) {
-
-    let brigadas: string = "";
+    let brigadas: string = '';
     let count = 1;
 
     brigada.forEach((element: Cuadrilla) => {
       element.user_movil.forEach((item: UsuarioMovil) => {
         if (item.is_lider === '1') {
           brigadas += `
-_Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${item.unidad_movil?.placa || ''} Cel: ${item.user.celular || ''}`;
+_Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${
+            item.unidad_movil?.placa || ''
+          } Cel: ${item.user.celular || ''}`;
           count++;
         }
       });
@@ -130,9 +151,12 @@ _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${item.unida
     }
     const horas = Math.floor(totalDemoras / 1000 / 60 / 60); //saca las horas sin decimales
     const minutos = totalDemoras / 1000 / 60 - horas * 60;
-    return horas.toString().padStart(2, "0") + ":" + minutos.toString().padStart(2, "0");
+    return (
+      horas.toString().padStart(2, '0') +
+      ':' +
+      minutos.toString().padStart(2, '0')
+    );
   }
-
 
   // Validar coordenada (latitud o longitud)
   isValidCoordinate(coordinate: number): boolean {
@@ -160,26 +184,29 @@ _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${item.unida
     }
 
     // Si uno de los campos tiene valor y el otro no, es inválido
-    if ((lat && (lon === null || lon === '')) || (lon && (lat === null || lat === ''))) {
-      return { missingCoordinate: true };  // Error si solo uno tiene valor
+    if (
+      (lat && (lon === null || lon === '')) ||
+      (lon && (lat === null || lat === ''))
+    ) {
+      return { missingCoordinate: true }; // Error si solo uno tiene valor
     }
 
     // Validar latitud si tiene un valor
     if (lat && !this.isValidCoordinate(lat)) {
-      return { invalidLatitude: true };  // Error si la latitud no es válida
+      return { invalidLatitude: true }; // Error si la latitud no es válida
     }
 
     // Validar longitud si tiene un valor
     if (lon && !this.isValidCoordinate(lon)) {
-      return { invalidLongitude: true };  // Error si la longitud no es válida
+      return { invalidLongitude: true }; // Error si la longitud no es válida
     }
 
     // Validar si la latitud y longitud están dentro del territorio de Perú, si ambos tienen valores
     if (lat && lon && !this.validateLatLong(lat, lon)) {
-      return { outOfPeru: true };  // Error si las coordenadas están fuera de Perú
+      return { outOfPeru: true }; // Error si las coordenadas están fuera de Perú
     }
 
-    return null;  // Si todo está bien, el formulario es válido
+    return null; // Si todo está bien, el formulario es válido
   }
 
   snackBar(comentario: string) {
@@ -194,11 +221,130 @@ _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${item.unida
     const userAgent = navigator.userAgent.toLowerCase();
     // Lista básica de dispositivos móviles
     const mobileDevices = [
-      'android', 'iphone', 'ipad', 'ipod', 'blackberry', 
-      'windows phone', 'opera mini', 'mobile'
+      'android',
+      'iphone',
+      'ipad',
+      'ipod',
+      'blackberry',
+      'windows phone',
+      'opera mini',
+      'mobile',
     ];
-    return mobileDevices.some(device => userAgent.includes(device));
+    return mobileDevices.some((device) => userAgent.includes(device));
   }
 
+  envioWhatsApp(id: number, grupo: string) {
+    var msgBitacora: string = '';
+    this.bitacoraService.read(id).subscribe((resp: Bitacora) => {
+      //this.bitacora_selected = resp.bitacora.data;
+      msgBitacora = this.armaBitacora(resp);
 
+      this.whatsapp.enviarMensaje(grupo, msgBitacora).subscribe({
+        next: () =>  this.snackBar('✅ Mensaje enviado al grupo'),
+        error: (err) => {
+          console.error('❌ Error al enviar:', err);
+          //this.snackBar(err);
+        },
+      });
+    });
+  }
+
+  private estadoSubject = new BehaviorSubject<string>('cargando');
+  private qrSubject = new BehaviorSubject<string>('');
+
+  estado$ = this.estadoSubject.asObservable();
+  qrImagen$ = this.qrSubject.asObservable();
+
+  private ultimoEstado = '';
+
+
+  consultarEstado(): void {
+    this.whatsapp.getEstado().subscribe({
+      next: (data) => {
+        const nuevoEstado = data.estado;
+
+        // Mostrar alerta si cambia el estado
+        if (nuevoEstado !== this.ultimoEstado) {
+          this.mostrarAlerta(nuevoEstado);
+          this.ultimoEstado = nuevoEstado;
+        }
+
+        this.estadoSubject.next(nuevoEstado);
+
+        if (nuevoEstado === 'esperando_qr') {
+          this.obtenerQR();
+        } else {
+          this.qrSubject.next('');
+        }
+      },
+      error: () => {
+        this.estadoSubject.next('error');
+        this.qrSubject.next('');
+        this.mostrarAlerta('error');
+      }
+    });
+  }
+
+  private obtenerQR(): void {
+    this.whatsapp.getQrCode().subscribe({
+      next: (data) => this.qrSubject.next(data.qr),
+      error: () => this.qrSubject.next('')
+    });
+  }
+
+reconectar(): void {
+  this.whatsapp.reconectar().subscribe({
+    next: () => {
+      this.mostrarAlerta('reconectando');
+      this.consultarEstado(); // Re-consulta estado tras reconexión
+    },
+    error: () => {
+      this.mostrarAlerta('error_reconectar');
+    }
+  });
+}
+
+private mostrarAlerta(estado: string): void {
+  const mensajes: Record<string, string> = {
+    conectado: '✅ Bot conectado a WhatsApp',
+    esperando_qr: '📱 Escanea el nuevo código QR',
+    desconectado: '🔌 Bot desconectado de WhatsApp',
+    error_autenticacion: '❌ Error de autenticación con WhatsApp',
+    error: '❗ Error al consultar estado',
+    reconectando: '🔁 Intentando reconectar al bot de WhatsApp...',
+    error_reconectar: '🚫 No se pudo reconectar al bot'
+  };
+
+  const mensaje = mensajes[estado] || `Estado desconocido: ${estado}`;
+  this.snackBar(mensaje); // Usa tu método preferido aquí
+}
+
+
+/*
+  estado: string = '';
+  qrImagen: string = '';
+  cargando: boolean = true;
+
+  consultarEstado() {
+    this.whatsapp.getEstado().subscribe({
+      next: (data) => {
+        this.estado = data.estado;
+        if (data.estado === 'esperando_qr') {
+          this.obtenerQR();
+        }
+        this.cargando = false;
+      },
+      error: () => {
+        this.estado = 'error';
+        this.cargando = false;
+      }
+    });
+  }
+
+  obtenerQR() {
+    this.whatsapp.getQrCode().subscribe({
+      next: (data) => this.qrImagen = data.qr,
+      error: () => this.qrImagen = ''
+    });
+  }*/
 }

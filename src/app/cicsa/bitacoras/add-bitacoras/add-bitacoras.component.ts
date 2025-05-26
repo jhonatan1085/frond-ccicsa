@@ -115,8 +115,10 @@ export class AddBitacorasComponent implements OnInit {
       tipo_averia_id: [null, Validators.required],
       red_id: [null, Validators.required],
       serv_id: [null, Validators.required],
-      afect_servicio:[],
-      afect_masiva:[]
+      nro_tas: [],
+      nro_crq: [],
+      afect_servicio:[false],
+      afect_masiva:[false]
     },
       {
         validators: [

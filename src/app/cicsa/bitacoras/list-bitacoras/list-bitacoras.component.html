@@ -86,12 +86,13 @@
                       <td *ngIf="!esMovil">{{ data.fecha_inicial }}</td>
                       <td *ngIf="!esMovil">{{ data.sot }}</td>
                       <td *ngIf="!esMovil">
-                        
+
 
                         <button *ngIf="!esMovil" [ngClass]="{
   'status-red': data.estado_sot === true,
   'status-green': data.estado_sot === false
-}" [disabled]="(data.estado_sot === true && data.estado === '1') || data.estado_sot === false" class="custom-badge" (click)="inactiva(data)">
+}" [disabled]="(data.estado_sot === true && data.estado === '1') || data.estado_sot === false" class="custom-badge"
+                          (click)="inactiva(data)">
                           {{ data.estado_sot_text }}
                         </button>
 
@@ -308,6 +309,41 @@
           </div> -->
           </div>
         </div>
+      </div>
+      <div class="container mt-3 text-center">
+
+
+        <h3>Escanea el código QR con tu WhatsApp</h3>
+<div *ngIf="estado$ | async as estado">
+
+  <!-- Indicador de carga -->
+  <div *ngIf="estado === 'cargando'">
+    <p>🔄 Consultando estado de WhatsApp...</p>
+  </div>
+
+  <!-- Estado actual -->
+  <div *ngIf="estado !== 'cargando'">
+    <p><strong>Estado:</strong> {{ estado }}</p>
+
+    <!-- Mostrar QR si se requiere escanear -->
+    <div *ngIf="estado === 'esperando_qr'">
+      <p>📱 Escanea el código QR:</p>
+      <img *ngIf="qrImagen$ | async as qr" [src]="qr" alt="QR de WhatsApp" style="max-width: 300px;" />
+    </div>
+
+    <!-- Mostrar mensaje si está conectado -->
+    <div *ngIf="estado === 'conectado'">
+      <p>✅ Bot conectado y listo para enviar mensajes</p>
+    </div>
+
+    <!-- Mensajes para estados con problemas 
+    <div *ngIf="estado === 'desconectado' || estado === 'error_autenticacion' || estado === 'error'">
+      <p>⚠️ Problemas con la conexión a WhatsApp</p>
+      <button (click)="reconectarBot()">🔁 Reconectar Bot</button>
+    </div>-->
+  </div>
+</div>
+
       </div>
     </div>
   </div>

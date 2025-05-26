@@ -15,6 +15,7 @@ import { DateTime } from 'luxon';
 import { TimeUtilsService } from '../../services/time-utils.service';
 import { UtilitiesService } from '../../services/utilities.service';
 import { EndSotComponent } from '../end-sot/end-sot.component';
+import { WhatsappService } from '../../services/whatsapp.service';
 
 
 @Component({
@@ -50,6 +51,10 @@ export class ListBitacorasComponent implements OnInit {
 
   bitacora_generals: Bitacora[] = [];
   bitacora_selected?: Bitacora;
+ qrData: string | null = null;
+  error: string | null = null;
+
+
 
   constructor(
     public bitacoraService: BitacorasService,
@@ -58,15 +63,27 @@ export class ListBitacorasComponent implements OnInit {
     private fileSaver: FileSaverService,
     private time_utils: TimeUtilsService,
     private utilities: UtilitiesService,
+    private whatsapp: WhatsappService
   ) {
 
   }
 
+  estado = '';
+  qrImagen = '';
+  cargando = true;
+
+estado$ = this.utilities.estado$;
+qrImagen$ = this.utilities.qrImagen$;
+
   ngOnInit() {
     this.esMovil = this.utilities.isMobile();
-    console.log(this.esMovil)
     this.user = this.auth.user
     this.getTableData();
+
+    this.utilities.consultarEstado();
+
+    this.utilities.qrImagen$.subscribe(qr => this.qrImagen = qr);
+
   }
 
   private getTableData(page = 1): void {
@@ -182,6 +199,7 @@ export class ListBitacorasComponent implements OnInit {
   }
 
   openDialog(id: number) {
+    
     this.dialog.open(ViewBitacorasComponent, {
       data: { id },
     });
@@ -203,12 +221,18 @@ export class ListBitacorasComponent implements OnInit {
     })
   }
 
+
+  envioWhatsApp(id: number) {
+      this.utilities.envioWhatsApp(id, 'prueba envio')
+  }
+
   openDialogDemora(bitacora: Bitacora) {
+
     this.dialog.open(AddDemorasComponent, {
       data: { bitacora: bitacora },
     });
-  }
-
+ 
+ }
 
 
   openDialogLocation(bitacora: Bitacora) {
@@ -464,6 +488,9 @@ export class ListBitacorasComponent implements OnInit {
     const data: Blob = new Blob([csv], { type: 'text/csv;charset=UTF-8' });
     this.fileSaver.save(data, fileName);
   }
-
+  
+reconectarBot(): void {
+  this.utilities.reconectar();
+}
 
 }

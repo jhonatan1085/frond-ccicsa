@@ -19,6 +19,8 @@ export interface Bitacora {
   tipo_averia: TipoAveria;
   red: Tipo;
   serv: Tipo;
+  nro_tas?: string;
+  nro_crq?: string;
   resp_cicsa: Responsable;
   resp_claro: Responsable;
   estado: string;
