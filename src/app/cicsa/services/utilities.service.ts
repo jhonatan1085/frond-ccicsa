@@ -6,6 +6,7 @@ import {
   CalcularTiempo,
   Cuadrilla,
   UsuarioMovil,
+  WhatsappGroup,
 } from '../modelos';
 import {
   AbstractControl,
@@ -17,18 +18,31 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { BitacorasService } from './bitacoras.service';
 import { WhatsappService } from './whatsapp.service';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilitiesService {
+  private sessionId = '';
+  private pollingSub: Subscription | null = null;
+
+  private qrSubject = new BehaviorSubject<string>('');
+  qrImagen$ = this.qrSubject.asObservable();
+
+  private estadoSubject = new BehaviorSubject<
+    'esperando_qr' | 'conectado' | 'error'
+  >('esperando_qr');
+  estado$ = this.estadoSubject.asObservable();
+
   constructor(
     private datePipe: DatePipe,
     private _snackBar: MatSnackBar,
     private bitacoraService: BitacorasService,
     private whatsapp: WhatsappService
-  ) {}
+  ) {
+    this.iniciarSesion();
+  }
   // Rango de coordenadas para Perú (aproximado)
   private PERU_BOUNDS = {
     minLat: -18.0, // Latitud mínima de Perú
@@ -36,6 +50,7 @@ export class UtilitiesService {
     minLong: -81.4, // Longitud mínima de Perú
     maxLong: -68.5, // Longitud máxima de Perú
   };
+
   armaBitacora(bitacora: Bitacora) {
     let brigadas: string = this.brigadas(bitacora.brigadas);
     let atencion: string = this.atenciones(bitacora.atenciones);
@@ -92,7 +107,7 @@ ${atencion} `;
         const formattedHora = this.datePipe.transform(item.hora, 'HH:mm');
 
         if (item.is_coment == '0') {
-          atenciones += ` *${formattedHora} * ${item.descripcion} \n`;
+          atenciones += ` *${formattedHora}* ${item.descripcion} \n`;
         } else {
           atenciones += `   *-* ${item.descripcion} \n`;
         }
@@ -233,6 +248,71 @@ _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${
     return mobileDevices.some((device) => userAgent.includes(device));
   }
 
+
+
+
+
+
+  private iniciarSesion(): void {
+
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
+    if (user && user.name) {
+      this.sessionId = user.whatsapp;
+    }
+
+
+    this.whatsapp.iniciarSesion(this.sessionId).subscribe({
+      next: (data) => {
+        console.log('QR recibido:', data.qr);
+        this.qrSubject.next(data.qr);
+        this.verificarEstado();
+      },
+      error: () => {
+        this.estadoSubject.next('error');
+        this.qrSubject.next('');
+      },
+    });
+  }
+
+  private verificarEstado(): void {
+    if (this.pollingSub) this.pollingSub.unsubscribe();
+
+    this.pollingSub = interval(3000).subscribe(() => {
+      this.whatsapp.obtenerEstado(this.sessionId).subscribe({
+        next: (res) => {
+          if (res.ready) {
+            this.estadoSubject.next('conectado');
+            this.qrSubject.next('');
+            this.pollingSub?.unsubscribe();
+          } else {
+            this.estadoSubject.next('esperando_qr');
+          }
+        },
+        error: () => {
+          this.estadoSubject.next('error');
+          this.qrSubject.next('');
+        },
+      });
+    });
+  }
+
+  enviarMensajeAGrupos(session:string,  grupos: string[], id: number): void {
+    var msgBitacora: string = '';
+    this.bitacoraService.read(id).subscribe((resp: Bitacora) => {
+      //this.bitacora_selected = resp.bitacora.data;
+      msgBitacora = this.armaBitacora(resp);
+
+      this.whatsapp
+        .enviarMensajeAGrupos(session, grupos, msgBitacora)
+        .subscribe({
+          next: (res) => this.snackBar('Mensaje enviado al grupo'),
+          error: (err) => this.snackBar('Error al enviar'),
+        });
+    });
+  }
+
+  /*222222
   envioWhatsApp(id: number, grupo: string) {
     var msgBitacora: string = '';
     this.bitacoraService.read(id).subscribe((resp: Bitacora) => {
@@ -318,9 +398,9 @@ private mostrarAlerta(estado: string): void {
   const mensaje = mensajes[estado] || `Estado desconocido: ${estado}`;
   this.snackBar(mensaje); // Usa tu método preferido aquí
 }
+*/
 
-
-/*
+  /*111111
   estado: string = '';
   qrImagen: string = '';
   cargando: boolean = true;

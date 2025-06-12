@@ -120,7 +120,7 @@ export class AddDetalleBitacorasComponent implements OnInit {
         if (resp.message == 403) {
           this.snackBar('Falta ingresar datos');
         } else {
-          this.utilities.envioWhatsApp(this.bitacora_id,'prueba envio'); 
+          //222  this.utilities.envioWhatsApp(this.bitacora_id,'prueba envio'); 
           this.snackBar('Registro Exitoso');
           this.router.navigate(['/bitacoras/list-bitacora']);
         }

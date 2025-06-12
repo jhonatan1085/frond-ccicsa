@@ -244,3 +244,7 @@ export interface Role {
   created_at: string;
   updated_at: string;
 }
+
+export interface WhatsappGroup {
+  nombre:string
+}

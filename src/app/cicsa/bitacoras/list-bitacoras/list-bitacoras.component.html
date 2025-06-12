@@ -36,22 +36,17 @@
                             src="assets/img/icons/plus.svg" alt="" /></a>
                         <a href="javascript:;" (click)="PageSize()" class="btn btn-primary doctor-refresh ms-2"><img
                             src="assets/img/icons/re-fresh.svg" alt="" /></a>
-
-
-
                       </div>
                     </div>
+                  </div>
                   </div>
                   <div class="col-auto text-end float-end ms-auto download-grp">
 
                     <a href="javascript:;" class=" me-2" (click)="exportExcel()"><img
                         src="assets/img/icons/pdf-icon-03.svg" alt=""></a>
-
-
                   </div>
-
                 </div>
-              </div>
+              
               <!-- /Table Header -->
 
 
@@ -70,7 +65,7 @@
                       <th mat-sort-header="serv" *ngIf="!esMovil">Serv</th>
                       <th mat-sort-header="estado" *ngIf="!esMovil">Estado Bitacora</th>
                       <th>Acción</th>
-                      <th></th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -88,26 +83,16 @@
                       <td *ngIf="!esMovil">
 
 
-                        <button *ngIf="!esMovil" [ngClass]="{
-  'status-red': data.estado_sot === true,
-  'status-green': data.estado_sot === false
-}" [disabled]="(data.estado_sot === true && data.estado === '1') || data.estado_sot === false" class="custom-badge"
-                          (click)="inactiva(data)">
+                        <button *ngIf="!esMovil" [ngClass]="{'status-red': data.estado_sot === true,'status-green': data.estado_sot === false}" [disabled]="(data.estado_sot === true && data.estado === '1') || data.estado_sot === false" class="custom-badge"(click)="inactiva(data)">
                           {{ data.estado_sot_text }}
                         </button>
-
-
-
                       </td>
                       <td *ngIf="!esMovil">{{ data.incidencia }}</td>
                       <td *ngIf="!esMovil">{{ data.tipo_averia.nombre }}</td>
                       <td *ngIf="!esMovil">{{ data.red.nombre }}</td>
                       <td *ngIf="!esMovil">{{ data.serv.nombre }}</td>
                       <td *ngIf="!esMovil">
-                        <a [ngClass]="{
-                          'status-red': data.estado === '1',
-                          'status-green': data.estado === '0'
-                        }" class="custom-badge">{{ data.estadotext }}</a>
+                        <a [ngClass]="{'status-red': data.estado === '1','status-green': data.estado === '0'}" class="custom-badge">{{ data.estadotext }}</a>
                       </td>
                       <td class="text-end">
                         <button [disabled]="data.estado === '0' " class="btn btn-primary ms-1"
@@ -211,139 +196,33 @@
                 </div>
               </div>
             </div>
-
-            <!--           <div class="col-sm-12 col-md-7">
-            <div class="pagination_section">
-              <ul class="pagination">
-                <li
-                  class="page-item"
-                  [ngClass]="{
-                    disabled: currentPage === 1
-                  }"
-                >
-                  <a
-                    (click)="getMoreData('previous')"
-                    class="page-link"
-                    href="javascript:void(0);"
-                    tabindex="-1"
-                    >Previous</a
-                  >
-                </li>
-
-                <ng-container
-                  *ngFor="let item of pageNumberArray; let i = index"
-                >
-                  <li
-                    class="page-item"
-                    [class.active]="item === currentPage"
-                    [ngClass]="
-                      (pageNumberArray[currentPage - 2] > item &&
-                        item !== 1 &&
-                        pageNumberArray.length > 6) ||
-                      (pageNumberArray[currentPage] < item &&
-                        item !== 1 &&
-                        pageNumberArray.length > 6 &&
-                        pageNumberArray.length !== item)
-                        ? 'hide-page-no'
-                        : 'show-page-no'
-                    "
-                  >
-                    <a
-                      (click)="moveToPage(item)"
-                      class="page-link"
-                      href="javascript:void(0);"
-                    >
-                      {{ item }}
-                    </a>
-                  </li>
-                  <li
-                    class="page-item"
-                    *ngIf="
-                      i === 0 && pageNumberArray.length > 6 && currentPage > 2
-                    "
-                    [hidden]="currentPage === 1"
-                    (click)="moveToPage(currentPage - 2)"
-                    (keyup.enter)="moveToPage(currentPage - 2)"
-                    tabindex="0"
-                  >
-                    <a class="page-link" href="javascript:void(0);"> ... </a>
-                  </li>
-                  <li
-                    *ngIf="
-                      i === pageNumberArray.length - 2 &&
-                      pageNumberArray.length > 6
-                    "
-                    [hidden]="
-                      currentPage >=
-                        pageNumberArray[pageNumberArray.length - 2] ||
-                      totalData <
-                        serialNumberArray[serialNumberArray.length - 1]
-                    "
-                    class="page-item"
-                    (click)="moveToPage(currentPage + 2)"
-                    (keyup.enter)="moveToPage(currentPage + 2)"
-                    tabindex="0"
-                  >
-                    <a class="page-link" href="javascript:void(0);"> ... </a>
-                  </li>
-                </ng-container>
-
-                <li
-                  class="page-item"
-                  [ngClass]="{
-                    disabled:
-                      currentPage ===
-                        pageNumberArray[pageNumberArray.length - 1] ||
-                      bitacoras.length === 0
-                  }"
-                >
-                  <a
-                    (click)="getMoreData('next')"
-                    class="page-link"
-                    href="javascript:void(0);"
-                    >Next
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div> -->
           </div>
         </div>
       </div>
-      <div class="container mt-3 text-center">
-
-
-        <h3>Escanea el código QR con tu WhatsApp</h3>
-<div *ngIf="estado$ | async as estado">
-
-  <!-- Indicador de carga -->
-  <div *ngIf="estado === 'cargando'">
-    <p>🔄 Consultando estado de WhatsApp...</p>
-  </div>
-
-  <!-- Estado actual -->
-  <div *ngIf="estado !== 'cargando'">
-    <p><strong>Estado:</strong> {{ estado }}</p>
-
-    <!-- Mostrar QR si se requiere escanear -->
-    <div *ngIf="estado === 'esperando_qr'">
-      <p>📱 Escanea el código QR:</p>
-      <img *ngIf="qrImagen$ | async as qr" [src]="qr" alt="QR de WhatsApp" style="max-width: 300px;" />
     </div>
 
-    <!-- Mostrar mensaje si está conectado -->
-    <div *ngIf="estado === 'conectado'">
-      <p>✅ Bot conectado y listo para enviar mensajes</p>
-    </div>
+    <div class="container mt-3 text-center">
 
-    <!-- Mensajes para estados con problemas 
-    <div *ngIf="estado === 'desconectado' || estado === 'error_autenticacion' || estado === 'error'">
-      <p>⚠️ Problemas con la conexión a WhatsApp</p>
-      <button (click)="reconectarBot()">🔁 Reconectar Bot</button>
-    </div>-->
-  </div>
-</div>
+      <!-- src/app/app.component.html -->
+      <div class="container" style="text-align: center;">
+        <h2>Conectar a WhatsApp</h2>
 
+        <div *ngIf="(utilities.estado$ | async) === 'esperando_qr'" style="margin-top: 20px;">
+          <h4>Escanea el código QR:</h4>
+          <img [src]="utilities.qrImagen$ | async" *ngIf="utilities.qrImagen$ | async" width="300" />
+        </div>
+
+        <div *ngIf="(utilities.estado$ | async) === 'conectado'" style="margin-top: 20px;">
+          <h4>✅ Conectado</h4>
+
+        </div>
+
+        <div *ngIf="(utilities.estado$ | async) === 'error'">
+          <p style="color: red;">❌ Error al conectar</p>
+        </div>
       </div>
     </div>
+
+
   </div>
+</div>

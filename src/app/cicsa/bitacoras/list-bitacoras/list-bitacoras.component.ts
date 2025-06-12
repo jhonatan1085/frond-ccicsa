@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Atencion, Bitacora, CalcularTiempo, DemoraBitacoraExtended } from '../../modelos';
+import {
+  Atencion,
+  Bitacora,
+  CalcularTiempo,
+  DemoraBitacoraExtended,
+} from '../../modelos';
 import { EndBitacorasComponent } from '../end-bitacoras/end-bitacoras.component';
 import { LocationBitacorasComponent } from '../location-bitacoras/location-bitacoras.component';
 import { ViewBitacorasComponent } from '../view-bitacoras/view-bitacoras.component';
@@ -17,14 +22,12 @@ import { UtilitiesService } from '../../services/utilities.service';
 import { EndSotComponent } from '../end-sot/end-sot.component';
 import { WhatsappService } from '../../services/whatsapp.service';
 
-
 @Component({
   selector: 'app-list-bitacoras',
   templateUrl: './list-bitacoras.component.html',
-  styleUrls: ['./list-bitacoras.component.scss']
+  styleUrls: ['./list-bitacoras.component.scss'],
 })
 export class ListBitacorasComponent implements OnInit {
-
   public fecha_llegada?: string;
 
   public user?: UserAuth;
@@ -51,10 +54,8 @@ export class ListBitacorasComponent implements OnInit {
 
   bitacora_generals: Bitacora[] = [];
   bitacora_selected?: Bitacora;
- qrData: string | null = null;
+  qrData: string | null = null;
   error: string | null = null;
-
-
 
   constructor(
     public bitacoraService: BitacorasService,
@@ -62,29 +63,61 @@ export class ListBitacorasComponent implements OnInit {
     public auth: AuthService,
     private fileSaver: FileSaverService,
     private time_utils: TimeUtilsService,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private whatsapp: WhatsappService
-  ) {
+  ) {}
 
-  }
+  sessionId = '';
+  mensaje = '';
+  gruposTexto = '';
 
-  estado = '';
+  qrImagen$ = this.utilities.qrImagen$;
+  estado$ = this.utilities.estado$;
+
+  /* 22222estado = '';
   qrImagen = '';
   cargando = true;
 
 estado$ = this.utilities.estado$;
 qrImagen$ = this.utilities.qrImagen$;
 
+*/
+
   ngOnInit() {
     this.esMovil = this.utilities.isMobile();
-    this.user = this.auth.user
+    this.user = this.auth.user;
     this.getTableData();
 
-    this.utilities.consultarEstado();
+    //222 this.utilities.consultarEstado();
 
-    this.utilities.qrImagen$.subscribe(qr => this.qrImagen = qr);
+    //222 this.utilities.qrImagen$.subscribe(qr => this.qrImagen = qr);
 
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
+    if (user && user.name) {
+      this.sessionId = user.whatsapp;
+    }
   }
+
+  enviar(id: number): void {
+    const grupos = this.gruposTexto
+      .split(',')
+      .map((g) => g.trim())
+      .filter(Boolean);
+    if (grupos.length) {
+      this.utilities.enviarMensajeAGrupos(this.sessionId, grupos, id);
+    }
+  }
+
+  /* 22222
+  envioWhatsApp(id: number) {
+      this.utilities.envioWhatsApp(id, 'prueba envio')
+  }
+
+
+reconectarBot(): void {
+  this.utilities.reconectar();
+}*/
 
   private getTableData(page = 1): void {
     //this.bitacoraList = [];
@@ -92,13 +125,13 @@ qrImagen$ = this.utilities.qrImagen$;
     this.bitacoraService
       .readAll({ page, search: this.searchDataValue })
       .subscribe((resp) => {
-
+        console.log(resp.total);
         this.totalData = resp.total;
         //this.bitacoras = resp.data;
 
-        this.bitacoras = resp.data.map(item => ({
+        this.bitacoras = resp.data.map((item) => ({
           ...item,
-          estado_sot: !!item.estado_sot // Convierte 0 o 1 a true o false
+          estado_sot: !!item.estado_sot, // Convierte 0 o 1 a true o false
         }));
 
         this.dataSource = new MatTableDataSource<Bitacora>(this.bitacoras);
@@ -161,7 +194,6 @@ qrImagen$ = this.utilities.qrImagen$;
     }
   }
 
-
   public moveToPage(pageNumber: number): void {
     this.currentPage = pageNumber;
     this.skip = this.pageSelection[pageNumber - 1].skip;
@@ -199,16 +231,16 @@ qrImagen$ = this.utilities.qrImagen$;
   }
 
   openDialog(id: number) {
-    
     this.dialog.open(ViewBitacorasComponent, {
       data: { id },
     });
   }
 
   openDialogEnd(bitacora: Bitacora) {
-
     if (!bitacora.latitud || !bitacora.longitud) {
-      this.utilities.snackBar('La bitacora no puede ser cerrada, no cuenta con latitud y longitud');
+      this.utilities.snackBar(
+        'La bitacora no puede ser cerrada, no cuenta con latitud y longitud'
+      );
       return; // Detén el flujo si no son válidos
     }
 
@@ -218,22 +250,14 @@ qrImagen$ = this.utilities.qrImagen$;
 
     ref.afterClosed().subscribe(() => {
       this.getTableData(this.currentPage);
-    })
-  }
-
-
-  envioWhatsApp(id: number) {
-      this.utilities.envioWhatsApp(id, 'prueba envio')
+    });
   }
 
   openDialogDemora(bitacora: Bitacora) {
-
     this.dialog.open(AddDemorasComponent, {
       data: { bitacora: bitacora },
     });
- 
- }
-
+  }
 
   openDialogLocation(bitacora: Bitacora) {
     const ref = this.dialog.open(LocationBitacorasComponent, {
@@ -242,65 +266,105 @@ qrImagen$ = this.utilities.qrImagen$;
 
     ref.afterClosed().subscribe(() => {
       this.getTableData(this.currentPage);
-    })
-
+    });
   }
 
   inactiva(bitacora: Bitacora) {
-
     if (bitacora.estado_sot == true) {
       const ref = this.dialog.open(EndSotComponent, {
         data: { bitacora: bitacora },
       });
       ref.afterClosed().subscribe(() => {
         this.getTableData(this.currentPage);
-      })
+      });
     }
   }
 
-
-
   exportExcel() {
-    const page = 1
-    this.bitacoraService
-      .exportExcel()
-      .subscribe((resp) => {
+    const page = 1;
+    this.bitacoraService.exportExcel().subscribe((resp) => {
+      this.totalData = resp.total;
 
-        this.totalData = resp.total;
+      this.detalleBitacora = resp.data;
 
-        this.detalleBitacora = resp.data;
+      console.log(resp.data);
+      const data = this.exportDataToExcel(resp.data);
+      // Crear la hoja de trabajo desde los datos JSON
+      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
 
-        console.log(resp.data)
-        const data = this.exportDataToExcel(resp.data);
-        // Crear la hoja de trabajo desde los datos JSON
-        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+      // Cambiar los nombres de las cabeceras manualmente (primer fila)
+      const headers = [
+        'Año',
+        'Mes',
+        'Semana',
+        'Fecha y Hora Asignación Cliente',
+        'Fecha y Hora Ejecucion',
+        'Incidencia',
+        'SOT',
+        'Fecha y Hora se creacion de SOT',
+        'Estatus SGA',
+        'Tipo de Incidencia',
+        'Red Afectada',
+        'Causa de Avería',
+        'Agrupamiento de Causa de Avería',
+        'Afectación de Servicio',
+        'Afectación Masiva',
+        'Base',
+        'Zona',
+        'SUP. Claro',
+        'SUP. Cicsa',
+        'Brigada #1 Asignada',
+        'Hora Asignación',
+        'Horarios por cuadrantes',
+        'POP/Site/Nodo',
+        'Departamento',
+        'Provincia',
+        'Distrito del punto de avería',
+        'Region Geografica',
+        'Fecha y Hora Llegada al Sitio',
+        'SLA Traslado Pop / Cliente2',
+        'Fecha y Hora de UBICACION punto de Avería / Trabajo2',
+        'SLA ubicación punto Avería2',
+        'Fecha y Hora UP Avería / Reparación TUPs',
+        'SLA Trabajos preliminares + Prepara. y Fusión',
+        'SLA TOTAL Avería / Atención',
+        'Cumplió SLA',
+        'Fecha y Hora de Retiro de la brigada',
+        'Tiempo total de atencion de incidencias',
+        'DEMORA #1 (cuando no se cumpla con el SLA)',
+        'F. y Hora INICIO Demora #1',
+        'F. y Hora FIN Demora #1',
+        'Tiempo de Demora #1',
+        'DEMORA #2 (cuando no se cumpla con el SLA)',
+        'F. y Hora INICIO Demora #2',
+        'F. y Hora FIN Demora #2',
+        'Tiempo de Demora #2',
+        'DEMORA #3 (cuando no se cumpla con el SLA)',
+        'F. y Hora INICIO Demora #3',
+        'F. y Hora FIN Demora #3',
+        'Tiempo de Demora #3',
+        'Total Demoras',
+        ' Coordenadas - Punto Averia LATITUD2',
+        ' Coordenadas - Punto Averia LONGITUD',
+        'bitacora',
+        'Tipo de Trabajo',
+        'Prioridad',
+        'Observaciones',
+        'NOMBRE DE EVENTO O INTERCONEXION',
+      ];
 
-        // Cambiar los nombres de las cabeceras manualmente (primer fila)
-        const headers = [
-          'Año', 'Mes', 'Semana', 'Fecha y Hora Asignación Cliente', 'Fecha y Hora Ejecucion', 'Incidencia', 'SOT', 'Fecha y Hora se creacion de SOT', 'Estatus SGA',
-          'Tipo de Incidencia', 'Red Afectada', 'Causa de Avería', 'Agrupamiento de Causa de Avería', 'Afectación de Servicio', 'Afectación Masiva',
-          'Base', 'Zona', 'SUP. Claro', 'SUP. Cicsa', 'Brigada #1 Asignada', 'Hora Asignación', 'Horarios por cuadrantes', 'POP/Site/Nodo', 'Departamento', 'Provincia', 'Distrito del punto de avería', 'Region Geografica',
-          'Fecha y Hora Llegada al Sitio', 'SLA Traslado Pop / Cliente2', 'Fecha y Hora de UBICACION punto de Avería / Trabajo2', 'SLA ubicación punto Avería2', 'Fecha y Hora UP Avería / Reparación TUPs', 'SLA Trabajos preliminares + Prepara. y Fusión',
-          'SLA TOTAL Avería / Atención', 'Cumplió SLA', 'Fecha y Hora de Retiro de la brigada', 'Tiempo total de atencion de incidencias',
-          'DEMORA #1 (cuando no se cumpla con el SLA)', 'F. y Hora INICIO Demora #1', 'F. y Hora FIN Demora #1', 'Tiempo de Demora #1',
-          'DEMORA #2 (cuando no se cumpla con el SLA)', 'F. y Hora INICIO Demora #2', 'F. y Hora FIN Demora #2', 'Tiempo de Demora #2',
-          'DEMORA #3 (cuando no se cumpla con el SLA)', 'F. y Hora INICIO Demora #3', 'F. y Hora FIN Demora #3', 'Tiempo de Demora #3', 'Total Demoras',
-          ' Coordenadas - Punto Averia LATITUD2', ' Coordenadas - Punto Averia LONGITUD',
-          'bitacora', 'Tipo de Trabajo', 'Prioridad', 'Observaciones', 'NOMBRE DE EVENTO O INTERCONEXION'
-        ];
+      // Asignamos las cabeceras a las celdas de la primera fila
+      const headerRow = headers.map((header, index) => ({
+        v: header,
+        t: 's',
+      }));
 
-        // Asignamos las cabeceras a las celdas de la primera fila
-        const headerRow = headers.map((header, index) => ({
-          v: header,
-          t: 's'
-        }));
+      headerRow.forEach((header, index) => {
+        const col = this.getExcelColumnName(index); // Convierte el índice en nombre de columna
+        worksheet[`${col}1`] = header; // Asigna los valores a la primera fila de cada columna
+      });
 
-        headerRow.forEach((header, index) => {
-          const col = this.getExcelColumnName(index); // Convierte el índice en nombre de columna
-          worksheet[`${col}1`] = header; // Asigna los valores a la primera fila de cada columna
-        });
-
-        /*                // Opciones de formato para las celdas
+      /*                // Opciones de formato para las celdas
                       const workbook: XLSX.WorkBook = {
                         Sheets: { 'Datos': worksheet },
                         SheetNames: ['Datos']
@@ -312,12 +376,12 @@ qrImagen$ = this.utilities.qrImagen$;
                       });
                       this.saveAsExcelFile(excelBuffer, 'datos_exportados');  */
 
-        // Convertir la hoja de trabajo a CSV
-        const csv = XLSX.utils.sheet_to_csv(worksheet);
+      // Convertir la hoja de trabajo a CSV
+      const csv = XLSX.utils.sheet_to_csv(worksheet);
 
-        // Guardar el archivo CSV
-        this.saveAsCSVFile(csv, 'Exportacion.csv');
-      });
+      // Guardar el archivo CSV
+      this.saveAsCSVFile(csv, 'Exportacion.csv');
+    });
   }
 
   private getExcelColumnName(index: number): string {
@@ -330,23 +394,17 @@ qrImagen$ = this.utilities.qrImagen$;
   }
 
   private tiempofinsla(atencion: Atencion[], id: number): string | undefined {
-
-    var horas = ""
+    var horas = '';
     atencion.forEach((element: Atencion) => {
       if (element.atencion.id === id) {
-        horas = element.hora
+        horas = element.hora;
       }
-
     });
-    return horas
+    return horas;
   }
 
-
-
   private exportDataToExcel(bitacoras: Bitacora[]) {
-
     return bitacoras.map((item: Bitacora) => {
-
       let llegada = this.tiempofinsla(item.atenciones, 1) || '';
       let ubicacion = this.tiempofinsla(item.atenciones, 5) || '';
       let fusion = this.tiempofinsla(item.atenciones, 6) || '';
@@ -358,46 +416,77 @@ qrImagen$ = this.utilities.qrImagen$;
       if (llegada) {
         tiempo = {
           fecha_inicio: item.fecha_ejecucion || '',
-          fecha_fin: llegada
-        }
+          fecha_fin: llegada,
+        };
         tiempototal.push(tiempo);
       }
 
       if (llegada && ubicacion) {
         tiempo = {
           fecha_inicio: llegada,
-          fecha_fin: ubicacion
-        }
+          fecha_fin: ubicacion,
+        };
         tiempototal.push(tiempo);
       }
 
       if (ubicacion && fusion) {
         tiempo = {
           fecha_inicio: ubicacion,
-          fecha_fin: fusion
-        }
+          fecha_fin: fusion,
+        };
         tiempototal.push(tiempo);
       }
 
-      let llegada_sla = llegada ? this.time_utils.calcularDiferenciaTiempo(item.fecha_ejecucion || '', llegada) : ''
-      let ubica_punto_sla = llegada && ubicacion ? this.time_utils.calcularDiferenciaTiempo(llegada || '', ubicacion) : ''
-      let fusion_sla = ubicacion && fusion ? this.time_utils.calcularDiferenciaTiempo(ubicacion || '', fusion) : ''
+      let llegada_sla = llegada
+        ? this.time_utils.calcularDiferenciaTiempo(
+            item.fecha_ejecucion || '',
+            llegada
+          )
+        : '';
+      let ubica_punto_sla =
+        llegada && ubicacion
+          ? this.time_utils.calcularDiferenciaTiempo(llegada || '', ubicacion)
+          : '';
+      let fusion_sla =
+        ubicacion && fusion
+          ? this.time_utils.calcularDiferenciaTiempo(ubicacion || '', fusion)
+          : '';
 
-
-      let texto_averia = item.tipo_averia.nombre === "Preventivo" || item.tipo_averia.nombre === "Sinergia" ? item.causa_averia?.nombre === "" ? 'FALSA AVERÍA' : 'NO ES AVERIA' : ''
+      let texto_averia =
+        item.tipo_averia.nombre === 'Preventivo' ||
+        item.tipo_averia.nombre === 'Sinergia'
+          ? item.causa_averia?.nombre === ''
+            ? 'FALSA AVERÍA'
+            : 'NO ES AVERIA'
+          : '';
 
       let demoras: DemoraBitacoraExtended[] = [];
-      demoras = item.demoras?.map((item) => ({
-        ...item,
-        tiempoDemora: this.time_utils.convierteHoras(this.time_utils.calcularDiferenciaTiempo(item.fecha_inicio || '', item.fecha_fin))
-      })) ?? [];
+      demoras =
+        item.demoras?.map((item) => ({
+          ...item,
+          tiempoDemora: this.time_utils.convierteHoras(
+            this.time_utils.calcularDiferenciaTiempo(
+              item.fecha_inicio || '',
+              item.fecha_fin
+            )
+          ),
+        })) ?? [];
 
       let totalDemoras = this.time_utils.updateTotalDemoras(demoras);
 
-      let total_sla = fusion ? this.time_utils.calcularDiferenciaTiempo(item.fecha_inicial || '', fusion) - totalDemoras : ''
+      let total_sla = fusion
+        ? this.time_utils.calcularDiferenciaTiempo(
+            item.fecha_inicial || '',
+            fusion
+          ) - totalDemoras
+        : '';
 
-      let tiempo_total = retiro ? this.time_utils.calcularDiferenciaTiempo(item.fecha_inicial || '', retiro) - totalDemoras : ''
-
+      let tiempo_total = retiro
+        ? this.time_utils.calcularDiferenciaTiempo(
+            item.fecha_inicial || '',
+            retiro
+          ) - totalDemoras
+        : '';
 
       return {
         anio: item.anio,
@@ -413,7 +502,7 @@ qrImagen$ = this.utilities.qrImagen$;
         red_afectada: item.red.nombre,
         causa_averia: item.causa_averia?.nombre,
         agru_causa_averia: item.causa_averia?.tipo_causa_averia.nombre || '',
-        afectacion_servicio: item.afect_servicio,//item.tipo_averia.nombre === "Preventivo" ? "No" : "Si",
+        afectacion_servicio: item.afect_servicio, //item.tipo_averia.nombre === "Preventivo" ? "No" : "Si",
         afectacion_masiva: item.afect_masiva,
         base: item.site.zona,
         zona: item.site.region,
@@ -421,44 +510,77 @@ qrImagen$ = this.utilities.qrImagen$;
         sup_cicsa: item.resp_cicsa.nombres,
         brigada: item.nombre_brigada,
         hora_asignacion: item.hora_asignacion,
-        horarios_cuadrantes: this.utilities.obtenerCuadrante(item.hora_asignacion || ''),
+        horarios_cuadrantes: this.utilities.obtenerCuadrante(
+          item.hora_asignacion || ''
+        ),
         site: item.site.nombre,
         departamento: item.site.departamento?.nombre,
         provincia: item.site.provincia?.nombre,
         distrito: item.site.distrito?.nombre,
         region_geografica: item.site.region_geografica?.nombre,
         fecha_llegada: llegada,
-        sla_llegada: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(llegada_sla) : texto_averia,//llegada  ? this.time_utils.calcularTiempoDemora(item.fecha_ejecucion || '' , llegada) :  "",
+        sla_llegada:
+          item.tipo_averia.nombre === 'Correctivo'
+            ? this.time_utils.convierteHoras(llegada_sla)
+            : texto_averia, //llegada  ? this.time_utils.calcularTiempoDemora(item.fecha_ejecucion || '' , llegada) :  "",
         fecha_ubica_punto: ubicacion,
-        sla_ubica_punto: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(ubica_punto_sla) : texto_averia, //llegada && ubicacion ? this.time_utils.calcularTiempoDemora(llegada || '' , ubicacion) :  "",
+        sla_ubica_punto:
+          item.tipo_averia.nombre === 'Correctivo'
+            ? this.time_utils.convierteHoras(ubica_punto_sla)
+            : texto_averia, //llegada && ubicacion ? this.time_utils.calcularTiempoDemora(llegada || '' , ubicacion) :  "",
         fecha_fusion: fusion,
-        sla_fusion: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(fusion_sla) : texto_averia,// ubicacion && fusion ? this.time_utils.calcularTiempoDemora(ubicacion || '' , fusion) :  "",
-        sla_total: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(total_sla) : texto_averia,
-        sla_cumplio: "",
+        sla_fusion:
+          item.tipo_averia.nombre === 'Correctivo'
+            ? this.time_utils.convierteHoras(fusion_sla)
+            : texto_averia, // ubicacion && fusion ? this.time_utils.calcularTiempoDemora(ubicacion || '' , fusion) :  "",
+        sla_total:
+          item.tipo_averia.nombre === 'Correctivo'
+            ? this.time_utils.convierteHoras(total_sla)
+            : texto_averia,
+        sla_cumplio: '',
         retiro: retiro,
-        sla_tiempo_total: item.tipo_averia.nombre === "Correctivo" ? this.time_utils.convierteHoras(tiempo_total) : texto_averia,
+        sla_tiempo_total:
+          item.tipo_averia.nombre === 'Correctivo'
+            ? this.time_utils.convierteHoras(tiempo_total)
+            : texto_averia,
         demora_1: demoras[0]?.demora_nombre ? demoras[0].demora_nombre : '',
-        inicio_demora_1: demoras[0]?.fecha_inicio ? demoras[0].fecha_inicio : '',
+        inicio_demora_1: demoras[0]?.fecha_inicio
+          ? demoras[0].fecha_inicio
+          : '',
         fin_demora_1: demoras[0]?.fecha_fin ? demoras[0].fecha_fin : '',
-        tiempo_demora_1: demoras[0]?.tiempoDemora ? demoras[0].tiempoDemora : '',
+        tiempo_demora_1: demoras[0]?.tiempoDemora
+          ? demoras[0].tiempoDemora
+          : '',
         demora_2: demoras[1]?.demora_nombre ? demoras[1].demora_nombre : '',
-        inicio_demora_2: demoras[1]?.fecha_inicio ? demoras[1].fecha_inicio : '',
+        inicio_demora_2: demoras[1]?.fecha_inicio
+          ? demoras[1].fecha_inicio
+          : '',
         fin_demora_2: demoras[1]?.fecha_fin ? demoras[1].fecha_fin : '',
-        tiempo_demora_2: demoras[1]?.tiempoDemora ? demoras[1].tiempoDemora : '',
+        tiempo_demora_2: demoras[1]?.tiempoDemora
+          ? demoras[1].tiempoDemora
+          : '',
         demora_3: demoras[2]?.demora_nombre ? demoras[2].demora_nombre : '',
-        inicio_demora_3: demoras[2]?.fecha_inicio ? demoras[2].fecha_inicio : '',
+        inicio_demora_3: demoras[2]?.fecha_inicio
+          ? demoras[2].fecha_inicio
+          : '',
         fin_demora_3: demoras[2]?.fecha_fin ? demoras[2].fecha_fin : '',
-        tiempo_demora_3: demoras[2]?.tiempoDemora ? demoras[2].tiempoDemora : '',
-        total_demoras: item.demoras ? this.time_utils.convierteHoras(totalDemoras) : '',
+        tiempo_demora_3: demoras[2]?.tiempoDemora
+          ? demoras[2].tiempoDemora
+          : '',
+        total_demoras: item.demoras
+          ? this.time_utils.convierteHoras(totalDemoras)
+          : '',
         latitud: item.latitud,
         longitud: item.longitud,
         bitacora: this.utilities.armaBitacora(item),
-        Tipo_trabajo: item.tipo_reparacion?.nombre ? item.tipo_reparacion.nombre : '',//,
-        prioridad: "",
-        Observacion: "",
+        Tipo_trabajo: item.tipo_reparacion?.nombre
+          ? item.tipo_reparacion.nombre
+          : '', //,
+        prioridad: '',
+        Observacion: '',
         nombre_bitacora: item.nombre,
-        enlace: item.enlace_plano_site
-      }
+        enlace: item.enlace_plano_site,
+      };
       /* item.estado = item.estadotext
       delete item.estadotext */
 
@@ -472,13 +594,12 @@ qrImagen$ = this.utilities.qrImagen$;
        item.sot = item.sot // SOT */
 
       //return item
-    })
+    });
   }
 
   private saveAsExcelFile(buffer: any, fileName: string): void {
     const blobData: Blob = new Blob([buffer], {
-      type:
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
     });
 
     this.fileSaver.save(blobData, fileName + '.xlsx');
@@ -488,9 +609,4 @@ qrImagen$ = this.utilities.qrImagen$;
     const data: Blob = new Blob([csv], { type: 'text/csv;charset=UTF-8' });
     this.fileSaver.save(data, fileName);
   }
-  
-reconectarBot(): void {
-  this.utilities.reconectar();
-}
-
 }

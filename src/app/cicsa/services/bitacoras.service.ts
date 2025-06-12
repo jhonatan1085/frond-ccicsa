@@ -6,6 +6,7 @@ import {
   CrudResponse,
   Page,
   DemoraBitacora,
+  WhatsappGroup,
 } from 'src/app/cicsa/modelos';
 import {  URL_SERVICIOS } from 'src/app/config/config';
 import { AuthService } from 'src/app/shared/auth/auth.service';
@@ -81,6 +82,12 @@ private apiUrlNode = 'http://localhost:3000/api/qr';
     return this.http.patch<CrudResponse>(URL,{},{ headers: headers });
   }
 
+
+    groupWhastApp(tipoAveria_id: number) {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/group-whastApp/${tipoAveria_id}`;
+    return this.http.get<Page<WhatsappGroup>>(URL, { headers: headers });
+  }
 
 
 }
