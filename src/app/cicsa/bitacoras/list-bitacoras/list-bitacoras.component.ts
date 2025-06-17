@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {
@@ -21,6 +21,8 @@ import { TimeUtilsService } from '../../services/time-utils.service';
 import { UtilitiesService } from '../../services/utilities.service';
 import { EndSotComponent } from '../end-sot/end-sot.component';
 import { WhatsappService } from '../../services/whatsapp.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-list-bitacoras',
@@ -28,12 +30,25 @@ import { WhatsappService } from '../../services/whatsapp.service';
   styleUrls: ['./list-bitacoras.component.scss'],
 })
 export class ListBitacorasComponent implements OnInit {
+  bitacoras: Bitacora[] = [];
+  dataSource!: MatTableDataSource<Bitacora>;
+  searchDataValue = '';
+  pageSize = 10;
+  totalData = 0;
+  currentPage = 0;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+    displayedColumns: string[] = [];
+
   public fecha_llegada?: string;
 
   public user?: UserAuth;
   esMovil: boolean = false;
 
   public detalleBitacora: Bitacora[] = [];
+  /* paginador anterior
   public bitacoras: Bitacora[] = [];
   dataSource!: MatTableDataSource<Bitacora>;
 
@@ -51,6 +66,7 @@ export class ListBitacorasComponent implements OnInit {
   public pageNumberArray: number[] = [];
   public pageSelection: any[] = [];
   public totalPages = 0;
+*/
 
   bitacora_generals: Bitacora[] = [];
   bitacora_selected?: Bitacora;
@@ -85,8 +101,16 @@ qrImagen$ = this.utilities.qrImagen$;
 
   ngOnInit() {
     this.esMovil = this.utilities.isMobile();
+ this.displayedColumns = this.esMovil
+    ? ['nombre', 'acciones']
+    : [
+        'nombre', 'fecha_inicial', 'SOT/INC','tipo_averia', 'red', 'serv', 'estado', 'estado_sot', 'acciones'
+      ];
+
+
+
     this.user = this.auth.user;
-    this.getTableData();
+    this.getTableData(1);
 
     //222 this.utilities.consultarEstado();
 
@@ -114,11 +138,62 @@ qrImagen$ = this.utilities.qrImagen$;
       this.utilities.envioWhatsApp(id, 'prueba envio')
   }
 
-
 reconectarBot(): void {
   this.utilities.reconectar();
 }*/
 
+  //inicio paginador nuevo
+
+ 
+
+  getTableData(page: number): void {
+    this.bitacoraService.readAll({ page, perPage: this.pageSize, search: this.searchDataValue })
+      .subscribe((resp) => {
+        console.log(resp);
+        this.totalData = resp.total;
+        this.bitacoras = resp.data.map(item => ({
+          ...item,
+          estado_sot: !!item.estado_sot
+        }));
+      });
+  }
+
+  onPaginateChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex + 1;
+    this.getTableData(this.currentPage);
+  }
+
+  searchData(): void {
+    this.currentPage = 1;
+    this.getTableData(this.currentPage);
+  }
+
+  refreshTable(): void {
+  this.searchDataValue = '';
+  this.currentPage = 1;
+  this.getTableData(this.currentPage);
+}
+  public sortData(sort: any) {
+    const data = this.bitacoras.slice();
+
+    if (!sort.active || sort.direction === '') {
+      this.bitacoras = data;
+    } else {
+      this.bitacoras = data.sort((a: any, b: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const aValue = (a as any)[sort.active];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const bValue = (b as any)[sort.active];
+        return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
+      });
+    }
+  }
+
+  //fin paginador nuevo
+
+  ///paginador anterior
+  /*
   private getTableData(page = 1): void {
     //this.bitacoraList = [];
     this.serialNumberArray = [];
@@ -139,20 +214,7 @@ reconectarBot(): void {
       });
   }
 
-  /*   getTableDataGeneral() {
-      this.bitacoras = [];
-      this.serialNumberArray = [];
-      this.bitacoras.map((res: any, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= this.skip && serialNumber <= this.limit) {
-          this.bitacoras.push(res);
-          this.serialNumberArray.push(serialNumber);
-        }
-      });
-      this.dataSource = new MatTableDataSource<any>(this.bitacoras);
-      this.calculateTotalPages(this.totalData, this.pageSize);
-    } */
-
+ 
   public searchData(): void {
     this.pageSelection = [];
     this.limit = this.pageSize;
@@ -221,7 +283,7 @@ reconectarBot(): void {
     if (this.totalPages % 1 != 0) {
       this.totalPages = Math.trunc(this.totalPages + 1);
     }
-    /* eslint no-var: off */
+   // eslint no-var: off 
     for (var i = 1; i <= this.totalPages; i++) {
       const limit = pageSize * i;
       const skip = limit - pageSize;
@@ -229,6 +291,7 @@ reconectarBot(): void {
       this.pageSelection.push({ skip: skip, limit: limit });
     }
   }
+*/
 
   openDialog(id: number) {
     this.dialog.open(ViewBitacorasComponent, {

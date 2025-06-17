@@ -16,7 +16,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule} from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {
   MtxCalendarView,
@@ -47,8 +49,10 @@ import {
     MatListModule,
     MatCheckboxModule,
     MtxDatetimepickerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
     MatSlideToggleModule,
-    
   ],
   exports: [
     CommonModule,
@@ -69,6 +73,9 @@ import {
     MatListModule,
     MatCheckboxModule,
     MtxDatetimepickerModule,
+     MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
     MatSlideToggleModule,
     
   ],

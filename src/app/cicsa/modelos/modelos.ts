@@ -1,5 +1,5 @@
 export interface Bitacora {
-
+  correlativo?:number;
   anio?: number;
   mes?: number;
   semana?: number;

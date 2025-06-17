@@ -64,14 +64,18 @@ export class UtilitiesService {
 *Causa:* ${bitacora.causa_averia.nombre}; 
 *Consecuencia:* ${bitacora.consecuencia_averia.nombre}; 
 *Tipo de Reparación:* ${bitacora.tipo_reparacion.nombre}; 
-*Tiempo de solución:* ${bitacora.tiempo_solucion || ''}; 
+*Tiempo de solución:* ${bitacora.tiempo_solucion || ''};
+ 
 *Material Utilizado:* 
 ${bitacora.herramientas || '- Sin materiales'}
 `;
     }
+const fechaFormateada = bitacora.fecha_inicial
+  ? new Date(bitacora.fecha_inicial).toISOString().split('T')[0]
+  : '';
 
-    detallebitacora = `#*${bitacora.nombre} - ${bitacora.enlace_plano_site}* 
-_FechaInicial:_ ${bitacora.fecha_inicial || ''} 
+    detallebitacora = `#${bitacora.correlativo ? bitacora.correlativo + '_' : ''}*${bitacora.nombre} - ${bitacora.enlace_plano_site}* 
+_FechaInicial:_ ${fechaFormateada}
 _NroSot:_ ${bitacora.sot || ''} 
 _NroIncidencia:_ ${bitacora.incidencia || ''} 
 _NroTAS:_ ${bitacora.nro_tas || ''} 
@@ -116,7 +120,7 @@ ${atencion} `;
         element.hora,
         'HH:mm'
       );
-      atenciones += ` *${formattedElementHora} (${element.atencion.orden}) ${element.atencion.descripcion}*, ${element.descripcion} \n`;
+      atenciones += ` *${formattedElementHora} (${element.atencion.orden.toString().padStart(2, '0')}) ${element.atencion.descripcion}*, ${element.descripcion} \n`;
     });
     return atenciones;
   }
@@ -180,10 +184,10 @@ _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${
 
   // Validar si las coordenadas están dentro del territorio de Perú
   validateLatLong(lat: number, lon: number): boolean {
-    const minLat = -18.0;
-    const maxLat = -0.1;
-    const minLon = -81.0;
-    const maxLon = -68.0;
+    const minLat = -18.35;
+    const maxLat = 0.0;
+    const minLon = -81.35;
+    const maxLon = -68.65;
 
     return lat >= minLat && lat <= maxLat && lon >= minLon && lon <= maxLon;
   }
@@ -248,19 +252,12 @@ _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${
     return mobileDevices.some((device) => userAgent.includes(device));
   }
 
-
-
-
-
-
   private iniciarSesion(): void {
-
     const userString = localStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
     if (user && user.name) {
       this.sessionId = user.whatsapp;
     }
-
 
     this.whatsapp.iniciarSesion(this.sessionId).subscribe({
       next: (data) => {
@@ -297,7 +294,7 @@ _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${
     });
   }
 
-  enviarMensajeAGrupos(session:string,  grupos: string[], id: number): void {
+  enviarMensajeAGrupos(session: string, grupos: string[], id: number): void {
     var msgBitacora: string = '';
     this.bitacoraService.read(id).subscribe((resp: Bitacora) => {
       //this.bitacora_selected = resp.bitacora.data;

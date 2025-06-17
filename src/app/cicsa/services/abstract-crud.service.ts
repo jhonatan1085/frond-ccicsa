@@ -22,6 +22,19 @@ export abstract class AbstractCrudService<T> {
     return this.http.post<CrudResponse>(URL, data, { headers: headers });
   }
 
+  readAll(options: ReadOptions = { page: 1, search: '', perPage: 10 })  {
+    const { page, search, perPage } = options;
+    const headers = this.getHeaders();
+    let url = `${URL_SERVICIOS}/${this.endpoint}`;
+    const params = [];
+    if (page && page > 0) params.push(`page=${page}`);
+    if (perPage && perPage > 0) params.push(`perPage=${perPage}`);
+    if (search) params.push(`search=${encodeURIComponent(search)}`);
+    if (params.length > 0) url += `?${params.join('&')}`;
+    return this.http.get<Page<T>>(url, { headers: headers });
+  }
+
+  /*
   readAll(options: ReadOptions = { page: 1, search: '' }) {
     const { page, search } = options;
     const headers = this.getHeaders();
@@ -31,7 +44,7 @@ export abstract class AbstractCrudService<T> {
     if (search) params.push(`search=${search}`);
     if (params.length > 0) url += `?${params.join('&')}`;
     return this.http.get<Page<T>>(url, { headers: headers });
-  }
+  }*/
 
   read(id: number) {
     const headers = this.getHeaders();

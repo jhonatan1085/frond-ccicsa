@@ -30,3 +30,38 @@ section {
     width: 120px;
   }
 
+  .botones-acciones {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+}
+
+/*.botones-acciones button {
+  width: 36px;
+  height: 36px;
+  //border-radius: 50%;
+  min-width: unset;
+}
+*/
+.col-fecha {
+  width: 120px; // o el valor que desees (por ejemplo 100px)
+  min-width: 100px;
+  max-width: 110px;
+  white-space: nowrap;
+}
+
+.estado-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.estado-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

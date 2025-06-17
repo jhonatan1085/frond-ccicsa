@@ -46,13 +46,53 @@ export class HeaderComponent {
   public toggleSideBar(): void {
     this.sideBar.switchSideMenuPosition();
   }
+
+
+public toggleMobileSideBar(): void {
+  this.addClass = !this.addClass;
+
+  const html = document.documentElement;
+  const sidebar = document.getElementById('sidebar');
+  const wrapper = document.querySelector('.main-wrapper');
+  const overlay = document.querySelector('.sidebar-overlay');
+
+  if (this.addClass) {
+    html.classList.add('menu-opened');
+    wrapper?.classList.add('slide-nav');
+    sidebar?.classList.add('opened');
+
+    // solo agregar overlay si no existe
+    if (!overlay) {
+      const overlayDiv = document.createElement('div');
+      overlayDiv.classList.add('sidebar-overlay');
+      overlayDiv.addEventListener('click', () => this.toggleMobileSideBar());
+      document.body.appendChild(overlayDiv);
+    }
+
+    this.sideBar.toggleMobileSideBar.next(true);
+    localStorage.setItem('isMobileSidebar', 'true');
+  } else {
+    html.classList.remove('menu-opened');
+    wrapper?.classList.remove('slide-nav');
+    sidebar?.classList.remove('opened');
+
+    // eliminar el overlay
+    overlay?.remove();
+
+    this.sideBar.toggleMobileSideBar.next(false);
+    localStorage.removeItem('isMobileSidebar');
+  }
+}
+
+  /*
   public toggleMobileSideBar(): void {
     this.sideBar.switchMobileSideBarPosition();
 
     this.addClass = !this.addClass;
-    /* eslint no-var: off */
+
+    /* eslint no-var: off 
     var root = document.getElementsByTagName('html')[0];
-    /* eslint no-var: off */
+    /* eslint no-var: off 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     var sidebar: any = document.getElementById('sidebar');
 
@@ -63,5 +103,5 @@ export class HeaderComponent {
       root.classList.remove('menu-opened');
       sidebar.classList.remove('opened');
     }
-  }
+  }*/
 }
