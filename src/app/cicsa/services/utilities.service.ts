@@ -74,7 +74,7 @@ const fechaFormateada = bitacora.fecha_inicial
   ? new Date(bitacora.fecha_inicial).toISOString().split('T')[0]
   : '';
 
-    detallebitacora = `#${bitacora.correlativo ? bitacora.correlativo + '_' : ''}*${bitacora.nombre} - ${bitacora.enlace_plano_site}* 
+    detallebitacora = `#${bitacora.correlativo ? bitacora.correlativo + '_' : ''}*${bitacora.nombre + (bitacora.enlace_plano_site ? '-' +bitacora.enlace_plano_site : '')}* 
 _FechaInicial:_ ${fechaFormateada}
 _NroSot:_ ${bitacora.sot || ''} 
 _NroIncidencia:_ ${bitacora.incidencia || ''} 

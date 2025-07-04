@@ -17,6 +17,7 @@ import { LocationBitacorasComponent } from './location-bitacoras/location-bitaco
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddDemorasComponent } from './add-demoras/add-demoras.component';
 import { EndSotComponent } from './end-sot/end-sot.component';
+import { AddMaterialesComponent } from './add-materiales/add-materiales.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,8 @@ import { EndSotComponent } from './end-sot/end-sot.component';
     LocationBitacorasComponent,
     AddDemorasComponent,
     EndSotComponent,
+    AddMaterialesComponent,
+    AddMaterialesComponent
   ],
   imports: [
     CommonModule,

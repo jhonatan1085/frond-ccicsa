@@ -103,7 +103,7 @@ export class AddBitacorasComponent implements OnInit {
 
     this.datosForm = this.fb.group({
       nombre: [null, Validators.required],
-      enlace_plano_site: [],
+      enlace_plano_site: [null],
       fecha_inicial: [now, Validators.required],
       fecha_ejecucion: [now],
       sot: [],

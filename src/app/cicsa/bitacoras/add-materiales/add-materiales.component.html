@@ -1,0 +1,135 @@
+<div class="page-wrapper">
+    <div class="content">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Bitacoras</a></li>
+                        <li class="breadcrumb-item"><i class="feather icon-chevron-right"></i></li>
+                        <li class="breadcrumb-item active">Agregar Materiales</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-heading">
+                                    <h4>Materiales Utilizados en Bitacora: <!-- #{{ usuario_selected.id }} --></h4>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-12">
+                                    <div class="form-heading">
+                                        <h4>Materiales</h4>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label>Descripción de material</mat-label>
+                                        <input type="text" class="form-control" matInput [formControl]="materialCtrl"
+                                            [matAutocomplete]="auto">
+
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="mostrarNombreMaterial"
+                                            (optionSelected)="seleccionarMaterial($event.option.value)">
+                                            <mat-option *ngFor="let mat of materialesFiltrados$ | async" [value]="mat">
+                                                {{ mat.nombre }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-12 col-md-6 col-xl-1">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="nro_incidencia">Codigo
+                                        </mat-label>
+                                        <input class="form-control" name="nro_incidencia" type="text" [disabled]="true"
+                                            [value]="materialSeleccionado?.codigo" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-1">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="nro_incidencia">UM.
+                                        </mat-label>
+                                        <input class="form-control" name="nro_incidencia" type="text" [disabled]="true"
+                                            [value]="materialSeleccionado?.unidad_medida" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-1">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="nro_incidencia">Stock
+                                        </mat-label>
+                                        <input class="form-control" name="nro_incidencia" type="text" [disabled]="true"
+                                            [value]="materialSeleccionado?.stock_actual" />
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-1">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="kilometraje">Cantidad </mat-label>
+                                        <input class="form-control" name="kilometraje" type="number"
+                                            [(ngModel)]="cantidad" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-2">
+                                    <button mat-mini-fab color="primary" (click)="agregarMaterial()"
+                                        [disabled]="!materialSeleccionado || materialSeleccionado.stock_actual <= 0 || cantidad <= 0"
+                                        [matTooltip]="getTooltipMensaje()" matTooltipPosition="above">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <table *ngIf="materialesAgregados.length" class="table mt-3 responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th>Descripción</th>
+                                        <th>Código</th>
+                                        <th>UM</th>
+                                        
+                                        <th>Cantidad</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of materialesAgregados; let i = index">
+                                        <td data-label="Descripción">{{ item.material.nombre }}</td>
+                                        <td data-label="Código">{{ item.material.codigo }}</td>
+                                        <td data-label="UM">{{ item.material.unidad_medida }}</td>
+                                        
+                                        <td data-label="Cantidad">{{ item.cantidad }}</td>
+                                        <td data-label="Acción">
+                                            <button mat-icon-button color="warn" (click)="confirmarEliminacion(i)"
+                                                matTooltip="Eliminar">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="col-12 mt-3 text-end" *ngIf="materialesAgregados.length">
+                                <button mat-raised-button color="primary" (click)="guardarMateriales()">
+                                    <mat-icon>save</mat-icon> Guardar materiales
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

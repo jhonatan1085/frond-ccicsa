@@ -1,0 +1,42 @@
+/* Tabla responsive tipo tarjeta */
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+@media screen and (max-width: 768px) {
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table tr {
+    display: block;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+
+  .responsive-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .responsive-table td:last-child {
+    border-bottom: none;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #333;
+  }
+
+  .responsive-table td button {
+    margin-left: auto;
+  }
+}

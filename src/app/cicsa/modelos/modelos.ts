@@ -71,6 +71,33 @@ export interface Responsable {
   telefono?: string;
 }
 
+export interface MovimientoMaterial {
+  cantidad: number;
+  almacen_id: number;
+  material: Material;
+}
+
+
+export interface Material{
+    id: number,
+    codigo: string;
+    nombre: string;
+    unidad_medida: string;
+    stock_actual: number;
+}
+
+export interface Movimiento {
+  material_id: number;
+  cantidad: number;
+  almacen_id: number;
+}
+
+export interface AgregaMaterialesBitacora {
+  bitacora_id: number;
+  materiales: Movimiento[];
+}
+
+
 export interface Site {
   id?: number;
   nombre: string;

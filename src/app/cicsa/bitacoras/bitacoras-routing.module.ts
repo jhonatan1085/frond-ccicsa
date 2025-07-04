@@ -5,6 +5,7 @@ import { AddBitacorasComponent } from './add-bitacoras/add-bitacoras.component';
 import { ListBitacorasComponent } from './list-bitacoras/list-bitacoras.component';
 import { ViewBitacorasComponent } from './view-bitacoras/view-bitacoras.component';
 import { AddDetalleBitacorasComponent } from './add-detalle-bitacoras/add-detalle-bitacoras.component';
+import { AddMaterialesComponent } from './add-materiales/add-materiales.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,9 @@ const routes: Routes = [
       {
         path: 'list-bitacora/detalle-bitacora/:bitacora',
         component: AddDetalleBitacorasComponent,
+      },{
+        path: 'list-bitacora/materiales-bitacora/:bitacora',
+        component: AddMaterialesComponent,
       },
     ],
   },

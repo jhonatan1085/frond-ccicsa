@@ -73,7 +73,7 @@ import {
     MatListModule,
     MatCheckboxModule,
     MtxDatetimepickerModule,
-     MatTableModule,
+    MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     MatSlideToggleModule,

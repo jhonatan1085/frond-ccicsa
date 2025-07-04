@@ -17,9 +17,10 @@ import { HeaderComponent } from '../common-component/header/header.component';
 import { SidebarComponent } from '../common-component/sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { AlertComponent } from './alert/alert.component';
+import { ConfirmDialogComponent } from './dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [HeaderComponent, SidebarComponent, AlertComponent],
+  declarations: [HeaderComponent, SidebarComponent, AlertComponent, ConfirmDialogComponent],
   imports: [
     CommonModule,
     NgxBootstrapModule,
