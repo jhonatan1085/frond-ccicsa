@@ -551,6 +551,45 @@ export class DataService {
           ],
         },
         {
+          menuValue: 'Materiales',
+          hasSubRoute: true,
+          showSubRoute: false,
+          base: 'materiales',
+          icon: 'fa-users',
+          faIcon: true,
+          subMenus: [
+            {
+              menuValue: 'Listar Materiales',
+              route: routes.materialesList,
+              base: routes.materialesList,
+              permision: 'list_materiales',
+              show_nav: true,
+            },
+            {
+              menuValue: 'Registrar Materiales',
+              route: '',
+              base: '',
+              permision: 'register_materiales',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Editar Materiales',
+              route: '',
+              base: '',
+              permision: 'edit_materiales',
+              show_nav: false,
+            },
+            {
+              menuValue: 'Eliminar Materiales',
+              route: '',
+              base: '',
+              permision: 'delete_materiales',
+              show_nav: false,
+            }
+            
+          ],
+        },
+        {
           menuValue: 'Settings',
           route: routes.settings,
           hasSubRoute: false,

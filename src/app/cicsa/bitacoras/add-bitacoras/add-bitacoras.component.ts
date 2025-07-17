@@ -163,8 +163,9 @@ export class AddBitacorasComponent implements OnInit {
         switchMap((params) => this.bitacoraService.read(params['id']))
       )
       .subscribe((resp) => {
-        console.log(resp);
+        
         this.bitacora = resp;
+        console.log(this.bitacora)
         this.datosForm.patchValue({
           ...this.bitacora, //los campos que tiene bitacora
           tipo_averia_id: resp.tipo_averia.id, //campos especiales
@@ -214,6 +215,8 @@ export class AddBitacorasComponent implements OnInit {
     this.brigadasService.activa().subscribe((resp) => {
       this.totalData = resp.data.length;
       this.brigadasGeneral = resp.data;
+      console.log('brigadas aca')
+      console.log(this.brigadasGeneral)
       this.getTableDataGeneral();
     });
   }

@@ -42,6 +42,7 @@ export class ViewBitacorasComponent {
   ) {
     this.bitacoraService.read(data.id).subscribe((resp: Bitacora) => {
       this.bitacora = resp;
+      console.log(resp)
       this.bitacoraPrint = this.utilities.armaBitacora(resp);
     });
   }

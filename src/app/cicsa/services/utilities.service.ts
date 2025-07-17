@@ -5,6 +5,7 @@ import {
   Bitacora,
   CalcularTiempo,
   Cuadrilla,
+  Herramienta,
   UsuarioMovil,
   WhatsappGroup,
 } from '../modelos';
@@ -54,6 +55,7 @@ export class UtilitiesService {
   armaBitacora(bitacora: Bitacora) {
     let brigadas: string = this.brigadas(bitacora.brigadas);
     let atencion: string = this.atenciones(bitacora.atenciones);
+    let herramientas: string = this.herramientas(bitacora.herramientas);
 
     let detallebitacora: string;
 
@@ -67,14 +69,19 @@ export class UtilitiesService {
 *Tiempo de solución:* ${bitacora.tiempo_solucion || ''};
  
 *Material Utilizado:* 
-${bitacora.herramientas || '- Sin materiales'}
+${herramientas}
 `;
     }
-const fechaFormateada = bitacora.fecha_inicial
-  ? new Date(bitacora.fecha_inicial).toISOString().split('T')[0]
-  : '';
+    const fechaFormateada = bitacora.fecha_inicial
+      ? new Date(bitacora.fecha_inicial).toISOString().split('T')[0]
+      : '';
 
-    detallebitacora = `#${bitacora.correlativo ? bitacora.correlativo + '_' : ''}*${bitacora.nombre + (bitacora.enlace_plano_site ? '-' +bitacora.enlace_plano_site : '')}* 
+    detallebitacora = `#${
+      bitacora.correlativo ? bitacora.correlativo + '_' : ''
+    }*${
+      bitacora.nombre +
+      (bitacora.enlace_plano_site ? '-' + bitacora.enlace_plano_site : '')
+    }* 
 _FechaInicial:_ ${fechaFormateada}
 _NroSot:_ ${bitacora.sot || ''} 
 _NroIncidencia:_ ${bitacora.incidencia || ''} 
@@ -89,7 +96,7 @@ _Distancia:_ ${bitacora.distancia || ''} Kms
 _Region:_ ${bitacora.site.region || ''} 
 _Departamento:_ ${bitacora.site.departamento?.nombre || ''} 
 _Distrito:_ ${bitacora.site.distrito?.nombre || ''} 
-_red1:_ ${bitacora.red.nombre || ''} , ${brigadas}
+_red1:_ ${bitacora.red.nombre || ''}, ${brigadas}
 _Responsable Cicsa:_ ${bitacora.resp_cicsa.nombres || ''} -T: ${
       bitacora.resp_cicsa.telefono || ''
     } 
@@ -101,6 +108,19 @@ ${atencion} `;
     return detallebitacora;
   }
   //*_serv1:_ ${bitacora.serv.nombre || ''}
+
+  herramientas(herramientas: Herramienta[]) {
+    var herramienta: string = '';
+    if (herramientas.length > 0) {
+      herramientas.forEach((elem: Herramienta) => {
+        herramienta += ` - ${Number(elem.cantidad)} ${elem.nombre}\n`;
+      });
+    } else {
+      herramienta = ` - Sin Materiales \n`;
+    }
+
+    return herramienta;
+  }
 
   atenciones(atencion: Atencion[]) {
     var atenciones: string = '';
@@ -120,7 +140,11 @@ ${atencion} `;
         element.hora,
         'HH:mm'
       );
-      atenciones += ` *${formattedElementHora} (${element.atencion.orden.toString().padStart(2, '0')}) ${element.atencion.descripcion}*, ${element.descripcion} \n`;
+      atenciones += ` *${formattedElementHora} (${element.atencion.orden
+        .toString()
+        .padStart(2, '0')}) ${element.atencion.descripcion}*, ${
+        element.descripcion
+      } \n`;
     });
     return atenciones;
   }
@@ -131,7 +155,7 @@ ${atencion} `;
 
     brigada.forEach((element: Cuadrilla) => {
       element.user_movil.forEach((item: UsuarioMovil) => {
-        if (item.is_lider === '1') {
+        if (Number(item.is_lider) === 1) {
           brigadas += `
 _Bri${count}:_ ${element.zona.nombre}: ${item.user.nombre} - Placa: ${
             item.unidad_movil?.placa || ''

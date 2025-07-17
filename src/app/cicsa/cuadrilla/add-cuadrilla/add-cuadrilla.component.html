@@ -11,71 +11,62 @@
                   <h4>Registro de Cuadrilla</h4>
                 </div>
               </div>
-              <div class="col-12 col-md-6 col-xl-6">
-                <div class="form-group local-forms">
-                  <mat-label
-                    >Tipo Brigada <span class="login-danger">*</span></mat-label
-                  >
-                  <mat-select
-                    [(ngModel)]="selectedTipobrigadas"
-                    [ngModelOptions]="{ standalone: true }"
-                    class="form-control select"
-                    placeholder="Seleccione Tipo"
-                  >
-                    <mat-option
-                      *ngFor="let data of tipobrigadas"
-                      [value]="data.id"
-                    >
-                      {{ data.nombre }}
-                    </mat-option>
-                  </mat-select>
+
+              <div class="row align-items-center" [formGroup]="cuadrillaForm">
+
+                <div class="col-12 col-md-6 col-xl-6">
+                  <div class="form-group local-forms">
+                    <mat-label>Tipo Brigada
+                      <span class="login-danger">*</span></mat-label>
+                    <mat-select formControlName="tipo_brigada_id" class="form-control select"
+                      placeholder="Selec. Brigada">
+                      <mat-option *ngFor="let data of tipobrigadas" [value]="data.id">
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-12 col-md-6 col-xl-6">
-                <div class="form-group local-forms">
-                  <mat-label
-                    >Contrata <span class="login-danger">*</span></mat-label
-                  >
-                  <mat-select
-                    [(ngModel)]="selectedContratistas"
-                    [ngModelOptions]="{ standalone: true }"
-                    class="form-control select"
-                    placeholder="Seleccione Contrata"
-                  >
-                    <mat-option
-                      *ngFor="let data of contratistas"
-                      [value]="data.id"
-                    >
-                      {{ data.nombre }}
-                    </mat-option>
-                  </mat-select>
+
+                <div class="col-12 col-md-6 col-xl-6">
+                  <div class="form-group local-forms">
+                    <mat-label>Contrata
+                      <span class="login-danger">*</span></mat-label>
+                    <mat-select formControlName="contratista_id" class="form-control select"
+                      placeholder="Selec. Contrata">
+                      <mat-option *ngFor="let data of contratistas" [value]="data.id">
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-12 col-md-6 col-xl-6">
-                <div class="form-group local-forms">
-                  <mat-label
-                    >Base <span class="login-danger">*</span></mat-label
-                  >
-                  <mat-select
-                    [(ngModel)]="selectedZona"
-                    [ngModelOptions]="{ standalone: true }"
-                    class="form-control select"
-                    placeholder="Seleccione Zona"
-                    (selectionChange)="tecnicos()"
-                  >
-                    <mat-option *ngFor="let data of zonas" [value]="data.id">
-                      {{ data.nombre }}
-                    </mat-option>
-                  </mat-select>
+
+                <div class="col-12 col-md-6 col-xl-6">
+                  <div class="form-group local-forms">
+                    <mat-label>Base
+                      <span class="login-danger">*</span></mat-label>
+                    <mat-select formControlName="zona_id" class="form-control select" placeholder="Selec. Zona">
+                      <mat-option *ngFor="let data of zonas" [value]="data.id">
+                        {{ data.nombre }}
+                      </mat-option>
+                    </mat-select>
+                  </div>
                 </div>
+
+
+
+                <div class="col-12 col-md-6 col-xl-6">
+                  <div class="form-group local-forms">
+                    <mat-label for="nombre">
+                      Nombre
+                      <span class="login-danger">*</span>
+                    </mat-label>
+                    <input class="form-control" formControlName="nombre" name="nombre" type="text" />
+                  </div>
+                </div>
+
               </div>
 
-              <div class="col-12 col-md-6 col-xl-6">
-                <div class="form-group local-forms">
-                  <mat-label for="nombre">Nombre </mat-label>
-                  <input [(ngModel)]="nombre" class="form-control" name="nombre" type="text" />
-                </div>
-              </div>
+
               <div class="col-12">
                 <div class="card">
                   <div class="card-body">
@@ -95,33 +86,21 @@
                             <tr>
                               <td style="text-align: center !important">
                                 <div class="form-check check-tables">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="checkbox"
-                                    [checked]="isCheck(user)"
-                                    (click)="addUser(user)"
-                                  />
+                                  <input class="form-check-input" type="checkbox" [checked]="isCheck(user)"
+                                    (click)="addUser(user)" />
                                 </div>
                               </td>
                               <td style="text-align: center !important">
                                 <div class="form-check check-tables">
-                                  <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    name="checkbox"
-                                    (click)="addLider(user)"
-                                    [disabled]="islider(user)"
-                                  />
+                                  <input class="form-check-input" type="checkbox" (click)="addLider(user)"
+                                    [disabled]="isLiderDisable(user)" [checked]="isLiderCheck(user)" />
                                 </div>
                               </td>
                               <td style="text-align: left !important">
                                 {{ user.name }} {{ user.surname }}
                               </td>
                               <td>
-                                <ng-container
-                                  *ngFor="let movil of user.unidad_movil"
-                                >
+                                <ng-container *ngFor="let movil of user.unidad_movil">
                                   {{ movil.placa }}
                                 </ng-container>
                               </td>
@@ -142,12 +121,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cerrar</button>
-  <button
-    mat-button
-
-    cdkFocusInitial
-    (click)="saveCuadrilla()"
-  >
+  <button mat-button cdkFocusInitial (click)="saveCuadrilla()">
     Guardar
   </button>
 </mat-dialog-actions>

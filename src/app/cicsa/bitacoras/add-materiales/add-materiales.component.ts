@@ -1,6 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MaterialService } from '../../services/material.service';
-import { Material, MovimientoMaterial } from '../../modelos';
+import {
+  Brigada,
+  Cuadrilla,
+  Material,
+  MovimientoMaterial,
+} from '../../modelos';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
@@ -12,6 +17,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UtilitiesService } from '../../services/utilities.service';
 import { ActivatedRoute } from '@angular/router';
 import { MovimientoService } from '../../services/movimiento.service';
+import { UserAuth } from 'src/app/shared/models/models';
+import { AuthService } from 'src/app/shared/auth/auth.service';
+import { BitacorasService } from '../../services/bitacoras.service';
 
 @Component({
   selector: 'app-add-materiales',
@@ -25,7 +33,7 @@ export class AddMaterialesComponent {
   materialesFiltrados$!: Observable<Material[]>;
   materialSeleccionado: Material | null = null;
   cantidad: number = 1;
-  almacenId = 3; // cambiar según tu lógica
+  brigadaId: number = 0; // cambiar según tu lógica
   unidadMedida = '';
   stock = 0;
 
@@ -34,20 +42,55 @@ export class AddMaterialesComponent {
   materialesAgregados: MovimientoMaterial[] = [];
   materialesRegistradosBD: MovimientoMaterial[] = [];
 
+  public user?: UserAuth;
+
+  brigadas: Brigada[] = [];
+  brigadaSeleccionadaId: number | null = null;
+  isTecnico: boolean = false;
+  brigadaSeleccionada?: Brigada;
+
   constructor(
+    public auth: AuthService,
     private materialService: MaterialService,
     private dialog: MatDialog,
     private utilities: UtilitiesService,
     public activeRoute: ActivatedRoute,
-    public movimientoService: MovimientoService
+    public movimientoService: MovimientoService,
+    public bitacoraService: BitacorasService
   ) {}
 
   ngOnInit(): void {
+    this.user = this.auth.user;
+
+    this.isTecnico = this.user?.roles.includes('Tecnico') ?? false;
+
     this.activeRoute.params.subscribe((resp) => {
       this.bitacora_id = resp['bitacora'];
     });
 
-    this.getMateriales();
+    if (this.isTecnico && this.user?.brigada) {
+      this.brigadaId = this.user?.brigada?.brigada_id;
+
+      this.listaMateriales(this.bitacora_id, this.brigadaId);
+
+      this.getMateriales();
+
+    } else {
+      this.bitacoraService
+        .getBrigadasBitacora(this.bitacora_id)
+        .subscribe((resp) => {
+          this.brigadas = resp.data;
+
+          if (this.brigadas.length > 0) {
+            this.brigadaSeleccionada = this.brigadas[0];
+
+            this.brigadaId = Number(this.brigadaSeleccionada.id);
+
+            this.listaMateriales(this.bitacora_id, Number(this.brigadaId));
+            this.getMateriales();
+          }
+        });
+    }
 
     this.materialCtrl.valueChanges.subscribe((valor) => {
       if (typeof valor === 'string') {
@@ -55,22 +98,33 @@ export class AddMaterialesComponent {
         this.materialSeleccionado = null;
       }
     });
+  }
 
+  listaMateriales(bitacora_id: number, brigadaId: number) {
     this.materialService
-      .listMAterialesBitacora(this.bitacora_id, this.almacenId)
+      .listMaterialesBitacora(bitacora_id, brigadaId)
       .subscribe((resp) => {
         this.materialesAgregados = JSON.parse(JSON.stringify(resp.data));
         this.materialesRegistradosBD = JSON.parse(JSON.stringify(resp.data));
       });
   }
 
-  private getMateriales() {
-    this.materialService
-      .autocomplete(this.almacenId.toString())
-      .subscribe((resp) => {
-        console.log(resp.data);
+  onBrigadaChange() {
+    if (this.brigadaSeleccionada) {
+      this.brigadaId = Number(this.brigadaSeleccionada.id);
 
+      this.listaMateriales(this.bitacora_id, this.brigadaId);
+      this.getMateriales();
+    }
+  }
+
+  private getMateriales() {
+
+    this.materialService
+      .autocomplete(this.brigadaId.toString())
+      .subscribe((resp) => {
         this.setMateriales(resp.data);
+        console.log(resp.data);
       });
   }
 
@@ -178,7 +232,7 @@ export class AddMaterialesComponent {
       this.materialesAgregados.push({
         material: this.materialSeleccionado,
         cantidad: cantidad,
-        almacen_id: this.almacenId,
+        brigada_id: this.brigadaId,
       });
     }
     console.log(this.materialesAgregados);
@@ -238,9 +292,11 @@ export class AddMaterialesComponent {
       materiales: this.materialesAgregados.map((m) => ({
         material_id: m.material.id,
         cantidad: m.cantidad,
-        almacen_id: m.almacen_id, // asegúrate de tenerlo
+        brigada_id: m.brigada_id, // asegúrate de tenerlo
       })),
     };
+
+    console.log(payload)
 
     this.movimientoService.guardarMaterialesEnBitacora(payload).subscribe({
       next: (resp) => {

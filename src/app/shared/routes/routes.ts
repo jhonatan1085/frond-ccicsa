@@ -197,4 +197,8 @@ public static get addLider(): string {
     return this.baseUrl + '/unidades-moviles/list-unidades-moviles';
   }
 
+    public static get materialesList(): string {
+    return this.baseUrl + '/materiales/list-materiales';
+  }
+
 }

@@ -35,12 +35,18 @@ export interface Bitacora {
   causa_averia: CausaAveria;
   consecuencia_averia: Tipo;
   tipo_reparacion: Tipo;
-  herramientas: string;
+  herramientas: Herramienta[];
   tiempo_solucion: string;
   demoras?: DemoraBitacora[];
   afect_servicio?: Boolean;
   afect_masiva?: Boolean;
 }
+
+export interface Herramienta{
+  cantidad : number;
+  nombre: string;
+}
+
 export interface Config {
   tipoaveria: TipoAveria[];
   red: string[];
@@ -73,7 +79,7 @@ export interface Responsable {
 
 export interface MovimientoMaterial {
   cantidad: number;
-  almacen_id: number;
+  brigada_id: number;
   material: Material;
 }
 
@@ -89,7 +95,7 @@ export interface Material{
 export interface Movimiento {
   material_id: number;
   cantidad: number;
-  almacen_id: number;
+  brigada_id: number;
 }
 
 export interface AgregaMaterialesBitacora {
@@ -138,6 +144,33 @@ export interface Departamento {
   nombre: string;
 }
 
+
+export interface Brigada{
+  id: number;
+  nombre: string;
+}
+
+export interface CuadrillaCreate {
+  zona_id: number;
+  tipo_brigada_id: number;
+  contratista_id: number;
+  nombre: string;
+  tecnicos: {
+    user_id: number;
+    movil_id: number | null;
+    is_lider: number;
+  }[];
+}
+
+export interface CuadrillaUpdate {
+  tecnicos: {
+    user_id: number;
+    movil_id: number | null;
+    is_lider: number;
+  }[];
+}
+
+
 export interface Cuadrilla {
   id: number;
   estado: string;
@@ -149,21 +182,34 @@ export interface Cuadrilla {
   user_movil: UsuarioMovil[];
 }
 
+export interface Zona {
+  id: number;
+  nombre: string;
+}
+
 export interface Contratista {
   id: number;
   nombre: string;
 }
 
-export interface Zona {
-  id: number;
-  nombre: string;
-}
+
 
 export interface UsuarioMovil {
   id: number;
   is_lider: '0' | '1';
   user: Usuario;
   unidad_movil?: UnidadMovil;
+}
+
+export interface UnidadMovil {
+  id: number;
+  placa: string;
+  kilometraje: number;
+  marca: Tipo;
+  modelo: Tipo;
+  color: Tipo;
+  estado: string;
+  estadotext: string;
 }
 
 export interface Usuario {
@@ -191,16 +237,7 @@ export interface Usuario {
   zonas?: Tipo[];
 }
 
-export interface UnidadMovil {
-  id: number;
-  placa: string;
-  kilometraje: number;
-  marca: Tipo;
-  modelo: Tipo;
-  color: Tipo;
-  estado: string;
-  estadotext: string;
-}
+
 
 export interface Atencion {
   atencion: AtencionDetalle;

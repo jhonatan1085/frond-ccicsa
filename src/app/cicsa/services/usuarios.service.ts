@@ -17,7 +17,7 @@ export class UsuariosService extends AbstractCrudService<Usuario> {
   }
 
   //retorna la tecnicos por zona
-  showUserZona(zona_id: string) {
+  showUserZona(zona_id: number) {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/tecnicos/zona/${zona_id}`;
     return this.http.get<Page<Usuario>>(URL, { headers: headers });

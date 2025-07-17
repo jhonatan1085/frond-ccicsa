@@ -17,7 +17,6 @@ export class MovimientoService extends AbstractCrudService<Movimiento> {
   }
 
   guardarMaterialesEnBitacora(data: AgregaMaterialesBitacora) {
-    console.log(data);
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/materiales-bitacora`;
     return this.http.post<CrudResponse>(URL, data, { headers: headers });

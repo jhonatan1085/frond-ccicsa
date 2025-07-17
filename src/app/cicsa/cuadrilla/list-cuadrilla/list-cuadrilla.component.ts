@@ -47,21 +47,27 @@ export class ListCuadrillaComponent implements OnInit {
     this.cuadrillasList = [];
     this.serialNumberArray = [];
 
-    this.cuadrillaService
-      .readAll()
-      .subscribe((resp) => {
-        console.log(resp);
-        this.totalData = resp.data.length;
-        this.cuadrilla_generals = resp.data;
-        this.getTableDataGeneral();
-      });
+    this.cuadrillaService.readAll().subscribe((resp) => {
+      console.log(resp);
+      this.totalData = resp.data.length;
+      this.cuadrilla_generals = resp.data;
+      this.getTableDataGeneral();
+    });
   }
   openDialog() {
     const ref = this.dialog.open(AddCuadrillaComponent);
     ref.afterClosed().subscribe(() => this.getTableData());
   }
-  
 
+  openDialogCuadrilla(cuadrilla: Cuadrilla) {
+    const ref = this.dialog.open(AddCuadrillaComponent, {
+      data: { cuadrilla: cuadrilla },
+    });
+
+    ref.afterClosed().subscribe(() => {
+      this.getTableDataGeneral();
+    });
+  }
 
   getTableDataGeneral() {
     this.cuadrillasList = [];
@@ -78,7 +84,7 @@ export class ListCuadrillaComponent implements OnInit {
   }
 
   public searchData(value: any): void {
-    console.log(this.dataSource)
+    console.log(this.dataSource);
     this.dataSource.filter = value.trim().toLowerCase();
     this.cuadrillasList = this.dataSource.filteredData;
   }

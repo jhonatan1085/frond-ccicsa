@@ -145,7 +145,6 @@ reconectarBot(): void {
   //inicio paginador nuevo
 
  
-
   getTableData(page: number): void {
     this.bitacoraService.readAll({ page, perPage: this.pageSize, search: this.searchDataValue })
       .subscribe((resp) => {

@@ -254,6 +254,12 @@ export interface UserAuth {
   permissions: string[];
   roles: string[];
   email: string;
+  brigada? : Brigada;
+}
+
+export interface Brigada{
+  brigada_id : number;
+  brigada_nombre: string
 }
 
 export interface Auth {

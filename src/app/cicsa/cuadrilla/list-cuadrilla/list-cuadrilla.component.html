@@ -51,27 +51,23 @@
             <div class="row align-items-center py-4">
               <div class="col-12">
                 <div class="table-responsive">
-                  <table
-                matSort
-                (matSortChange)="sortData($event)"
-                class="table border-0 custom-table comman-table datatable m-0"
-              >
+                  <table matSort (matSortChange)="sortData($event)"
+                    class="table border-0 custom-table comman-table datatable m-0">
                     <thead>
                       <tr>
-                        
-                        <th >Brigada</th>
-                        <th >T. Brigada</th>
+
+                        <th>Brigada</th>
+                        <th>T. Brigada</th>
                         <th mat-sort-header="nombre">Contrata</th>
                         <th mat-sort-header="zona.nombre">Zona</th>
-                        <th >Tecnicos</th>
-                        <th >Estado</th>
-                        <th >Ver</th>
-
+                        <th>Tecnicos</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
                       </tr>
                     </thead>
                     <tbody>
                       <ng-container *ngFor="let cuadrilla of cuadrillasList">
-                        <tr>   
+                        <tr>
                           <td>{{ cuadrilla.nombre }}</td>
                           <td>{{ cuadrilla.tipo_brigada.nombre }}</td>
                           <td>{{ cuadrilla.contratista.nombre }}</td>
@@ -85,15 +81,16 @@
                               {{ cuadrilla.estadotext }}
                             </button>
                           </td>
-                          <td>
+                          <td class="text-end">
                             <div class="add-group">
                               <button class="btn btn-primary ms-2" (click)="showSegment(cuadrilla)">
                                 <i class="fa fa-search" aria-hidden="true"></i>
                               </button>
+                              <button class="btn btn-primary ms-1">
+                              <i class="fa fa-pencil" (click)="openDialogCuadrilla(cuadrilla)" aria-hidden="true"></i>
+                            </button>
                             </div>
-                            <!-- <a class="btn btn-primary add-pluss ms-2" (click)="showSegment(cuadrilla)" ><img
-                                                            src="assets/img/icons/search-normal.svg" alt="" /></a>
-                                                    -->
+                            
                           </td>
                         </tr>
                       </ng-container>
@@ -107,32 +104,19 @@
                         {{ totalData }} usuarios
                       </div>
                     </div>
-    
+
                     <div class="col-sm-12 col-md-7">
                       <div class="pagination_section mx-2">
                         <ul class="pagination">
-                          <li
-                            class="page-item"
-                            [ngClass]="{
+                          <li class="page-item" [ngClass]="{
                               disabled: currentPage === 1
-                            }"
-                          >
-                            <a
-                              (click)="getMoreData('previous')"
-                              class="page-link"
-                              href="javascript:void(0);"
-                              tabindex="-1"
-                              >Anterior</a
-                            >
+                            }">
+                            <a (click)="getMoreData('previous')" class="page-link" href="javascript:void(0);"
+                              tabindex="-1">Anterior</a>
                           </li>
-    
-                          <ng-container
-                            *ngFor="let item of pageNumberArray; let i = index"
-                          >
-                            <li
-                              class="page-item"
-                              [class.active]="item === currentPage"
-                              [ngClass]="
+
+                          <ng-container *ngFor="let item of pageNumberArray; let i = index">
+                            <li class="page-item" [class.active]="item === currentPage" [ngClass]="
                                 (pageNumberArray[currentPage - 2] > item &&
                                   item !== 1 &&
                                   pageNumberArray.length > 6) ||
@@ -142,68 +126,44 @@
                                   pageNumberArray.length !== item)
                                   ? 'hide-page-no'
                                   : 'show-page-no'
-                              "
-                            >
-                              <a
-                                (click)="moveToPage(item)"
-                                class="page-link"
-                                href="javascript:void(0);"
-                              >
+                              ">
+                              <a (click)="moveToPage(item)" class="page-link" href="javascript:void(0);">
                                 {{ item }}
                               </a>
                             </li>
-                            <li
-                              class="page-item"
-                              *ngIf="
+                            <li class="page-item" *ngIf="
                                 i === 0 &&
                                 pageNumberArray.length > 6 &&
                                 currentPage > 2
-                              "
-                              [hidden]="currentPage === 1"
-                              (click)="moveToPage(currentPage - 2)"
-                              (keyup.enter)="moveToPage(currentPage - 2)"
-                              tabindex="0"
-                            >
+                              " [hidden]="currentPage === 1" (click)="moveToPage(currentPage - 2)"
+                              (keyup.enter)="moveToPage(currentPage - 2)" tabindex="0">
                               <a class="page-link" href="javascript:void(0);">
                                 ...
                               </a>
                             </li>
-                            <li
-                              *ngIf="
+                            <li *ngIf="
                                 i === pageNumberArray.length - 2 &&
                                 pageNumberArray.length > 6
-                              "
-                              [hidden]="
+                              " [hidden]="
                                 currentPage >=
                                   pageNumberArray[pageNumberArray.length - 2] ||
                                 totalData <
                                   serialNumberArray[serialNumberArray.length - 1]
-                              "
-                              class="page-item"
-                              (click)="moveToPage(currentPage + 2)"
-                              (keyup.enter)="moveToPage(currentPage + 2)"
-                              tabindex="0"
-                            >
+                              " class="page-item" (click)="moveToPage(currentPage + 2)"
+                              (keyup.enter)="moveToPage(currentPage + 2)" tabindex="0">
                               <a class="page-link" href="javascript:void(0);">
                                 ...
                               </a>
                             </li>
                           </ng-container>
-    
-                          <li
-                            class="page-item"
-                            [ngClass]="{
+
+                          <li class="page-item" [ngClass]="{
                               disabled:
                                 currentPage ===
                                   pageNumberArray[pageNumberArray.length - 1] ||
                                   cuadrillasList.length === 0
-                            }"
-                          >
-                            <a
-                              (click)="getMoreData('next')"
-                              class="page-link"
-                              href="javascript:void(0);"
-                              >Siguiente
+                            }">
+                            <a (click)="getMoreData('next')" class="page-link" href="javascript:void(0);">Siguiente
                             </a>
                           </li>
                         </ul>

@@ -1,12 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigService } from '../../services/config.service';
 import { CuadrillaService } from '../../services/cuadrilla.service';
 import { UsuariosService } from '../../services/usuarios.service';
-import { Tipo } from '../../modelos';
+import {
+  Cuadrilla,
+  CuadrillaCreate,
+  CuadrillaUpdate,
+  Tipo,
+} from '../../modelos';
 import { UtilitiesService } from '../../services/utilities.service';
-
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NumberValueAccessor,
+  Validators,
+} from '@angular/forms';
 // declare const $: any;
 
 @Component({
@@ -15,10 +28,12 @@ import { UtilitiesService } from '../../services/utilities.service';
   styleUrls: ['./add-cuadrilla.component.scss'],
 })
 export class AddCuadrillaComponent {
+  cuadrillaForm!: FormGroup;
+
   selectedTipobrigadas!: string;
   selectedContratistas!: string;
   selectedZona!: string;
-  nombre!:string;
+  nombre!: string;
   tipobrigadas: any[] = [];
   contratistas: any[] = [];
   zonas: Tipo[] = [];
@@ -29,14 +44,19 @@ export class AddCuadrillaComponent {
 
   user_selecteds: any[] = [];
 
+  cuadrilla?: Cuadrilla;
   constructor(
     public dialogRef: MatDialogRef<AddCuadrillaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { cuadrilla?: Cuadrilla },
     private cuadrillaService: CuadrillaService,
     private configService: ConfigService,
     private usuarioService: UsuariosService,
     private _snackBar: MatSnackBar,
-    private utilities:UtilitiesService
+    private utilities: UtilitiesService,
+    private fb: FormBuilder
   ) {
+    this.cuadrilla = data?.cuadrilla;
+    this.createForm();
     this.configService.cuadrillas().subscribe((resp) => {
       this.tipobrigadas = resp.tipobrigadas;
       this.zonas = resp.zonas;
@@ -44,146 +64,201 @@ export class AddCuadrillaComponent {
     });
   }
 
-  tecnicos() {
+  createForm(): void {
+    this.cuadrillaForm = this.fb.group({
+      tipo_brigada_id: [null, Validators.required],
+      contratista_id: [null, Validators.required],
+      nombre: [null, Validators.required],
+      zona_id: [null, Validators.required],
+      tecnicos: this.fb.array([]),
+    });
+  }
+
+  ngOnInit() {
+    // Si es edición
+    if (this.cuadrilla) {
+      this.cuadrillaForm.patchValue({
+        tipo_brigada_id: this.cuadrilla.tipo_brigada?.id,
+        contratista_id: this.cuadrilla.contratista?.id,
+        nombre: this.cuadrilla.nombre,
+        zona_id: this.cuadrilla.zona?.id,
+      });
+
+      const zonaId = this.cuadrilla.zona?.id;
+      if (zonaId) {
+        this.tecnicos(zonaId);
+      }
+
+      // Cargar técnicos existentes
+      if (Array.isArray(this.cuadrilla.user_movil)) {
+        this.cuadrilla.user_movil.forEach((item: any) => {
+          const tecnico = this.fb.group({
+            user_id: [item.user.id],
+            movil_id: [item.unidad_movil ? item.unidad_movil.id : null],
+            is_lider: [Number(item.is_lider)],
+          });
+          this.tecnicosFormArray.push(tecnico);
+        });
+      }
+    }
+
+    // Escuchar cambio de zona
+    this.cuadrillaForm.get('zona_id')?.valueChanges.subscribe((zonaId) => {
+      this.tecnicosFormArray.clear(); // Limpia los técnicos anteriores
+      this.tecnicos(zonaId);
+    });
+  }
+
+  tecnicos(zona_id: number) {
     this.user_selecteds = [];
-    this.usuarioService.showUserZona(this.selectedZona).subscribe((resp) => {
+    this.usuarioService.showUserZona(zona_id).subscribe((resp) => {
       console.log(resp);
       this.users = resp.data;
     });
   }
 
+  get tecnicosFormArray(): FormArray {
+    return this.cuadrillaForm.get('tecnicos') as FormArray;
+  }
+
   addUser(user: any, islider = 0) {
     let id_movil = null;
-
-    console.log(user.unidad_movil.length);
 
     if (user.unidad_movil.length > 0) {
       user.unidad_movil.forEach((movil: any) => {
         id_movil = movil.id;
       });
     }
-    const INDEX = this.user_selecteds.findIndex(
-      (us: any) => us.user_id == user.id
+
+    const INDEX = this.tecnicosFormArray.controls.findIndex(
+      (ctrl: AbstractControl) => ctrl.value.user_id === user.id
     );
-    if (INDEX != -1) {
-      this.user_selecteds.splice(INDEX, 1);
+
+    if (INDEX !== -1) {
+      this.tecnicosFormArray.removeAt(INDEX);
     } else {
-      this.user_selecteds.push({
-        user_id: user.id,
-        movil_id: id_movil,
-        is_lider: islider,
+      const tecnico = this.fb.group({
+        user_id: [user.id],
+        movil_id: [id_movil],
+        is_lider: [islider],
       });
+      this.tecnicosFormArray.push(tecnico);
     }
 
-    console.log(this.user_selecteds);
+    console.log(this.tecnicosFormArray.value);
   }
 
   addLider(user: any) {
-    const existe = this.user_selecteds.findIndex((us: any) => us.is_lider == 1);
+    const liderIndex = this.tecnicosFormArray.controls.findIndex(
+      (ctrl: AbstractControl) => ctrl.value.is_lider === 1
+    );
 
-    if (existe != -1) {
-      const INDEX = this.user_selecteds.findIndex(
-        (us: any) => us.user_id == user.id && us.is_lider == 1
-      );
+    const userIndex = this.tecnicosFormArray.controls.findIndex(
+      (ctrl: AbstractControl) => ctrl.value.user_id === user.id
+    );
 
-      if (INDEX != -1) {
-        const replace = {
-          user_id: this.user_selecteds[INDEX].user_id,
-          movil_id: this.user_selecteds[INDEX].movil_id,
-          is_lider: 0,
-        };
-        this.user_selecteds.splice(INDEX, 1, replace);
+    if (liderIndex !== -1) {
+      if (userIndex === liderIndex) {
+        // Quitar el rol de líder al mismo usuario
+        const data = this.tecnicosFormArray.at(userIndex).value;
+        this.tecnicosFormArray.at(userIndex).patchValue({ is_lider: 0 });
       } else {
-        console.log('no se puede agregar otro cliente');
+        console.log('No se puede agregar otro líder');
       }
     } else {
-      const exislider = this.user_selecteds.findIndex(
-        (us: any) => us.user_id == user.id
-      );
-      if (exislider != -1) {
-        const replace = {
-          user_id: this.user_selecteds[exislider].user_id,
-          movil_id: this.user_selecteds[exislider].movil_id,
-          is_lider: 1,
-        };
-        this.user_selecteds.splice(exislider, 1, replace);
+      if (userIndex !== -1) {
+        this.tecnicosFormArray.at(userIndex).patchValue({ is_lider: 1 });
       } else {
         this.addUser(user, 1);
       }
-      console.log('hace lo otro');
     }
-    console.log(this.user_selecteds);
+
+    console.log(this.tecnicosFormArray.value);
   }
 
-  isCheck(user: any) {
-    const INDEX = this.user_selecteds.findIndex(
-      (us: any) => us.user_id == user.id
+  isCheck(user: any): boolean {
+    return this.tecnicosFormArray.controls.some(
+      (ctrl: AbstractControl) => ctrl.value.user_id === user.id
     );
-    if (INDEX != -1) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
-  islider(user: any) {
-    const INDEX = this.user_selecteds.findIndex(
-      (us: any) => us.user_id == user.id && us.is_lider == 1
+  isLiderCheck(user: any): boolean {
+    const tecnico = this.tecnicosFormArray.value.find(
+      (t: any) => t.user_id === user.id
     );
-    if (INDEX != -1) {
-      return false;
-    } else {
-      const exis = this.user_selecteds.findIndex((us: any) => us.is_lider == 1);
-      if (exis != -1) {
-        return true;
-      } else {
-        return false;
-      }
-    }
+    return Number(tecnico?.is_lider) === 1;
   }
 
+  isLiderDisable(user: any): boolean {
+    const esLider = this.tecnicosFormArray.controls.find(
+      (ctrl: AbstractControl) =>
+        ctrl.value.user_id === user.id && Number(ctrl.value.is_lider) === 1
+    );
+
+    if (esLider) {
+      return false; // Ya es líder, se puede dejar activo
+    }
+
+    const yaExisteOtroLider = this.tecnicosFormArray.controls.some(
+      (ctrl: AbstractControl) => Number(ctrl.value.is_lider) === 1
+    );
+
+    return yaExisteOtroLider; // true => desactiva para los demás
+  }
 
   saveCuadrilla() {
-    if (this.user_selecteds.length == 0) {
-      console.log(this.user_selecteds.length);
-      this.utilities.snackBar('No selecciono tecnico');
+    const formValue = this.cuadrillaForm.value;
+    const tecnicos = formValue.tecnicos;
+
+    if (!tecnicos || tecnicos.length === 0) {
+      this.utilities.snackBar('No seleccionó técnicos');
       return;
     }
 
-    const INDEX = this.user_selecteds.findIndex((us: any) => us.is_lider == 1);
-    console.log(INDEX);
-    if (INDEX == -1) {
-      console.log(this.user_selecteds.length);
-      this.utilities.snackBar('No selecciono Lider');
+    const tieneLider = tecnicos.some((t: any) => Number(t.is_lider) === 1);
+    if (!tieneLider) {
+      this.utilities.snackBar('No seleccionó líder');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('zona_id', this.selectedZona);
-    formData.append('tipo_brigada_id', this.selectedTipobrigadas);
-    formData.append('contratista_id', this.selectedContratistas);
-    formData.append('nombre', this.nombre);
-    formData.append('tecnicos', JSON.stringify(this.user_selecteds));
+    if (this.cuadrilla?.id) {
+      // ✏️ Solo actualizar técnicos
+      const updateData: CuadrillaUpdate = { tecnicos };
+      this.cuadrillaService
+        .updateCuadrilla(this.cuadrilla.id, updateData)
+        .subscribe({
+          next: () => {
+            this.utilities.snackBar('Técnicos actualizados');
+            this.dialogRef.close();
+            this.refresh();
+          },
+          error: (err) => {
+            this.utilities.snackBar('Error al actualizar técnicos');
+            console.error(err);
+          },
+        });
+    } else {
+      // 🆕 Crear nueva cuadrilla completa
+      const createData: CuadrillaCreate = {
+        zona_id: formValue.zona_id,
+        tipo_brigada_id: formValue.tipo_brigada_id,
+        contratista_id: formValue.contratista_id,
+        nombre: formValue.nombre,
+        tecnicos: tecnicos,
+      };
 
-    this.cuadrillaService.create(formData).subscribe((resp) => {
-      console.log(resp);
-      if (resp.message == 403) {
-        this.utilities.snackBar('Falta ingresar datos');
-      } else {
-        this.utilities.snackBar('Registro Exitoso');
-
-        this.dialogRef.close();
-
-        this.selectedZona = '';
-        this.selectedTipobrigadas = '';
-        this.selectedContratistas = '';
-        this.nombre = '';
-        this.user_selecteds = [];
-        this.users = [];
-        //
-        this.refresh();
-      }
-    });
+      this.cuadrillaService.createCuadrilla(createData).subscribe({
+        next: () => {
+          this.utilities.snackBar('Cuadrilla registrada');
+          this.dialogRef.close();
+          this.refresh();
+        },
+        error: (err) => {
+          this.utilities.snackBar('Error al crear cuadrilla');
+          console.error(err);
+        },
+      });
+    }
   }
 
   refresh() {

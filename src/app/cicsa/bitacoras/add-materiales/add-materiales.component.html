@@ -30,12 +30,23 @@
                                         <h4>Materiales</h4>
                                     </div>
                                 </div>
+
+                                <div class="col-12" class="brigada-select-wrapper" *ngIf="!isTecnico">
+                                    <mat-label>Brigada:</mat-label>
+                                    <mat-select [(ngModel)]="brigadaSeleccionada" (selectionChange)="onBrigadaChange()"
+                                        class="form-control">
+                                        <mat-option *ngFor="let brigada of brigadas" [value]="brigada">
+                                            {{ brigada.nombre }}
+                                        </mat-option>
+                                    </mat-select>
+                                </div>
+                                <div class="espacio-inferior"></div>
+
                                 <div class="col-12 col-md-6 col-xl-4">
                                     <div class="form-group local-forms">
                                         <mat-label>Descripción de material</mat-label>
                                         <input type="text" class="form-control" matInput [formControl]="materialCtrl"
                                             [matAutocomplete]="auto">
-
                                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="mostrarNombreMaterial"
                                             (optionSelected)="seleccionarMaterial($event.option.value)">
                                             <mat-option *ngFor="let mat of materialesFiltrados$ | async" [value]="mat">
@@ -45,29 +56,27 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="col-12 col-md-6 col-xl-1">
                                     <div class="form-group local-forms">
-                                        <mat-label for="nro_incidencia">Codigo
+                                        <mat-label for="codigo">Codigo
                                         </mat-label>
-                                        <input class="form-control" name="nro_incidencia" type="text" [disabled]="true"
+                                        <input class="form-control" name="codigo" type="text" [disabled]="true"
                                             [value]="materialSeleccionado?.codigo" />
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-1">
                                     <div class="form-group local-forms">
-                                        <mat-label for="nro_incidencia">UM.
+                                        <mat-label for="um">UM.
                                         </mat-label>
-                                        <input class="form-control" name="nro_incidencia" type="text" [disabled]="true"
+                                        <input class="form-control" name="um" type="text" [disabled]="true"
                                             [value]="materialSeleccionado?.unidad_medida" />
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-1">
                                     <div class="form-group local-forms">
-                                        <mat-label for="nro_incidencia">Stock
+                                        <mat-label for="stock">Stock
                                         </mat-label>
-                                        <input class="form-control" name="nro_incidencia" type="text" [disabled]="true"
+                                        <input class="form-control" name="stock" type="text" [disabled]="true"
                                             [value]="materialSeleccionado?.stock_actual" />
 
 
@@ -76,8 +85,8 @@
 
                                 <div class="col-12 col-md-6 col-xl-1">
                                     <div class="form-group local-forms">
-                                        <mat-label for="kilometraje">Cantidad </mat-label>
-                                        <input class="form-control" name="kilometraje" type="number"
+                                        <mat-label for="cantidad">Cantidad </mat-label>
+                                        <input class="form-control" name="cantidad" type="number"
                                             [(ngModel)]="cantidad" />
                                     </div>
                                 </div>
@@ -98,7 +107,7 @@
                                         <th>Descripción</th>
                                         <th>Código</th>
                                         <th>UM</th>
-                                        
+
                                         <th>Cantidad</th>
                                         <th>Acción</th>
                                     </tr>
@@ -108,7 +117,7 @@
                                         <td data-label="Descripción">{{ item.material.nombre }}</td>
                                         <td data-label="Código">{{ item.material.codigo }}</td>
                                         <td data-label="UM">{{ item.material.unidad_medida }}</td>
-                                        
+
                                         <td data-label="Cantidad">{{ item.cantidad }}</td>
                                         <td data-label="Acción">
                                             <button mat-icon-button color="warn" (click)="confirmarEliminacion(i)"
