@@ -18,7 +18,6 @@ export class EndBitacorasComponent {
   public selectedCausa!: string;
   public selectedConsecuencia!: string;
   public selectedTipoReparacion!: string;
-  public herramientas = '';
   public tiempo = '';
   public causa: Tipo[] = [];
   public consecuencia: Tipo[] = [];
@@ -45,16 +44,9 @@ export class EndBitacorasComponent {
       causa_averia_id: [this.bitacora.causa_averia?.id ?? null],
       consecuencia_averia_id: [this.bitacora.consecuencia_averia?.id ?? null],
       tipo_reparacion_id: [this.bitacora.tipo_reparacion?.id ?? null],
-      herramientas:[this.bitacora.herramientas ?? null],
       tiempo_solucion:[this.bitacora.tiempo_solucion ?? null]
     })
 
-/*     this.bitacora.causa_averia = this.bitacora.causa_averia ?? {};
-    this.bitacora.consecuencia_averia = this.bitacora.consecuencia_averia ?? {};
-    this.bitacora.tipo_reparacion = this.bitacora.tipo_reparacion ?? {};
-    this.bitacora.herramientas ??= '';
-    this.bitacora.incidencia ??= ''; */
-    
     this.configService.bitacorasFinalizar().subscribe((resp) => {
       this.causa = resp.causa;
       this.consecuencia = resp.consecuencia;

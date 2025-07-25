@@ -1,0 +1,106 @@
+<mat-dialog-content class="mat-typography">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-heading">
+                                    <h4>Registro de Material</h4>
+                                </div>
+                            </div>
+
+                            <div class="row align-items-center" [formGroup]="MaterialForm">
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label>Categoria
+                                            <span class="login-danger">*</span></mat-label>
+                                        <mat-select formControlName="categoria_id" class="form-control select"
+                                            placeholder="Selec. Categoria">
+                                            <mat-option *ngFor="let cat of categorias" [value]="cat.id">
+                                                {{ cat.nombre }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label>S. Categoria
+                                            <span class="login-danger">*</span></mat-label>
+                                        <mat-select formControlName="sub_categoria_id" class="form-control select"
+                                            placeholder="Selec. Sub Categoria">
+                                            <mat-option *ngFor="let sub of subcategoriasFiltradas" [value]="sub.id">
+                                                {{ sub.nombre }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="nombre">Nombre </mat-label>
+                                        <input formControlName="nombre" class="form-control" name="nombre"
+                                            type="text" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="codigo">Codigo </mat-label>
+                                        <input formControlName="codigo" class="form-control" name="codigo"
+                                            type="text" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="codigoSAP">Codigo SAP </mat-label>
+                                        <input formControlName="codigoSAP" class="form-control" name="codigoSAP"
+                                            type="text" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="codigoAX">Codigo AX </mat-label>
+                                        <input formControlName="codigoAX" class="form-control" name="codigoAX"
+                                            type="text" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="precio">Precio </mat-label>
+                                        <input formControlName="precio" class="form-control" name="precio"
+                                            type="number" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="unidad_medida">UM</mat-label>
+                                        <input formControlName="unidad_medida" class="form-control" name="unidad_medida"
+                                            type="text" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="stock_minimo">Stock Minimo </mat-label>
+                                        <input formControlName="stock_minimo" class="form-control" name="stock_minimo"
+                                            type="number" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button cdkFocusInitial (click)="saveMaterial()" [disabled]="MaterialForm.invalid">
+        Guardar
+    </button>
+</mat-dialog-actions>

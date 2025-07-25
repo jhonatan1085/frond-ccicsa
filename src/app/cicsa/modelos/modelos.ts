@@ -1,11 +1,11 @@
 export interface Bitacora {
-  correlativo?:number;
+  correlativo?: number;
   anio?: number;
   mes?: number;
   semana?: number;
   hora_asignacion?: string;
   cuadrantes?: string;
-  nombre_brigada?:string;
+  nombre_brigada?: string;
   id: number;
   nombre: string;
   enlace_plano_site?: string;
@@ -29,6 +29,7 @@ export interface Bitacora {
   longitud?: string;
   distancia: number;
   site: Site;
+  site_fin: Site;
   cliente?: string;
   brigadas: Cuadrilla[];
   atenciones: Atencion[];
@@ -42,8 +43,8 @@ export interface Bitacora {
   afect_masiva?: Boolean;
 }
 
-export interface Herramienta{
-  cantidad : number;
+export interface Herramienta {
+  cantidad: number;
   nombre: string;
 }
 
@@ -56,19 +57,19 @@ export interface Config {
 export interface CausaAveria {
   id: number;
   nombre: string;
-  tipo_causa_averia:Tipo;
+  tipo_causa_averia: Tipo;
 }
 
 export interface Tipo {
   id: number;
   nombre: string;
-  checked?:boolean;
+  checked?: boolean;
 }
 
 export interface TipoAveria {
   id: number;
   nombre: string;
-  incidencia?:string;
+  incidencia?: string;
 }
 
 export interface Responsable {
@@ -83,13 +84,15 @@ export interface MovimientoMaterial {
   material: Material;
 }
 
-
-export interface Material{
-    id: number,
-    codigo: string;
-    nombre: string;
-    unidad_medida: string;
-    stock_actual: number;
+export interface Material {
+  id: number;
+  codigo: string;
+  codigoSAP?: string;
+  descripcion?: string;
+  codigoAX?: string;
+  nombre: string;
+  unidad_medida: string;
+  stock_actual: number;
 }
 
 export interface Movimiento {
@@ -103,6 +106,43 @@ export interface AgregaMaterialesBitacora {
   materiales: Movimiento[];
 }
 
+export interface Categoria {
+  id: number;
+  nombre: string;
+}
+
+export interface SubCategoria {
+  id: number;
+  nombre: string;
+  categoria: Categoria;
+}
+
+export interface MaterialCreate {
+  id?: number;
+  codigo: string;
+  codigoSAP: string;
+  nombre: string;
+  descripcion: string;
+  codigoAX: string;
+  sub_categoria_id: number;
+  sub_categoria?: SubCategoria;
+  categoria_id?: number;
+  precio: number;
+  unidad_medida: string;
+  stock_minimo: number;
+}
+
+export interface CategoriaWithSubs {
+  id: number;
+  nombre: string;
+  subcategorias: SubCategoriaSimple[];
+}
+
+export interface SubCategoriaSimple {
+  id: number;
+  nombre: string;
+  categoria_id: number;
+}
 
 export interface Site {
   id?: number;
@@ -113,17 +153,17 @@ export interface Site {
   distrito?: Distrito;
   departamento?: Tipo;
   tipo_site?: Tipo;
-  tipo_site_id? : number | string;
+  tipo_site_id?: number | string;
   codigo: string;
   latitud: string;
   longitud: string;
   direccion: string;
-  municipalidade_id? : number | string;
-  municipalidade? :Tipo;
+  municipalidade_id?: number | string;
+  municipalidade?: Tipo;
   zona?: Tipo;
-  zona_id?: number  | string;
+  zona_id?: number | string;
   region_geografica?: Tipo;
-  region_geografica_id? : number | string;
+  region_geografica_id?: number | string;
   provincia?: Tipo;
   observacion: string;
 }
@@ -144,8 +184,7 @@ export interface Departamento {
   nombre: string;
 }
 
-
-export interface Brigada{
+export interface Brigada {
   id: number;
   nombre: string;
 }
@@ -170,13 +209,12 @@ export interface CuadrillaUpdate {
   }[];
 }
 
-
 export interface Cuadrilla {
   id: number;
   estado: string;
   estadotext: string;
   contratista: Contratista;
-  nombre?:string;
+  nombre?: string;
   tipo_brigada: Tipo;
   zona: Zona;
   user_movil: UsuarioMovil[];
@@ -191,8 +229,6 @@ export interface Contratista {
   id: number;
   nombre: string;
 }
-
-
 
 export interface UsuarioMovil {
   id: number;
@@ -237,8 +273,6 @@ export interface Usuario {
   zonas?: Tipo[];
 }
 
-
-
 export interface Atencion {
   atencion: AtencionDetalle;
   id: number;
@@ -262,7 +296,6 @@ export interface AtencionDetalle {
   parent_id: number;
 }
 
-
 export interface CalcularTiempo {
   fecha_inicio: string | Date;
   fecha_fin: string | Date;
@@ -272,14 +305,14 @@ export interface DemoraBitacora {
   id?: number;
   bitacora_id: number;
   tipo_demora_id: number;
-  demora_nombre?:string;
+  demora_nombre?: string;
   fecha_inicio: string;
   fecha_fin: string;
-  orden:number
+  orden: number;
 }
 
 export interface DemoraBitacoraExtended extends DemoraBitacora {
-  tiempoDemora: string //tiempo de horas
+  tiempoDemora: string; //tiempo de horas
 }
 
 export interface AtencionBitacora {
@@ -291,7 +324,7 @@ export interface AtencionBitacora {
 
 export interface BitacoraAtencion {
   id: number;
-  hora: string ;
+  hora: string;
   orden: number;
   is_coment: string;
   atencion_id?: number;
@@ -310,5 +343,5 @@ export interface Role {
 }
 
 export interface WhatsappGroup {
-  nombre:string
+  nombre: string;
 }

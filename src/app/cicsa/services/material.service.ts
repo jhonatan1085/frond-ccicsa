@@ -6,6 +6,7 @@ import {
   AgregaMaterialesBitacora,
   CrudResponse,
   Material,
+  MaterialCreate,
   MovimientoMaterial,
   Page,
 } from '../modelos';
@@ -14,7 +15,7 @@ import { URL_SERVICIOS } from 'src/app/config/config';
 @Injectable({
   providedIn: 'root',
 })
-export class MaterialService extends AbstractCrudService<Material> {
+export class MaterialService extends AbstractCrudService<MaterialCreate> {
   constructor(
     public override http: HttpClient,
     public override authService: AuthService
@@ -40,4 +41,11 @@ export class MaterialService extends AbstractCrudService<Material> {
       headers: headers,
     });
   }
+
+cargaMasiva(data: MaterialCreate[]){
+const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/carga-masiva`;
+    return this.http.post<CrudResponse>(URL, data, {headers: headers });
+}
+
 }

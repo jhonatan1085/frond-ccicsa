@@ -1,0 +1,46 @@
+<mat-dialog-content class="mat-typography">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-heading">
+                                    <h4>Carga Masiva de Materiales</h4>
+                                </div>
+                            </div>
+
+                            <!-- archivo: drag-drop-excel.component.html -->
+                            <div class="dropzone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                                (drop)="onDrop($event)">
+                                <p>Arrastra tu archivo Excel aquí o</p>
+
+                                <label class="custom-file-upload">
+                                    <input type="file" accept=".xlsx, .xls" (change)="onFileChange($event)" />
+                                    Seleccionar archivo
+                                </label>
+
+                                <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+                                <!-- Progreso -->
+                                <div *ngIf="isLoading" class="progress-bar-container mt-2">
+                                    <div class="progress-bar" [style.width.%]="progressValue"></div>
+                                    <span class="progress-text">Cargando... {{ progressValue }}%</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button color="primary" (click)="procesarArchivoExcel()" [disabled]="isLoading">
+        <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="3"></mat-spinner>
+        <span *ngIf="!isLoading">Guardar</span>
+    </button>
+</mat-dialog-actions>

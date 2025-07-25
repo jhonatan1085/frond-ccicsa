@@ -555,7 +555,7 @@ export class DataService {
           hasSubRoute: true,
           showSubRoute: false,
           base: 'materiales',
-          icon: 'fa-users',
+          icon: 'fa-wrench',
           faIcon: true,
           subMenus: [
             {
@@ -566,11 +566,11 @@ export class DataService {
               show_nav: true,
             },
             {
-              menuValue: 'Registrar Materiales',
-              route: '',
-              base: '',
-              permision: 'register_materiales',
-              show_nav: false,
+              menuValue: 'Asignar Materiales',
+              route: routes.materialesAsig,
+              base: routes.materialesAsig,
+              permision: 'asignar_materiales',
+              show_nav: true,
             },
             {
               menuValue: 'Editar Materiales',

@@ -74,7 +74,6 @@ export class AddMaterialesComponent {
       this.listaMateriales(this.bitacora_id, this.brigadaId);
 
       this.getMateriales();
-
     } else {
       this.bitacoraService
         .getBrigadasBitacora(this.bitacora_id)
@@ -119,12 +118,10 @@ export class AddMaterialesComponent {
   }
 
   private getMateriales() {
-
     this.materialService
       .autocomplete(this.brigadaId.toString())
       .subscribe((resp) => {
         this.setMateriales(resp.data);
-        console.log(resp.data);
       });
   }
 
@@ -189,7 +186,6 @@ export class AddMaterialesComponent {
 
   agregarMaterial() {
     if (!this.materialSeleccionado) return;
-
     const id = this.materialSeleccionado.id;
     const disponible = Number(this.materialSeleccionado.stock_actual);
     const cantidad = Number(this.cantidad);
@@ -296,7 +292,7 @@ export class AddMaterialesComponent {
       })),
     };
 
-    console.log(payload)
+    console.log(payload);
 
     this.movimientoService.guardarMaterialesEnBitacora(payload).subscribe({
       next: (resp) => {

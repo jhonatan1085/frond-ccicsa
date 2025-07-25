@@ -61,13 +61,13 @@
                         <mat-label for="fecha_inicial">Fecha Inicial
                           <span class="login-danger">*</span>
                         </mat-label>
-                       <!--  <input formControlName="fecha_inicial" class="form-control" name="fecha_inicial" type="text"
+                        <!--  <input formControlName="fecha_inicial" class="form-control" name="fecha_inicial" type="text"
                           matInput [matDatepicker]="picker" />
                         <mat-datepicker #picker></mat-datepicker>
                         <mat-datepicker-toggle matIconSuffix class="mt-4" [for]="picker"></mat-datepicker-toggle> -->
 
                         <input type="datetime-local" class="form-control" formControlName="fecha_inicial"
-                        name="fecha_inicial" />
+                          name="fecha_inicial" />
 
                       </div>
                     </div>
@@ -77,7 +77,7 @@
                         <mat-label for="fecha_ejecucion">Fecha Ejecución
                         </mat-label>
                         <input type="datetime-local" class="form-control" formControlName="fecha_ejecucion"
-                        name="fecha_ejecucion" />
+                          name="fecha_ejecucion" />
 
                       </div>
                     </div>
@@ -99,7 +99,7 @@
                         <mat-label for="fecha_sot">Fecha SOT
                         </mat-label>
                         <input type="datetime-local" class="form-control" formControlName="fecha_sot"
-                        name="fecha_sot" />
+                          name="fecha_sot" />
                       </div>
                     </div>
 
@@ -173,13 +173,13 @@
                     </div>
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="">
-                        <mat-slide-toggle formControlName="afect_servicio" >Afectacion de Servicio </mat-slide-toggle>
+                        <mat-slide-toggle formControlName="afect_servicio">Afectacion de Servicio </mat-slide-toggle>
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="">
-                        <mat-slide-toggle formControlName="afect_masiva" >Afectacion de Masiva </mat-slide-toggle>
+                        <mat-slide-toggle formControlName="afect_masiva">Afectacion de Masiva </mat-slide-toggle>
                       </div>
                     </div>
 
@@ -204,13 +204,13 @@
                   <div class="row align-items-center" [formGroup]="siteForm">
                     <div class="col-12">
                       <div class="form-heading">
-                        <h4>Datos Site</h4>
+                        <h4>Datos de Sites</h4>
                       </div>
                     </div>
-
+<!--ini site ini-->
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <mat-label>Buscar Site</mat-label>
+                        <mat-label>Buscar Site Inicio</mat-label>
                         <input type="text" class="form-control" [formControl]="siteControl" [matAutocomplete]="auto" />
                         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                           <mat-option *ngFor="let option of filteredSites | async" [value]="option"
@@ -234,38 +234,6 @@
                         <input class="form-control" [value]="site?.zona?.nombre" [disabled]="true" />
                       </div>
                     </div>
-
-                    <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <mat-label for="cliente">Cliente </mat-label>
-                        <input class="form-control" formControlName="cliente" name="cliente" type="text" />
-                      </div>
-                    </div>
-
-
-                    <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <mat-label>Region</mat-label>
-                        <input class="form-control" [value]="site?.region?.nombre" [disabled]="true" />
-                      </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <mat-label>Departamento</mat-label>
-                        <input class="form-control" [value]="
-                            site?.departamento?.nombre
-                          " [disabled]="true" />
-                      </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-xl-2">
-                      <div class="form-group local-forms">
-                        <mat-label>Provincia</mat-label>
-                        <input class="form-control" [value]="site?.provincia?.nombre" [disabled]="true" />
-                      </div>
-                    </div>
-
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
                         <mat-label>Distrito</mat-label>
@@ -275,19 +243,80 @@
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <mat-label>Latitud</mat-label>
-                        <input class="form-control" [value]="site?.latitud" [disabled]="true" />
+                        <mat-label>Provincia</mat-label>
+                        <input class="form-control" [value]="site?.provincia?.nombre" [disabled]="true" />
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label>Departamento</mat-label>
+                        <input class="form-control" [value]="
+                            site?.departamento?.nombre
+                          " [disabled]="true" />
+                      </div>
+                    </div>
+<!--fin site ini-->
+<!--ini site fin-->
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label>Buscar Site Fin</mat-label>
+                        <input type="text" class="form-control" [formControl]="siteFinControl" [matAutocomplete]="autofin" />
+                        <mat-autocomplete #autofin="matAutocomplete" [displayWith]="displayFnFin">
+                          <mat-option *ngFor="let option of filteredSitesFin | async" [value]="option"
+                            (click)="onSetSiteFin(option)">
+                            {{ option.codigo }} - {{ option.nombre }}
+                          </mat-option>
+                        </mat-autocomplete>
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-2">
                       <div class="form-group local-forms">
-                        <mat-label>Longitud</mat-label>
-                        <input class="form-control" [value]="site?.longitud" [disabled]="true" />
+                        <mat-label>Código</mat-label>
+                        <input class="form-control" [value]="siteFin?.codigo" [disabled]="true" />
                       </div>
                     </div>
-                  </div>
 
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label>Zona</mat-label>
+                        <input class="form-control" [value]="siteFin?.zona?.nombre" [disabled]="true" />
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label>Distrito</mat-label>
+                        <input class="form-control" [value]="siteFin?.distrito?.nombre" [disabled]="true" />
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label>Provincia</mat-label>
+                        <input class="form-control" [value]="siteFin?.provincia?.nombre" [disabled]="true" />
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label>Departamento</mat-label>
+                        <input class="form-control" [value]="
+                            siteFin?.departamento?.nombre
+                          " [disabled]="true" />
+                      </div>
+                    </div>
+<!--fin site ini-->
+
+                    <div class="col-12 col-md-6 col-xl-2">
+                      <div class="form-group local-forms">
+                        <mat-label for="cliente">Cliente </mat-label>
+                        <input class="form-control" formControlName="cliente" name="cliente" type="text" />
+                      </div>
+                    </div>
+
+
+                  
+
+                  </div>
                   <mat-action-row>
                     <button mat-button color="warn" (click)="prevStep()">
                       Anterior
@@ -314,7 +343,7 @@
                             <table class="table mb-0">
                               <thead>
                                 <tr>
-                                 
+
                                   <th>Brigada</th>
                                   <th>T. Brigada</th>
                                   <th>Contrata</th>

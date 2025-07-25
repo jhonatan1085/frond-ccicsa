@@ -3,11 +3,14 @@ import { Injectable } from '@angular/core';
 import { URL_SERVICIOS } from 'src/app/config/config';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import {
+  Categoria,
+  CategoriaWithSubs,
   Config,
   Departamento,
   Distrito,
   Provincia,
   Role,
+  SubCategoria,
   Tipo,
 } from '../modelos';
 import { AbstractCrudService } from './abstract-crud.service';
@@ -52,6 +55,11 @@ export interface CuadrillasConfig {
   contratistas: Tipo[];
   zonas: Tipo[];
   tipobrigadas: Tipo[];
+}
+
+export interface MaterialesConfig {
+  categorias: CategoriaWithSubs[];
+  
 }
 
 export interface UnidadesMovilesConfig {
@@ -125,6 +133,14 @@ export class ConfigService extends AbstractCrudService<Config> {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/brigadas`;
     return this.http.get<CuadrillasConfig>(URL, {
+      headers,
+    });
+  }
+
+    materiales() {
+    const headers = this.getHeaders();
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/materiales`;
+    return this.http.get<MaterialesConfig>(URL, {
       headers,
     });
   }

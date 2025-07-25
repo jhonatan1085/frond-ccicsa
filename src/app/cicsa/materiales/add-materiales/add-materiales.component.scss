@@ -1,0 +1,22 @@
+mat-form-field {
+  width: 100%;
+  min-width: 200px; /* puedes ajustar según tu necesidad */
+}
+
+mat-select {
+  text-align: left;
+}
+
+mat-select .mat-select-trigger {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.mat-select-value-text {
+  width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

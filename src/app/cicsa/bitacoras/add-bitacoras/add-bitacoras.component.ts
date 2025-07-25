@@ -69,14 +69,20 @@ export class AddBitacorasComponent implements OnInit {
   } as any;
 
   site?: Site;
+  siteFin?: Site;
 
   tipo_Averia: Tipo[] = [];
   red: Tipo[] = [];
   serv: Tipo[] = [];
 
   siteControl = new FormControl();
+
   sites!: Site[];
   filteredSites!: Observable<Site[]>;
+
+  siteFinControl = new FormControl();
+  sitesFin!: Site[];
+  filteredSitesFin!: Observable<Site[]>;
   // formularios
   datosForm: FormGroup;
   siteForm: FormGroup;
@@ -96,42 +102,44 @@ export class AddBitacorasComponent implements OnInit {
     private dialog: MatDialog,
     private alertService: AlertService,
     private time_utils: TimeUtilsService,
-    private utilities: UtilitiesService,
+    private utilities: UtilitiesService
   ) {
-
     const now = this.time_utils.getLocalDateTime();
 
-    this.datosForm = this.fb.group({
-      nombre: [null, Validators.required],
-      enlace_plano_site: [null],
-      fecha_inicial: [now, Validators.required],
-      fecha_ejecucion: [now],
-      sot: [],
-      fecha_sot:[now],
-      incidencia: [],
-      latitud: [null],
-      longitud: [null],
-      distancia: [],
-      tipo_averia_id: [null, Validators.required],
-      red_id: [null, Validators.required],
-      serv_id: [null, Validators.required],
-      nro_tas: [],
-      nro_crq: [],
-      afect_servicio:[false],
-      afect_masiva:[false]
-    },
+    this.datosForm = this.fb.group(
+      {
+        nombre: [null, Validators.required],
+        enlace_plano_site: [null],
+        fecha_inicial: [now, Validators.required],
+        fecha_ejecucion: [now],
+        sot: [],
+        fecha_sot: [now],
+        incidencia: [],
+        latitud: [null],
+        longitud: [null],
+        distancia: [],
+        tipo_averia_id: [null, Validators.required],
+        red_id: [null, Validators.required],
+        serv_id: [null, Validators.required],
+        nro_tas: [],
+        nro_crq: [],
+        afect_servicio: [false],
+        afect_masiva: [false],
+      },
       {
         validators: [
-          this.time_utils.fechaEjecucionMayorValidator('fecha_inicial', 'fecha_ejecucion'),
-          this.utilities.validateCoordinates.bind(this.utilities)
-        ]
+          this.time_utils.fechaEjecucionMayorValidator(
+            'fecha_inicial',
+            'fecha_ejecucion'
+          ),
+          this.utilities.validateCoordinates.bind(this.utilities),
+        ],
       }
     );
 
-
-
     this.siteForm = this.fb.group({
       site_id: [null, Validators.required],
+      site_fin_id: [null, Validators.required],
       cliente: [],
     });
     this.brigadasForm = this.fb.group({
@@ -143,8 +151,6 @@ export class AddBitacorasComponent implements OnInit {
     });
   }
 
-
-
   ngOnInit(): void {
     this.getBitacoraFromParams();
     this.getConfigBitacora();
@@ -153,9 +159,6 @@ export class AddBitacorasComponent implements OnInit {
     this.dataResponsables();
   }
 
-
-
-
   private getBitacoraFromParams() {
     this.activateRoute.params
       .pipe(
@@ -163,9 +166,8 @@ export class AddBitacorasComponent implements OnInit {
         switchMap((params) => this.bitacoraService.read(params['id']))
       )
       .subscribe((resp) => {
-        
         this.bitacora = resp;
-        console.log(this.bitacora)
+        console.log(this.bitacora);
         this.datosForm.patchValue({
           ...this.bitacora, //los campos que tiene bitacora
           tipo_averia_id: resp.tipo_averia.id, //campos especiales
@@ -174,7 +176,8 @@ export class AddBitacorasComponent implements OnInit {
         });
         this.siteForm.patchValue({
           site_id: resp.site.id,
-          cliente: resp.cliente,// de donde obtengo el cliente
+          site_fin_id: resp.site_fin.id,
+          cliente: resp.cliente, // de donde obtengo el cliente
         });
         // this.brigadasForm.patchValue(this.bitacora);
         // brigadas form
@@ -189,7 +192,6 @@ export class AddBitacorasComponent implements OnInit {
           resp_claro_id: this.bitacora.resp_claro.id,
         });
         //
-        this.getSites();
       });
   }
 
@@ -203,8 +205,8 @@ export class AddBitacorasComponent implements OnInit {
 
   private getSites() {
     this.siteService.autocomplete().subscribe((resp) => {
-      console.log(resp.data)
       this.setSites(resp.data);
+      this.setSitesFin(resp.data);
     });
   }
 
@@ -215,8 +217,6 @@ export class AddBitacorasComponent implements OnInit {
     this.brigadasService.activa().subscribe((resp) => {
       this.totalData = resp.data.length;
       this.brigadasGeneral = resp.data;
-      console.log('brigadas aca')
-      console.log(this.brigadasGeneral)
       this.getTableDataGeneral();
     });
   }
@@ -337,18 +337,23 @@ export class AddBitacorasComponent implements OnInit {
     );
     return INDEX == -1;
   }
-  // Auth Complete
+
+  // Auth Complete Site
   setSites(sites: Site[]) {
     this.sites = sites;
-
     this.filteredSites = this.siteControl.valueChanges.pipe(
       startWith(''),
       map((value) => (value.length >= 1 ? this._filter(value) : []))
     );
 
-    if (this.bitacora) {
+    //console.log('este es id 1' + this.bitacora.site.id);
+
+    if (this.bitacora?.site?.id) {
       this.site = this.sites.find((s) => s.id === this.bitacora.site.id);
-      if (this.site) this.onSetSite(this.site);
+      if (this.site) {
+        this.siteControl.setValue(this.site); // <- ESTA LÍNEA FALTABA
+        this.onSetSite(this.site);
+      }
     }
   }
 
@@ -359,8 +364,8 @@ export class AddBitacorasComponent implements OnInit {
     );
   }
 
-  displayFn(value: any) {
-    return value ? value.nombre : undefined;
+  displayFn(value: Site): string {
+    return value ? `${value.nombre}` : '';
   }
 
   onSetSite(value: Site) {
@@ -370,6 +375,48 @@ export class AddBitacorasComponent implements OnInit {
     this.site = value;
     // this.dataResponsables();
   }
+  //fin Autocomplete Site
+
+  // Auth Complete Site fin
+  setSitesFin(sites: Site[]) {
+    this.sitesFin = sites;
+
+    this.filteredSitesFin = this.siteFinControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => (value.length >= 1 ? this._filterFin(value) : []))
+    );
+
+    if (this.bitacora?.site_fin?.id) {
+      this.siteFin = this.sitesFin.find(
+        (s) => s.id === this.bitacora.site_fin.id
+      );
+
+      if (this.siteFin) {
+        this.siteFinControl.setValue(this.siteFin); // <- ESTA LÍNEA FALTABA
+        this.onSetSiteFin(this.siteFin);
+      }
+    }
+  }
+
+  private _filterFin(value: any) {
+    const filterValue = value.toLowerCase();
+    return this.sitesFin.filter((option: any) =>
+      option.nombre.toLowerCase().includes(filterValue)
+    );
+  }
+
+  displayFnFin(value: any) {
+    return value ? value.nombre : undefined;
+  }
+
+  onSetSiteFin(value: Site) {
+    if (!this.bitacora) return;
+    this.siteForm.patchValue({ site_fin_id: value.id });
+    this.bitacora.site_fin = value;
+    this.siteFin = value;
+    // this.dataResponsables();
+  }
+  //fin Autocomplete Site fin
 
   dataResponsables() {
     this.usuarioService.showResponsables().subscribe((resp) => {
@@ -392,8 +439,7 @@ export class AddBitacorasComponent implements OnInit {
       console.error('No Bitacora was created');
       return;
     }
-    console.log(this.bitacora);
-    console.log(this.datosForm.value);
+
     const result = {
       ...this.bitacora,
       ...this.datosForm.value,
@@ -401,17 +447,16 @@ export class AddBitacorasComponent implements OnInit {
       ...this.brigadasForm.value,
       ...this.responsablesForm.value,
     };
-    console.log(result);
-
+ 
     if (this.bitacora.id) {
       this.bitacoraService
         .update(this.bitacora.id, result)
         .subscribe((resp) => {
           console.log(resp);
           if (resp.message == 403) {
-            this.snackBar('Falta ingresar datos');
+            this.utilities.snackBar('Falta ingresar datos');
           } else {
-            this.snackBar('Registro Exitoso');
+            this.utilities.snackBar('Registro Exitoso');
             this.router.navigate(['/bitacoras/list-bitacora']);
           }
         });
@@ -420,9 +465,9 @@ export class AddBitacorasComponent implements OnInit {
     this.bitacoraService.create(result).subscribe((resp) => {
       console.log(resp);
       if (resp.message == 403) {
-        this.snackBar('Falta ingresar datos');
+        this.utilities.snackBar('Falta ingresar datos');
       } else {
-        this.snackBar('Registro Exitoso');
+        this.utilities.snackBar('Registro Exitoso');
         this.router.navigate(['/bitacoras/list-bitacora']);
       }
     });
@@ -446,7 +491,7 @@ export class AddBitacorasComponent implements OnInit {
           color: 'warn',
           action: () => {
             this.bitacoraService.delete(this.bitacora.id).subscribe(() => {
-              this.snackBar('Bitacora Borrada');
+              this.utilities.snackBar('Bitacora Borrada');
               this.router.navigate(['bitacoras/list-bitacora']);
             });
           },
@@ -462,14 +507,10 @@ export class AddBitacorasComponent implements OnInit {
   }
 
   nextStep() {
-
     this.step++;
   }
 
   prevStep() {
-
     this.step--;
   }
-
-
 }

@@ -20,7 +20,7 @@ import {
   NumberValueAccessor,
   Validators,
 } from '@angular/forms';
-// declare const $: any;
+
 
 @Component({
   selector: 'app-add-cuadrilla',

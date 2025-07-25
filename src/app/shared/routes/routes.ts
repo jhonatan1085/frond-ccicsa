@@ -1,5 +1,4 @@
 export class routes {
-
   private static Url = '';
 
   public static get baseUrl(): string {
@@ -156,14 +155,14 @@ export class routes {
     return this.baseUrl + '/roles/list';
   }
 
-//jhonatan
-public static get liderList(): string {
-  return this.baseUrl + '/lideres/list-lideres';
-}
+  //jhonatan
+  public static get liderList(): string {
+    return this.baseUrl + '/lideres/list-lideres';
+  }
 
-public static get addLider(): string {
-  return this.baseUrl + '/lideres/add-lider';
-}
+  public static get addLider(): string {
+    return this.baseUrl + '/lideres/add-lider';
+  }
 
   public static get usuarioList(): string {
     return this.baseUrl + '/usuarios/list-usuario';
@@ -184,7 +183,7 @@ public static get addLider(): string {
   public static get bitacoraList(): string {
     return this.baseUrl + '/bitacoras/list-bitacora';
   }
-  
+
   public static get addBitacora(): string {
     return this.baseUrl + '/bitacoras/add-bitacora';
   }
@@ -197,8 +196,10 @@ public static get addLider(): string {
     return this.baseUrl + '/unidades-moviles/list-unidades-moviles';
   }
 
-    public static get materialesList(): string {
+  public static get materialesList(): string {
     return this.baseUrl + '/materiales/list-materiales';
   }
-
+  public static get materialesAsig(): string {
+    return this.baseUrl + '/materiales/asignar-materiales';
+  }
 }
