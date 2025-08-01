@@ -164,10 +164,6 @@ export class AddMaterialesComponent {
       (m) => m.material.id === material.id
     );
 
-    console.log(this.materialesRegistradosBD);
-    console.log(this.materialesAgregados);
-
-    console.log('ya agregado ' + yaAgregado?.cantidad);
     const cantidadAgregada = yaAgregado ? yaAgregado.cantidad : 0;
 
     // Mostrar el stock disponible como: stock_actual + ya agregado

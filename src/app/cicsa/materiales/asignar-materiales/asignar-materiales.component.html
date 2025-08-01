@@ -1,0 +1,154 @@
+<mat-dialog-content class="mat-typography">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="asignacionForm">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-heading">
+                                    <h4>Asignar Materiales</h4>
+                                </div>
+                            </div>
+                            <div class="col-12" class="brigada-select-wrapper">
+                                <mat-label>Brigada:</mat-label>
+                                <mat-select formControlName="brigada_id" class="form-control" (selectionChange)="onBrigadaChange()">
+                                    <mat-option *ngFor="let brigada of brigadas" [value]="brigada.id">
+                                        {{ brigada.nombre }}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <mat-button-toggle-group [formControl]="modoCargaControl" aria-label="Modo de carga">
+                                    <mat-button-toggle value="manual">Agregar manual</mat-button-toggle>
+                                    <mat-button-toggle value="excel">Cargar desde Excel</mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
+
+                            <div *ngIf="modoCargaManual" class="row">
+                                <!-- Aquí va toda la sección de descripción, código, UM, cantidad y botón agregar -->
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="form-group local-forms">
+                                        <mat-label>Descripción de material</mat-label>
+                                        <input type="text" class="form-control" matInput [formControl]="materialCtrl"
+                                            [matAutocomplete]="auto">
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="mostrarNombreMaterial"
+                                            (optionSelected)="seleccionarMaterial($event.option.value)">
+                                            <mat-option *ngFor="let mat of materialesFiltrados$ | async" [value]="mat">
+                                                {{ mat.nombre }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-2">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="codigo">Codigo
+                                        </mat-label>
+                                        <input class="form-control" name="codigo" type="text" [disabled]="true"
+                                            [value]="materialSeleccionado?.codigo" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-2">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="um">UM.
+                                        </mat-label>
+                                        <input class="form-control" name="um" type="text" [disabled]="true"
+                                            [value]="materialSeleccionado?.unidad_medida" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-2">
+                                    <div class="form-group local-forms">
+                                        <mat-label for="cantidad">Cantidad </mat-label>
+
+                                        <input class="form-control" type="number" [formControl]="cantidadCtrl" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-2">
+                                    <button mat-mini-fab color="primary" (click)="agregarMaterial()"
+                                        [disabled]="!materialSeleccionado || cantidad <= 0"
+                                        [matTooltip]="getTooltipMensaje()" matTooltipPosition="above">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div *ngIf="!modoCargaManual" class="row">
+
+                                <div class="dropzone" [class.dragover]="isDragging" (dragover)="onDragOver($event)"
+                                    (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+                                    <p>Arrastra tu archivo Excel aquí o</p>
+
+                                    <label class="custom-file-upload">
+                                        <input type="file" accept=".xlsx, .xls" (change)="onFileChange($event)" #fileInput />
+                                        Seleccionar archivo
+                                    </label>
+
+                                    <span *ngIf="archivoSeleccionado">Archivo seleccionado: {{
+                                        archivoSeleccionado.name }}</span>
+                                </div>
+
+                                <!-- Botón Cargar solo si hay archivo -->
+                                <div class="mt-2" *ngIf="archivoSeleccionado && !isLoading">
+                                    <button mat-raised-button color="accent" (click)="procesarArchivo(archivoSeleccionado)">
+                                        Cargar materiales
+                                    </button>
+                                </div>
+
+                                <!-- Barra de progreso -->
+                                <div *ngIf="isLoading" class="progress-bar-container mt-2">
+                                    <div class="progress-bar" [style.width.%]="progressValue"></div>
+                                    <span class="progress-text">Cargando... {{ progressValue }}%</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <table *ngIf="materialesArray && materialesArray.length > 0"
+                            class="table mt-3 responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Descripción</th>
+                                    <th>Código</th>
+                                    <th>UM</th>
+
+                                    <th>Cantidad</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let grupo  of materialesArray.controls; let i = index">
+                                    <td data-label="Descripción">{{ grupo.value.nombre }}</td>
+                                    <td data-label="Código">{{ grupo.value.codigo }}</td>
+                                    <td data-label="UM">{{ grupo.value.unidad_medida }}</td>
+
+                                    <td data-label="Cantidad">
+                                        <input type="number" class="form-control cantidad-input"
+                                            [formControl]="getCantidadControl(grupo)" min="1" />
+                                        <div *ngIf="grupo.get('cantidad')?.invalid && grupo.get('cantidad')?.touched"
+                                            class="text-danger small">
+                                            Cantidad debe ser mayor a 0
+                                        </div>
+                                    </td>
+
+                                    <td data-label="Acción">
+                                        <button mat-icon-button color="warn" (click)="confirmarEliminacion(i)"
+                                            matTooltip="Eliminar">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button cdkFocusInitial (click)="saveMaterial()" [disabled]="formInvalido()">
+        Guardar
+    </button>
+</mat-dialog-actions>

@@ -23,11 +23,14 @@ export class MaterialService extends AbstractCrudService<MaterialCreate> {
     super(http, authService, 'materiales');
   }
 
-  autocomplete(brigada_id: string) {
+  autocomplete(brigada_id?: string) {
     const headers = this.getHeaders();
-    const URL = `${URL_SERVICIOS}/${this.endpoint}/autocomplete/${brigada_id}`;
-    return this.http.get<Page<Material>>(URL, { headers: headers });
+    const params = brigada_id ? { params: { brigada_id } } : {};
+    const URL = `${URL_SERVICIOS}/${this.endpoint}/autocomplete`;
+    return this.http.get<Page<Material>>(URL,{ headers: headers, ...params });
   }
+
+ 
 
   listMaterialesBitacora(bitacora_id: number, brigada_id: number) {
     const data = {
@@ -42,10 +45,9 @@ export class MaterialService extends AbstractCrudService<MaterialCreate> {
     });
   }
 
-cargaMasiva(data: MaterialCreate[]){
-const headers = this.getHeaders();
+  cargaMasiva(data: MaterialCreate[]) {
+    const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}/carga-masiva`;
-    return this.http.post<CrudResponse>(URL, data, {headers: headers });
-}
-
+    return this.http.post<CrudResponse>(URL, data, { headers: headers });
+  }
 }

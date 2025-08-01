@@ -14,7 +14,7 @@ export class CargaMasivaComponent {
   isDragging = false;
   selectedFile?: File | null = null;
 
-  isLoading = false;
+  isLoading:boolean = false;
   progressValue = 0;
 
   constructor(
@@ -48,9 +48,17 @@ export class CargaMasivaComponent {
 
   procesarArchivoExcel() {
     if (!this.selectedFile) {
-      alert('Primero debes seleccionar un archivo Excel');
+      this.utilities.snackBar('Primero debes seleccionar un archivo Excel');
       return;
     }
+    const fileName = this.selectedFile.name.toLowerCase();
+    if (!fileName.endsWith('.xls') && !fileName.endsWith('.xlsx')) {
+      this.utilities.snackBar(
+        'El archivo debe ser un Excel válido (.xls o .xlsx)'
+      );
+      return;
+    }
+this.isLoading = true;
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -60,7 +68,20 @@ export class CargaMasivaComponent {
       const worksheet = workbook.Sheets[sheetName];
       const jsonData: any[] = XLSX.utils.sheet_to_json(worksheet);
 
+      if (jsonData.length === 0) {
+        this.utilities.snackBar(
+          'El archivo está vacío o no contiene datos válidos'
+        );
+        return;
+      }
+
       this.subirMateriales(jsonData);
+    };
+    reader.onerror = () => {
+      this.utilities.snackBar(
+        'No se pudo leer el archivo. Verifique que esté bien formado'
+      );
+      this.isLoading = false;
     };
     reader.readAsArrayBuffer(this.selectedFile);
   }

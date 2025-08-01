@@ -569,7 +569,7 @@ export class DataService {
               menuValue: 'Asignar Materiales',
               route: routes.materialesAsig,
               base: routes.materialesAsig,
-              permision: 'asignar_materiales',
+              permision: 'list-materiales-brigada',
               show_nav: true,
             },
             {

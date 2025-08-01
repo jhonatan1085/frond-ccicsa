@@ -11,6 +11,8 @@ import { RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CargaMasivaComponent } from './carga-masiva/carga-masiva.component';
+import { AsignarMaterialesComponent } from './asignar-materiales/asignar-materiales.component';
+import { ListMaterialesBrigadaComponent } from './list-materiales-brigada/list-materiales-brigada.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { CargaMasivaComponent } from './carga-masiva/carga-masiva.component';
     ListMaterialesComponent,
     AddMaterialesComponent,
     CargaMasivaComponent,
+    AsignarMaterialesComponent,
+    ListMaterialesBrigadaComponent,
   ],
   imports: [
     CommonModule,

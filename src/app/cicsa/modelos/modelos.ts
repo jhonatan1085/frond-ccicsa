@@ -106,6 +106,16 @@ export interface AgregaMaterialesBitacora {
   materiales: Movimiento[];
 }
 
+export interface Existencias {
+  id:number;
+  brigada_id: number;
+  brigada_nombre: string;
+  material_id: number;
+  codigo: string;
+  nombre_material: string;
+  stock_actual: number;
+}
+
 export interface Categoria {
   id: number;
   nombre: string;

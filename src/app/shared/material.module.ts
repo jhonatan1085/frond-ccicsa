@@ -21,7 +21,7 @@ import { MatPaginatorModule} from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
   MtxCalendarView,
   MtxDatetimepickerMode,
@@ -55,7 +55,8 @@ import {
     MatPaginatorModule,
     MatSortModule,
     MatSlideToggleModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonToggleModule
   ],
   exports: [
     CommonModule,
@@ -80,7 +81,8 @@ import {
     MatPaginatorModule,
     MatSortModule,
     MatSlideToggleModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonToggleModule
   ],
 })
 export class MaterialModule {}

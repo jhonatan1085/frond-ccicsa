@@ -21,4 +21,10 @@ export class MovimientoService extends AbstractCrudService<Movimiento> {
     const URL = `${URL_SERVICIOS}/${this.endpoint}/materiales-bitacora`;
     return this.http.post<CrudResponse>(URL, data, { headers: headers });
   }
+
+    cargaMaterialesBrigada(data: Movimiento[]) {
+      const headers = this.getHeaders();
+      const URL = `${URL_SERVICIOS}/${this.endpoint}/agrega-material-brigada`;
+      return this.http.post<CrudResponse>(URL, data, { headers: headers });
+    }
 }

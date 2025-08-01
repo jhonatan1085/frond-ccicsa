@@ -200,6 +200,6 @@ export class routes {
     return this.baseUrl + '/materiales/list-materiales';
   }
   public static get materialesAsig(): string {
-    return this.baseUrl + '/materiales/asignar-materiales';
+    return this.baseUrl + '/materiales/list-materiales-brigada';
   }
 }
