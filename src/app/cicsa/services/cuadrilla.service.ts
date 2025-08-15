@@ -16,7 +16,6 @@ export class CuadrillaService extends AbstractCrudService<Cuadrilla> {
     super(http, authService, 'brigadas');
   }
 
-
   createCuadrilla(data: CuadrillaCreate) {
     const headers = this.getHeaders();
     const URL = `${URL_SERVICIOS}/${this.endpoint}`;

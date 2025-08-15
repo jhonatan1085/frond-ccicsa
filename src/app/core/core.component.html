@@ -10,12 +10,14 @@
     [ngClass]="{
       'd-none': sideBarActivePath === false && headerActivePath === false
     }"
-  ></app-header>
+  ></app-header> 
   <app-sidebar
     [ngClass]="{
       'd-none': sideBarActivePath === false && headerActivePath === false
     }"
   ></app-sidebar>
+
+ 
   <router-outlet></router-outlet>
   <div
     class="sidebar-overlay"
@@ -23,5 +25,6 @@
       opened: mobileSidebar
     }"
   ></div>
+ 
   <app-modal></app-modal>
 </div>
